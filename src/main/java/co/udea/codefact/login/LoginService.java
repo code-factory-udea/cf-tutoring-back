@@ -5,6 +5,6 @@ import org.springframework.stereotype.Service;
 @Service
 public interface LoginService {
     
-    void login(LoginRequest loginRequest);
+    LoginResponse login(LoginRequest loginRequest);
 
 }

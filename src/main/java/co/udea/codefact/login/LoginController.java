@@ -1,10 +1,17 @@
 package co.udea.codefact.login;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import co.udea.codefact.utils.exceptions.InvalidCredentialsException;
 
 @RestController
 public class LoginController {
@@ -15,9 +22,16 @@ public class LoginController {
         this.loginService = loginService;
     }
     
-    @PostMapping("/")
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
-        this.loginService.login(loginRequest);
-        return new ResponseEntity<>("API para codefact", HttpStatus.OK);
+    @PostMapping("/auth/login")
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
+        return new ResponseEntity<>(this.loginService.login(loginRequest), HttpStatus.OK);
+    }
+
+    @ExceptionHandler(InvalidCredentialsException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Map<String, String> handleInvalidCredentialsException(InvalidCredentialsException ex) {
+        Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put("message", ex.getMessage());
+        return errorResponse;
     }
 }
