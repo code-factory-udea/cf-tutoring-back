@@ -7,5 +7,5 @@ RUN mvn clean package -DskipTests -Pprod
 FROM eclipse-temurin:17-jdk
 WORKDIR /app
 COPY --from=build /app/target/codefact-api.jar codefact-api.jar
-EXPOSE 8080
+EXPOSE 8443
 CMD ["java", "-jar", "codefact-api.jar"]
