@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import co.udea.codefact.utils.constants.EndpointConstants;
 import co.udea.codefact.utils.exceptions.InvalidCredentialsException;
 
 @RestController
+
 public class LoginController {
 
     private final LoginService loginService;
@@ -22,7 +24,7 @@ public class LoginController {
         this.loginService = loginService;
     }
     
-    @PostMapping("/auth/login")
+    @PostMapping(EndpointConstants.LOGIN)
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
         return new ResponseEntity<>(this.loginService.login(loginRequest), HttpStatus.OK);
     }
@@ -34,4 +36,5 @@ public class LoginController {
         errorResponse.put("message", ex.getMessage());
         return errorResponse;
     }
+
 }

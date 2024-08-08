@@ -8,6 +8,8 @@ import co.udea.codefact.login.jwt.JWTService;
 import co.udea.codefact.user.User;
 import co.udea.codefact.user.UserMapper;
 import co.udea.codefact.user.UserService;
+import co.udea.codefact.utils.constants.MessagesConstants;
+import co.udea.codefact.utils.constants.URLConstants;
 import co.udea.codefact.utils.exceptions.InvalidCredentialsException;
 import reactor.core.publisher.Mono;
 
@@ -26,14 +28,12 @@ public class LoginLDAPService implements LoginService{
 
     @Override
     public LoginResponse login(LoginRequest loginRequest) {
-        System.out.println("LoginLDAPService.login()");
-        String url = "https://sistemas.udea.edu.co/api/ldap/login/";
         Mono<User> dto = webClient.post()
-                    .uri(url)
+                    .uri(URLConstants.URL_LDAP)
                     .header("Content-Type", "application/json")
                     .bodyValue(loginRequest)
                     .retrieve()
-                    .onStatus(HttpStatus.UNAUTHORIZED::equals, clientResponse -> Mono.error(new InvalidCredentialsException("Usuario y/o contraseña incorrecto")))
+                    .onStatus(HttpStatus.UNAUTHORIZED::equals, clientResponse -> Mono.error(new InvalidCredentialsException(MessagesConstants.INVALID_CREDENTIALS)))
                     .bodyToMono(LoginLDAPResponse.class)
                     .flatMap(this::handleResponse);
             
@@ -43,7 +43,6 @@ public class LoginLDAPService implements LoginService{
             .user(UserMapper.toLoginUserDTO(dto.block()))
             .token(token)
             .build();
-            
         }
 
         private Mono<User> handleResponse(LoginLDAPResponse loginLDAPResponse) {
