@@ -18,10 +18,10 @@ public class UserRoleInitializer implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        this.userRoleService.createRoleIfNotExists(1L,RoleConstants.STUDENT);
-        this.userRoleService.createRoleIfNotExists(2L,RoleConstants.PROFESSOR);
-        this.userRoleService.createRoleIfNotExists(3L,RoleConstants.UNKNOWN);
-        this.userRoleService.createRoleIfNotExists(4L,RoleConstants.ADMIN);
-        this.userRoleService.createRoleIfNotExists(5L,RoleConstants.TUTOR);
+        this.userRoleService.createRoleIfNotExists(RoleConstants.STUDENT_ID,RoleConstants.STUDENT);
+        this.userRoleService.createRoleIfNotExists(RoleConstants.PROFESSOR_ID,RoleConstants.PROFESSOR);
+        this.userRoleService.createRoleIfNotExists(RoleConstants.UNKNOWN_ID,RoleConstants.UNKNOWN);
+        this.userRoleService.createRoleIfNotExists(RoleConstants.ADMIN_ID,RoleConstants.ADMIN);
+        this.userRoleService.createRoleIfNotExists(RoleConstants.TUTOR_ID,RoleConstants.TUTOR);
     }
 }
