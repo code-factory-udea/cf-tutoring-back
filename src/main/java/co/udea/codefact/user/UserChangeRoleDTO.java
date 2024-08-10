@@ -11,8 +11,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class UserDTO {
+public class UserChangeRoleDTO {
+    
     private String username;
-    private String name;
-    private String role;
+    private Long idRole;
 }

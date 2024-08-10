@@ -10,4 +10,14 @@ public class UserMapper {
             .role(user.getRole().getRole())
             .build();
     }
+
+    public static UserDTO toUserDTO(User user) {
+        return UserDTO.builder()
+            .username(user.getUsername())
+            .name(String.format("%s %s", user.getFirstName(), user.getLastName()))
+            .role(user.getRole().getRole())
+            .build();
+    }
+
+    
 }

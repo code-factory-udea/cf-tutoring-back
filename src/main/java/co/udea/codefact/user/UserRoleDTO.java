@@ -1,5 +1,6 @@
 package co.udea.codefact.user;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,8 +12,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class UserDTO {
-    private String username;
-    private String name;
-    private String role;
+public class UserRoleDTO {
+
+    public Long id;
+    public String role; 
+    
 }

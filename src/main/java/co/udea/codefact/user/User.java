@@ -39,14 +39,17 @@ public class User implements UserDetails {
     private String username;
 
     @ManyToOne
-    @JoinColumn(name = "role_id")
+    @JoinColumn(name = "role_id", nullable = false)
     private UserRole role;
 
     @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @Column(name = "last_name", nullable = false)
+    @Column(name = "last_name", nullable = true)
     private String lastName;
+
+    @Column(name="password", nullable = true)
+    private String password;
 
 
     @Override
