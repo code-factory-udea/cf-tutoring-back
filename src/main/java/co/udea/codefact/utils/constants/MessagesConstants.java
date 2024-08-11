@@ -11,5 +11,5 @@ public class MessagesConstants {
     public static final String FACULTY_NOT_FOUND = "Facultad no encontrada";
     public static final String ACADEMIC_PROGRAM_ALREADY_EXISTS = "El programa académico ya existe";
     public static final String FACULTY_ALREADY_EXISTS = "La facultad ya existe";
-    
+    public static final String SUBJECT_ALREADY_EXISTS = "La materia ya existe";
 }
