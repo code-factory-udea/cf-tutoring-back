@@ -9,7 +9,16 @@ public class MessagesConstants {
     public static final String USER_ROLE_NOT_FOUND = "Rol de usuario no encontrado";
     public static final String ACADEMIC_PROGRAM_NOT_FOUND = "Programa académico no encontrado";
     public static final String FACULTY_NOT_FOUND = "Facultad no encontrada";
+    public static final String SUBJECT_NOT_FOUND = "Materia no encontrada";
     public static final String ACADEMIC_PROGRAM_ALREADY_EXISTS = "El programa académico ya existe";
     public static final String FACULTY_ALREADY_EXISTS = "La facultad ya existe";
     public static final String SUBJECT_ALREADY_EXISTS = "La materia ya existe";
+
+
+
+
+
+    public static final String RESPONSE_ASSIGN_SUBJECT_TO_TUTOR = "Materia asignada al monitor";
+    public static final String RESPONSE_ASSIGN_SUBJECT_TO_PROFESSOR = "Materia asignada al profesor";
+    
 }
