@@ -16,11 +16,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import co.udea.codefact.subject.SubjectRequestDTO;
+import co.udea.codefact.subject.SubjectResponseDTO;
 import co.udea.codefact.user.UserChangeRoleDTO;
 import co.udea.codefact.user.UserDTO;
+import co.udea.codefact.user.UserRoleDTO;
 import co.udea.codefact.utils.constants.EndpointConstants;
 import co.udea.codefact.utils.constants.MessagesConstants;
 import co.udea.codefact.utils.constants.RoleConstants;
+import co.udea.codefact.utils.exceptions.DataAlreadyExistsException;
+import co.udea.codefact.utils.exceptions.DataNotFoundException;
 import co.udea.codefact.utils.exceptions.InvalidRoleChangeException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -40,7 +45,7 @@ public class AdministrationController {
     @Operation(summary = "Cambiar el rol de un usuario", description = "Se puede cambiar el rol de un usuario, no todos los casos son permitidos")
     @ApiResponse(responseCode = "200", description = "Cambio de rol exitoso")
     @ApiResponse(responseCode = "400", description = "Cambio de rol no permitido")
-    @PatchMapping(EndpointConstants.USER_ROLE)
+    @PatchMapping(EndpointConstants.USER+"/"+EndpointConstants.USER_ROLE)
     public ResponseEntity<UserDTO> changeRole(@RequestBody UserChangeRoleDTO userChangeRoleDTO) {
         return new ResponseEntity<>(this.adminService.changeUserRole(userChangeRoleDTO), null, 200);
     }
@@ -63,7 +68,7 @@ public class AdministrationController {
     @Operation(summary = "Asignar materia a tutor", description = "Se le asigna una materia a un tutor")
     @ApiResponse(responseCode = "200", description = "Materia asignada satisfactoriamente")
     @ApiResponse(responseCode = "400", description = "Error al asignar la materia al tutor")
-    @PostMapping(EndpointConstants.TUTOR)
+    @PostMapping(EndpointConstants.TUTOR+"/"+EndpointConstants.SUBJECT)
     public ResponseEntity<String> assignSubjectToTutor(@RequestBody AssignSubjectDTO tutorSubjectDTO) {
         this.adminService.assignSubjectToTutor(tutorSubjectDTO);
         return new ResponseEntity<>(MessagesConstants.RESPONSE_ASSIGN_SUBJECT_TO_TUTOR, null, 200);
@@ -76,15 +81,13 @@ public class AdministrationController {
         return new ResponseEntity<>(this.adminService.getUsersByRole(RoleConstants.PROFESSOR_ID), null, 200);
     }
     
-    // -------------------------------------------------------------------------
     @Operation(summary = "Asignar materia a un profesor", description = "Se le asigna una materia a un profesor")
     @ApiResponse(responseCode = "200", description = "Materia asignada satisfactoriamente")
-    @PostMapping(EndpointConstants.PROFESSOR)
+    @PostMapping(EndpointConstants.PROFESSOR+"/"+EndpointConstants.SUBJECT)
     public ResponseEntity<String> assignSubjectToProfessor(@RequestBody AssignSubjectDTO tutorSubjectDTO) {
         this.adminService.assignSubjectToProfessor(tutorSubjectDTO);
         return new ResponseEntity<>(MessagesConstants.RESPONSE_ASSIGN_SUBJECT_TO_TUTOR, null, 200);
     }
-    // -------------------------------------------------------------------------
 
     @Operation(summary = "Obtener administradores", description = "Obtener todos los usuarios con rol de administrador")
     @ApiResponse(responseCode = "200", description = "Se obtuvieron los administradores")
@@ -105,6 +108,37 @@ public class AdministrationController {
     @GetMapping
     public ResponseEntity<List<UserDTO>> searchUsers(@RequestParam String name) {
         return new ResponseEntity<>(this.adminService.getUsersByName(name), null, 200);
+    }
+
+
+    @Operation(summary = "Crear materia", description = "Crea una materia")
+    @ApiResponse(responseCode = "200", description = "Materia creada satisfactoriamente")
+    @PostMapping(EndpointConstants.SUBJECT)
+    public ResponseEntity<SubjectResponseDTO> createSubject(@RequestBody SubjectRequestDTO subjectDTO) {
+        return new ResponseEntity<>(this.adminService.createSubject(subjectDTO), null, 200);
+    }
+
+    @Operation(summary = "Obtener roles", description = "Obtiene todos los roles disponibles")
+    @ApiResponse(responseCode = "200", description = "Se obtuvieron los roles")
+    @GetMapping(EndpointConstants.USER_ROLE)
+    public ResponseEntity<List<UserRoleDTO>> getRoles() {
+        return new ResponseEntity<>(this.adminService.getRoles(), null, 200);
+    }
+
+    @ExceptionHandler(DataAlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Map<String, String> handleDataAlreadyExistsException(DataAlreadyExistsException ex) {
+        Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put("message", ex.getMessage());
+        return errorResponse;
+    }
+
+    @ExceptionHandler(DataNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Map<String, String> handleDataNotFoundException(DataNotFoundException ex) {
+        Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put("message", ex.getMessage());
+        return errorResponse;
     }
 
     @ExceptionHandler(InvalidRoleChangeException.class)

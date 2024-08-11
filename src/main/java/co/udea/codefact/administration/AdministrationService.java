@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import co.udea.codefact.professor.ProfessorService;
 import co.udea.codefact.subject.Subject;
+import co.udea.codefact.subject.SubjectRequestDTO;
+import co.udea.codefact.subject.SubjectResponseDTO;
 import co.udea.codefact.subject.SubjectService;
 import co.udea.codefact.tutor.TutorService;
 import co.udea.codefact.user.User;
@@ -17,6 +19,7 @@ import co.udea.codefact.user.UserDTO;
 import co.udea.codefact.user.UserMapper;
 import co.udea.codefact.user.UserRole;
 import co.udea.codefact.user.UserRoleChangeKey;
+import co.udea.codefact.user.UserRoleDTO;
 import co.udea.codefact.user.UserRoleService;
 import co.udea.codefact.user.UserService;
 import co.udea.codefact.utils.constants.MessagesConstants;
@@ -108,6 +111,14 @@ public class AdministrationService {
         this.professorService.createProfessor(user);
         user.setRole(newRole);
         this.userService.saveUser(user);
+    }
+
+    public SubjectResponseDTO createSubject(SubjectRequestDTO subject){
+        return this.subjectService.createSubject(subject);
+    }
+
+    public List<UserRoleDTO> getRoles() {
+        return this.userRoleService.getRoles();
     }
 
     public void assignSubjectToTutor(AssignSubjectDTO tutorSubjectDTO){
