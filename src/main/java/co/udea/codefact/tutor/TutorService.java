@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import co.udea.codefact.user.User;
 import co.udea.codefact.utils.constants.MessagesConstants;
-import co.udea.codefact.utils.exceptions.TutorNotFoundException;
+import co.udea.codefact.utils.exceptions.DataNotFoundException;
 
 @Service
 public class TutorService {
@@ -35,7 +35,7 @@ public class TutorService {
     public void disableTutor(User user) {
         Optional<Tutor> tutor = this.tutorRepository.findByUserId(user.getId());
         if (!tutor.isPresent()) {
-            throw new TutorNotFoundException(MessagesConstants.TUTOR_NOT_FOUND);    
+            throw new DataNotFoundException(MessagesConstants.TUTOR_NOT_FOUND);    
         }
         tutor.get().setIsActive(false);
         this.tutorRepository.save(tutor.get());

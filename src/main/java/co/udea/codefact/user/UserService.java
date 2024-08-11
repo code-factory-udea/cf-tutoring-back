@@ -13,7 +13,7 @@ import co.udea.codefact.tutor.TutorService;
 import co.udea.codefact.utils.constants.MessagesConstants;
 import co.udea.codefact.utils.constants.RoleConstants;
 import co.udea.codefact.utils.exceptions.InvalidRoleChangeException;
-import co.udea.codefact.utils.exceptions.UserNotFoundException;
+import co.udea.codefact.utils.exceptions.DataNotFoundException;
 
 @Service
 public class UserService {
@@ -87,7 +87,7 @@ public class UserService {
     public UserDTO changeUserRole(UserChangeRoleDTO userChangeRoleDTO) {
         System.out.println("nuevo rol: "+userChangeRoleDTO.getIdRole());
         //User user = this.userRepository.findByUsername(userChangeRoleDTO.getUsername()).get();
-        User user = this.userRepository.findByUsername(userChangeRoleDTO.getUsername()).orElseThrow(() -> new UserNotFoundException(MessagesConstants.USER_NOT_FOUND));
+        User user = this.userRepository.findByUsername(userChangeRoleDTO.getUsername()).orElseThrow(() -> new DataNotFoundException(MessagesConstants.USER_NOT_FOUND));
         Long oldRoleId = this.userRoleService.findRoleById(user.getRole().getId()).getId();
         System.out.println("oldRoleId: "+oldRoleId);
         
