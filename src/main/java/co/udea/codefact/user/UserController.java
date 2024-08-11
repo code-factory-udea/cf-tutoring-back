@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -30,7 +31,7 @@ public class UserController {
     }
 
     @PatchMapping(EndpointConstants.USER_ROLE)
-    public ResponseEntity<UserDTO> changeRole(UserChangeRoleDTO userChangeRoleDTO) {
+    public ResponseEntity<UserDTO> changeRole(@RequestBody UserChangeRoleDTO userChangeRoleDTO) {
         return new ResponseEntity<>(this.userService.changeUserRole(userChangeRoleDTO), null, 200);
     }
 
@@ -41,6 +42,7 @@ public class UserController {
         errorResponse.put("message", ex.getMessage());
         return errorResponse;
     }
+    
     @GetMapping(EndpointConstants.STUDENT)
     public ResponseEntity<List<UserDTO>> getStudents() {
         return new ResponseEntity<>(this.userService.getUsersByRole(RoleConstants.STUDENT_ID), null, 200);
