@@ -35,20 +35,20 @@ public class User implements UserDetails {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "username", nullable = false, unique = true)
+    @Column(name = "username", nullable = false, unique = true, length = 30)
     private String username;
 
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
     private UserRole role;
 
-    @Column(name = "first_name", nullable = false)
+    @Column(name = "first_name", nullable = false, length = 64)
     private String firstName;
 
-    @Column(name = "last_name", nullable = true)
+    @Column(name = "last_name", nullable = true, length = 64)
     private String lastName;
 
-    @Column(name="password", nullable = true)
+    @Column(name="password", nullable = true, length = 255)
     private String password;
 
 
