@@ -17,27 +17,31 @@ public class AcademicService {
         this.academicProgramRepository = academicProgramRepository;
     }
 
-    public Faculty createFaculty(Long id, String name) {
-        this.facultyRepository.findByName(name).ifPresent(faculty -> {
+    public Faculty createFaculty(FacultyDTO facultyDTO) {
+        this.facultyRepository.findByName(facultyDTO.getName()).ifPresent(faculty -> {
             throw new DataAlreadyExistsException(MessagesConstants.FACULTY_ALREADY_EXISTS);
             
         });
         Faculty faculty = Faculty.builder()
-                .id(id)
-                .name(name)
+                .id(facultyDTO.getId())
+                .name(facultyDTO.getName())
                 .build();
         return facultyRepository.save(faculty);
     }
 
-    public AcademicProgram createAcademicProgram(Long id, String name, Long facultyId) {
-        this.academicProgramRepository.findById(id).ifPresent(academicProgram -> {
+    public AcademicProgram createAcademicProgram(AcademicProgramDTO academicProgramDTO) {
+        this.academicProgramRepository.findById(academicProgramDTO.getId()).ifPresent(academicProgram -> {
             throw new DataAlreadyExistsException(MessagesConstants.ACADEMIC_PROGRAM_ALREADY_EXISTS);
         });
         AcademicProgram academicProgram = AcademicProgram.builder()
-                .id(id)
-                .name(name)
-                .faculty(facultyRepository.findById(facultyId).orElseThrow(() -> new DataNotFoundException(MessagesConstants.FACULTY_NOT_FOUND)))
+                .id(academicProgramDTO.getId())
+                .name(academicProgramDTO.getName())
+                .faculty(facultyRepository.findById(academicProgramDTO.getFacultyId()).orElseThrow(() -> new DataNotFoundException(MessagesConstants.FACULTY_NOT_FOUND)))
                 .build();
         return academicProgramRepository.save(academicProgram);
+    }
+
+    public AcademicProgram getAcademicProgram(Long id) {
+        return this.academicProgramRepository.findById(id).orElseThrow(() -> new DataNotFoundException(MessagesConstants.ACADEMIC_PROGRAM_NOT_FOUND));
     }
 }
