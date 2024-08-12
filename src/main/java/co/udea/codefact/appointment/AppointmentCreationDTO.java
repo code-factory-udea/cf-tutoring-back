@@ -18,5 +18,4 @@ public class AppointmentCreationDTO {
     // Cambiar la fecha 
     private String date;
     
-    
 }

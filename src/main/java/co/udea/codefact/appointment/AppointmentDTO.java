@@ -21,7 +21,4 @@ public class AppointmentDTO {
     private String date;
     private String creationDate;
 
-
-    
-    
 }

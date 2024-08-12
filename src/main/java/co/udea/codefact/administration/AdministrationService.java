@@ -9,6 +9,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import co.udea.codefact.appointment.AppointmentService;
+import co.udea.codefact.appointment.AppointmentDTO;
 import co.udea.codefact.appointment.AppointmentDataCSV;
 import co.udea.codefact.professor.ProfessorService;
 import co.udea.codefact.subject.Subject;
@@ -71,8 +72,12 @@ public class AdministrationService {
         return listStudents;
     }
 
-    public String appointmentsListToCSV(){
-        List<AppointmentDataCSV> listAppointmentsCsvs = this.appointmentService.getAllAppointments();
+    public List<AppointmentDTO> getAllAppointments(){
+        return this.appointmentService.getAllAppointments();
+    }
+
+    public String appointmentsListToCSVFile(){
+        List<AppointmentDataCSV> listAppointmentsCsvs = this.appointmentService.getAllAppointmentsToCSV();
         StringWriter writer = new StringWriter();
         writer.append("id,date,is_virtual,appointment_status,subject_id,academic_program_id,calification\n");
         for (AppointmentDataCSV appointmentDataCSV : listAppointmentsCsvs) {
@@ -118,6 +123,7 @@ public class AdministrationService {
         return UserMapper.toUserDTO(this.userService.getUserByUsername(user.getUsername()));
     }
 
+    
     private void changeRole(User user, UserRole newRole) {
         user.setRole(newRole);
         this.userService.saveUser(user);

@@ -1,6 +1,5 @@
 package co.udea.codefact.appointment;
 
-import java.io.StringWriter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +42,7 @@ public class AppointmentService {
         User student = this.getUser();
         System.out.println(student.getUsername());
         Tutor tutor = this.tutorService.getTutorById(appointmentCreationDTO.getTutorId());
-        // Obtener bien la fecha con el DTO
+        // TODO: Obtener bien la fecha con el DTO
         LocalDateTime date = LocalDateTime.now();
         //
         Appointment appointment = Appointment.builder()
@@ -66,24 +65,7 @@ public class AppointmentService {
             .build();
     }
 
-    public String appointmentsListToCSV(){
-        List<AppointmentDataCSV> listAppointmentsCsvs = this.getAllAppointments();
-        StringWriter writer = new StringWriter();
-        writer.append("id,date,is_virtual,appointment_status,subject_id,academic_program_id,calification\n");
-        for (AppointmentDataCSV appointmentDataCSV : listAppointmentsCsvs) {
-            writer.append(String.format("%d,%s,%b,%s,%d,%d,%d\n",
-                appointmentDataCSV.getId(),
-                appointmentDataCSV.getDate(),
-                appointmentDataCSV.getIsVirtual(),
-                appointmentDataCSV.getAppointmentStatus(),
-                appointmentDataCSV.getSubjectId(),
-                appointmentDataCSV.getAcademicProgramId(),
-                appointmentDataCSV.getCalification()));
-        }
-        return writer.toString();
-    }
-
-    public List<AppointmentDataCSV> getAllAppointments() {
+    public List<AppointmentDataCSV> getAllAppointmentsToCSV() {
         List<AppointmentDataCSV> listAppointmentsCsvs = new ArrayList<>();
         for (Appointment appointment : this.appointmentRepository.findAll()) {
             listAppointmentsCsvs.add(
@@ -98,6 +80,25 @@ public class AppointmentService {
                 .build());
         }
         return listAppointmentsCsvs;
+    }
+
+    public List<AppointmentDTO> getAllAppointments() {
+        List<AppointmentDTO> listAppointments = new ArrayList<>();
+        for (Appointment appointment : this.appointmentRepository.findAll()) {
+            User student = appointment.getStudent();
+            User tutor = appointment.getTutor().getUser();
+            listAppointments.add(
+                AppointmentDTO.builder()
+                .id(appointment.getId())
+                .studentName(String.format("%s %s",student.getFirstName(),student.getLastName()))
+                .tutorName(String.format("%s %s", tutor.getFirstName(), tutor.getLastName()))
+                .date(appointment.getDate().toString())
+                .creationDate(appointment.getCreationDate().toString())
+                .isVirtual(appointment.getIsVirtual())
+                .status(appointment.getStatus())
+                .build());
+        }
+        return listAppointments;
     }
 
     private Integer getCalification(Long appointmentId) {
