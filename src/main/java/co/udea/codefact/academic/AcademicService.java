@@ -36,12 +36,16 @@ public class AcademicService {
         AcademicProgram academicProgram = AcademicProgram.builder()
                 .id(academicProgramDTO.getId())
                 .name(academicProgramDTO.getName())
-                .faculty(facultyRepository.findById(academicProgramDTO.getFacultyId()).orElseThrow(() -> new DataNotFoundException(MessagesConstants.FACULTY_NOT_FOUND)))
+                .faculty(this.getFaculty(academicProgramDTO.getFacultyId()))
                 .build();
         return academicProgramRepository.save(academicProgram);
     }
 
     public AcademicProgram getAcademicProgram(Long id) {
         return this.academicProgramRepository.findById(id).orElseThrow(() -> new DataNotFoundException(MessagesConstants.ACADEMIC_PROGRAM_NOT_FOUND));
+    }
+
+    public Faculty getFaculty(Long id) {
+        return this.facultyRepository.findById(id).orElseThrow(() -> new DataNotFoundException(MessagesConstants.FACULTY_NOT_FOUND));
     }
 }
