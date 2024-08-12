@@ -24,6 +24,14 @@ public class TutorService {
         this.userService = userService;
     }
 
+    public Tutor getTutorById(Long id) {
+        Optional<Tutor> tutor = this.tutorRepository.findById(id);
+        if (!tutor.isPresent()) {
+            throw new DataNotFoundException(MessagesConstants.TUTOR_NOT_FOUND);
+        }
+        return tutor.get();
+    }
+
     public void enableTutor(User user) {
         Optional<Tutor> tutor = this.tutorRepository.findByUserId(user.getId());
         if (tutor.isPresent()) {
