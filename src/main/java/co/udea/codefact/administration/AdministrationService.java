@@ -9,6 +9,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import co.udea.codefact.appointment.AppointmentService;
+import co.udea.codefact.appointment.AppointmentAllDataDTO;
 import co.udea.codefact.appointment.AppointmentDTO;
 import co.udea.codefact.appointment.AppointmentDataCSV;
 import co.udea.codefact.professor.ProfessorService;
@@ -72,6 +73,10 @@ public class AdministrationService {
         return listStudents;
     }
 
+    public AppointmentAllDataDTO getAppointmentByIdAsAdmin(Long appointmentId) {
+        return this.appointmentService.getAppointmentByIdAsAdmin(appointmentId);
+    }
+    
     public List<AppointmentDTO> getAllAppointments(){
         return this.appointmentService.getAllAppointments();
     }

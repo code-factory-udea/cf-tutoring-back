@@ -13,6 +13,8 @@ public class MessagesConstants {
     public static final String ACADEMIC_PROGRAM_ALREADY_EXISTS = "El programa académico ya existe";
     public static final String FACULTY_ALREADY_EXISTS = "La facultad ya existe";
     public static final String SUBJECT_ALREADY_EXISTS = "La materia ya existe";
+    public static final String APPOINTMENT_NOT_FOUND = "Monitoría no encontrada";
+    public static final String NO_CALIFICATION = "N/A";
 
 
 

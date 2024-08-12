@@ -12,6 +12,8 @@ import co.udea.codefact.tutor.TutorService;
 import co.udea.codefact.user.User;
 import co.udea.codefact.user.UserService;
 import co.udea.codefact.utils.auth.AuthenticationUtil;
+import co.udea.codefact.utils.constants.MessagesConstants;
+import co.udea.codefact.utils.exceptions.DataNotFoundException;
 
 @Service
 public class AppointmentService {
@@ -107,6 +109,45 @@ public class AppointmentService {
             return satisfactionSurvey.get().getCalification();
         }
         return null;
+    }
+
+    public AppointmentAllDataDTO getAppointmentByIdAsAdmin(Long appointmentId) {
+        Appointment appointment = this.getAppointment(appointmentId);
+        return this.getAppointmentData(appointment);
+    }
+
+    private AppointmentAllDataDTO getAppointmentData(Appointment appointment) {
+        User student = appointment.getStudent();
+        User tutor = appointment.getTutor().getUser();
+
+        AppointmentAllDataDTO.AppointmentAllDataDTOBuilder appointmentDataBuilder = AppointmentAllDataDTO.builder()
+            .studentName(String.format("%s %s",student.getFirstName(),student.getLastName()))
+            .tutorName(String.format("%s %s", tutor.getFirstName(), tutor.getLastName()))
+            .date(appointment.getDate().toString())
+            .creationDate(appointment.getCreationDate().toString())
+            .isVirtual(appointment.getIsVirtual())
+            .status(appointment.getStatus());
+
+        if (appointment.getStatus().equals(AppointmentStatus.COMPLETED)) {
+            SatisfactionSurvey satisfactionSurvey = this.getSatisfactionSurvey(appointment.getId());
+            appointmentDataBuilder.feedback(satisfactionSurvey.getFeedback());
+            appointmentDataBuilder.calification(satisfactionSurvey.getCalification().toString());    
+            appointmentDataBuilder.calificationDate(satisfactionSurvey.getCreationDate().toString());
+            return appointmentDataBuilder.build();
+        }
+        
+        appointmentDataBuilder.calification(MessagesConstants.NO_CALIFICATION);
+        appointmentDataBuilder.feedback(MessagesConstants.NO_CALIFICATION);
+        appointmentDataBuilder.calificationDate(MessagesConstants.NO_CALIFICATION);
+        return appointmentDataBuilder.build();
+    }
+
+    private Appointment getAppointment(Long appointmentId) {
+        return this.appointmentRepository.findById(appointmentId).orElseThrow(() -> new DataNotFoundException(MessagesConstants.APPOINTMENT_NOT_FOUND));
+    }
+
+    private SatisfactionSurvey getSatisfactionSurvey(Long appointmentId) {
+        return this.satisfactionSurveyRepository.findByAppointmentId(appointmentId).orElseThrow(() -> new DataNotFoundException(MessagesConstants.APPOINTMENT_NOT_FOUND));
     }
 
     private User getUser() {

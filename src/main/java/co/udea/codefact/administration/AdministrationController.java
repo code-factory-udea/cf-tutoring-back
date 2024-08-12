@@ -8,12 +8,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import co.udea.codefact.appointment.AppointmentAllDataDTO;
 import co.udea.codefact.appointment.AppointmentDTO;
 import co.udea.codefact.subject.SubjectRequestDTO;
 import co.udea.codefact.subject.SubjectResponseDTO;
@@ -137,6 +139,13 @@ public class AdministrationController {
     @GetMapping(EndpointConstants.APPOINTMENT)
     public ResponseEntity<List<AppointmentDTO>> getAppointments() {
         return new ResponseEntity<>(this.adminService.getAllAppointments(), null, 200);
+    }
+
+    @Operation(summary = "Obtener toda la info de una monitoria", description = "Se obtiene la información de la monitoria y su calificación")
+    @ApiResponse(responseCode = "200", description = "Se obtuvo la información de la monitoria")
+    @GetMapping(EndpointConstants.APPOINTMENT+"/{appointmentId}")
+    public ResponseEntity<AppointmentAllDataDTO> getAppointmentById(@PathVariable Long appointmentId) {
+        return new ResponseEntity<>(this.adminService.getAppointmentByIdAsAdmin(appointmentId), null, 200);
     }
     
 
