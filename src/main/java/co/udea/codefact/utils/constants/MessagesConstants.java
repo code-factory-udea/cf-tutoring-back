@@ -22,5 +22,13 @@ public class MessagesConstants {
 
     public static final String RESPONSE_ASSIGN_SUBJECT_TO_TUTOR = "Materia asignada al monitor";
     public static final String RESPONSE_ASSIGN_SUBJECT_TO_PROFESSOR = "Materia asignada al profesor";
+
+
+
+
+
+    private MessagesConstants() {
+        throw new IllegalStateException("Utility class");
+    }
     
 }

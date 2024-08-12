@@ -42,7 +42,6 @@ public class AppointmentService {
 
     public AppointmentDTO createAppointment(AppointmentCreationDTO appointmentCreationDTO) {
         User student = this.getUser();
-        System.out.println(student.getUsername());
         Tutor tutor = this.tutorService.getTutorById(appointmentCreationDTO.getTutorId());
         // TODO: Obtener bien la fecha con el DTO
         LocalDateTime date = LocalDateTime.now();

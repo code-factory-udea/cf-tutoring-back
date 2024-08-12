@@ -12,5 +12,9 @@ public class RoleConstants {
     public static final Long ADMIN_ID = 4L;
     public static final String TUTOR = "Monitor";
     public static final Long TUTOR_ID = 5L;
+
+    private RoleConstants() {
+        throw new IllegalStateException("Utility class");
+    }
     
 }

@@ -45,21 +45,19 @@ public class UserService {
         return this.userRepository.findByUsername(loginLDAPResponse.getUser()).get();
     }
 
-    private User saveUser(LoginLDAPResponse LDAPResponse) {
+    private User saveUser(LoginLDAPResponse ldapResponse) {
             User user = User.builder()  
-                .username(LDAPResponse.getUser())
-                .firstName(LDAPResponse.getName())
-                .lastName(LDAPResponse.getLastName())
-                .role(this.getRole(LDAPResponse.getRole()))
+                .username(ldapResponse.getUser())
+                .firstName(ldapResponse.getName())
+                .lastName(ldapResponse.getLastName())
+                .role(this.getRole(ldapResponse.getRole()))
                 .build();
             return this.userRepository.save(user);
     }
 
     private UserRole getRole(String role) {
         switch (role) {
-            case "estudiante":
-            case "auxProg":
-            case "auxAdmin":
+            case "estudiante", "auxProg", "auxAdmin":
                 role = RoleConstants.STUDENT;
                 break;
             case "profesor":

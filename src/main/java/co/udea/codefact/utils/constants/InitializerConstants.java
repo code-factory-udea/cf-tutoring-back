@@ -24,4 +24,8 @@ public class InitializerConstants {
     public static final Long PROGRAMMING_TECHNIQUES_AND_LABORATORY_ID = 2508307L;
     // End Subjects
     
+
+    private InitializerConstants() {
+        throw new IllegalStateException("Utility class");
+    }
 }
