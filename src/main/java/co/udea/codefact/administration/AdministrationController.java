@@ -148,5 +148,11 @@ public class AdministrationController {
         return new ResponseEntity<>(this.adminService.getAppointmentByIdAsAdmin(appointmentId), null, 200);
     }
     
+    @Operation(summary = "Modificar info de materia", description = "Modificar la información de una materia")
+    @ApiResponse(responseCode = "200", description = "Se modificó la información de la materia")
+    @PatchMapping(EndpointConstants.SUBJECT)
+    public ResponseEntity<SubjectResponseDTO> updateSubject(@RequestBody SubjectRequestDTO subjectDTO) {
+        return new ResponseEntity<>(this.adminService.updateSubject(subjectDTO), null, 200);
+    }
 
 }

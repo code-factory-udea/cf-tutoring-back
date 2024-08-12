@@ -98,6 +98,31 @@ public class AdministrationService {
         return writer.toString();
     }
 
+    
+    public SubjectResponseDTO createSubject(SubjectRequestDTO subject){
+        return this.subjectService.createSubject(subject);
+    }
+
+    public List<UserRoleDTO> getRoles() {
+        return this.userRoleService.getRoles();
+    }
+
+    public void assignSubjectToTutor(AssignSubjectDTO tutorSubjectDTO){
+        User user = this.userService.getUserByUsername(tutorSubjectDTO.getUsername());
+        Subject subject = this.subjectService.getSubject(tutorSubjectDTO.getSubjectId());
+        this.tutorService.assignSubject(user, subject);
+    }
+
+    public void assignSubjectToProfessor(AssignSubjectDTO tutorSubjectDTO){
+        User user = this.userService.getUserByUsername(tutorSubjectDTO.getUsername());
+        Subject subject = this.subjectService.getSubject(tutorSubjectDTO.getSubjectId());
+        this.professorService.assignSubject(user, subject);
+    }
+
+    public SubjectResponseDTO updateSubject(SubjectRequestDTO subjectDTO) {
+        return this.subjectService.updateSubject(subjectDTO);
+    }
+    
     public UserDTO changeUserRole(UserChangeRoleDTO userChangeRoleDTO) {
         User user = this.userService.getUserByUsername(userChangeRoleDTO.getUsername());
         Long oldRoleId = this.userRoleService.findRoleById(user.getRole().getId()).getId();
@@ -127,7 +152,6 @@ public class AdministrationService {
 
         return UserMapper.toUserDTO(this.userService.getUserByUsername(user.getUsername()));
     }
-
     
     private void changeRole(User user, UserRole newRole) {
         user.setRole(newRole);
@@ -152,26 +176,5 @@ public class AdministrationService {
         this.userService.saveUser(user);
     }
 
-    public SubjectResponseDTO createSubject(SubjectRequestDTO subject){
-        return this.subjectService.createSubject(subject);
-    }
-
-    public List<UserRoleDTO> getRoles() {
-        return this.userRoleService.getRoles();
-    }
-
-    public void assignSubjectToTutor(AssignSubjectDTO tutorSubjectDTO){
-        User user = this.userService.getUserByUsername(tutorSubjectDTO.getUsername());
-        Subject subject = this.subjectService.getSubject(tutorSubjectDTO.getSubjectId());
-        this.tutorService.assignSubject(user, subject);
-    }
-
-    public void assignSubjectToProfessor(AssignSubjectDTO tutorSubjectDTO){
-        User user = this.userService.getUserByUsername(tutorSubjectDTO.getUsername());
-        Subject subject = this.subjectService.getSubject(tutorSubjectDTO.getSubjectId());
-        this.professorService.assignSubject(user, subject);
-    }
-
-    
 
 }
