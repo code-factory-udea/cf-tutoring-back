@@ -1,9 +1,11 @@
 package co.udea.codefact.administration;
 
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -110,7 +112,6 @@ public class AdministrationController {
         return new ResponseEntity<>(this.adminService.getUsersByName(name), null, 200);
     }
 
-
     @Operation(summary = "Crear materia", description = "Crea una materia")
     @ApiResponse(responseCode = "200", description = "Materia creada satisfactoriamente")
     @PostMapping(EndpointConstants.SUBJECT)
@@ -123,6 +124,18 @@ public class AdministrationController {
     @GetMapping(EndpointConstants.USER_ROLE)
     public ResponseEntity<List<UserRoleDTO>> getRoles() {
         return new ResponseEntity<>(this.adminService.getRoles(), null, 200);
+    }
+
+    @Operation(summary = "Obtener monitorias en csv", description = "Se obtiene la información de las monitorias en formato csv")
+    @ApiResponse(responseCode = "200", description = "Se genero el csv con las informaciones de las monitorias")
+    @GetMapping(EndpointConstants.APPOINTMENT+"/"+EndpointConstants.CSV)
+    public ResponseEntity<byte[]> getAppointmentsCSV() {
+        String csv = this.adminService.appointmentsListToCSV();
+        byte[] output = csv.getBytes(StandardCharsets.UTF_8);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=monitorias.csv");
+        headers.add(HttpHeaders.CONTENT_TYPE, "text/csv; charset=UTF-8");
+        return new ResponseEntity<>(output, headers, HttpStatus.OK);
     }
 
     @ExceptionHandler(DataAlreadyExistsException.class)

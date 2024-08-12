@@ -1,5 +1,6 @@
 package co.udea.codefact.administration;
 
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,6 +8,8 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import co.udea.codefact.appointment.AppointmentService;
+import co.udea.codefact.appointment.AppointmentDataCSV;
 import co.udea.codefact.professor.ProfessorService;
 import co.udea.codefact.subject.Subject;
 import co.udea.codefact.subject.SubjectRequestDTO;
@@ -35,13 +38,21 @@ public class AdministrationService {
     private final TutorService tutorService;
     private final ProfessorService professorService;
     private final SubjectService subjectService;
+    private final AppointmentService appointmentService;
 
-    public AdministrationService(UserService userService, UserRoleService userRoleService, TutorService tutorService, ProfessorService professorService, SubjectService subjectService) {
+    public AdministrationService(
+                            UserService userService, 
+                            UserRoleService userRoleService, 
+                            TutorService tutorService, 
+                            ProfessorService professorService, 
+                            SubjectService subjectService,
+                            AppointmentService appointmentService) {
         this.userService = userService;
         this.userRoleService = userRoleService;
         this.tutorService = tutorService;
         this.professorService = professorService;
         this.subjectService = subjectService;
+        this.appointmentService = appointmentService;
     }
     
     public List<UserDTO> getUsersByRole(Long roleId) {
@@ -58,6 +69,23 @@ public class AdministrationService {
             listStudents.add(UserMapper.toUserDTO(student));
         }
         return listStudents;
+    }
+
+    public String appointmentsListToCSV(){
+        List<AppointmentDataCSV> listAppointmentsCsvs = this.appointmentService.getAllAppointments();
+        StringWriter writer = new StringWriter();
+        writer.append("id,date,is_virtual,appointment_status,subject_id,academic_program_id,calification\n");
+        for (AppointmentDataCSV appointmentDataCSV : listAppointmentsCsvs) {
+            writer.append(String.format("%d,%s,%b,%s,%d,%d,%d\n",
+                appointmentDataCSV.getId(),
+                appointmentDataCSV.getDate(),
+                appointmentDataCSV.getIsVirtual(),
+                appointmentDataCSV.getAppointmentStatus(),
+                appointmentDataCSV.getSubjectId(),
+                appointmentDataCSV.getAcademicProgramId(),
+                appointmentDataCSV.getCalification()));
+        }
+        return writer.toString();
     }
 
     public UserDTO changeUserRole(UserChangeRoleDTO userChangeRoleDTO) {
@@ -132,5 +160,7 @@ public class AdministrationService {
         Subject subject = this.subjectService.getSubject(tutorSubjectDTO.getSubjectId());
         this.professorService.assignSubject(user, subject);
     }
+
+    
 
 }
