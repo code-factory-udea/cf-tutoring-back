@@ -28,6 +28,7 @@ public class LoginLDAPService implements LoginService{
 
     @Override
     public LoginResponse login(LoginRequest loginRequest) {
+        @SuppressWarnings("unlikely-arg-type")
         Mono<User> dto = webClient.post()
                     .uri(URLConstants.URL_LDAP)
                     .header("Content-Type", "application/json")
