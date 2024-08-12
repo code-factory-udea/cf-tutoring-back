@@ -13,9 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import co.udea.codefact.utils.constants.EndpointConstants;
 import co.udea.codefact.utils.exceptions.InvalidCredentialsException;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
+@Tag(name = "Inicio de sesión", description = "Endpoints válidos para iniciar sesión en la aplicación")
 @RestController
-
 public class LoginController {
 
     private final LoginService loginService;
@@ -24,17 +27,10 @@ public class LoginController {
         this.loginService = loginService;
     }
     
+    @Operation(summary = "Iniciar sesión", description = "Iniciar sesión en la aplicación")
+    @ApiResponse(responseCode = "200", description = "Inicio de sesión exitoso")
     @PostMapping(EndpointConstants.LOGIN)
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
         return new ResponseEntity<>(this.loginService.login(loginRequest), HttpStatus.OK);
     }
-
-    @ExceptionHandler(InvalidCredentialsException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public Map<String, String> handleInvalidCredentialsException(InvalidCredentialsException ex) {
-        Map<String, String> errorResponse = new HashMap<>();
-        errorResponse.put("message", ex.getMessage());
-        return errorResponse;
-    }
-
 }
