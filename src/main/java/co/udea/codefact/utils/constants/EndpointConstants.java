@@ -11,7 +11,12 @@ public class EndpointConstants {
     public static final String PROFESSOR = "/professor";
     public static final String ADMIN = "/admin";
     public static final String OTHERS = "/others";
-    
+    public static final String ACADEMIC = "/academic";
+    public static final String ACADEMIC_PROGRAM = "/academic-program";
+    public static final String FACULTY = "/faculty";
+    public static final String SUBJECT = "/subject";
+    public static final String APPOINTMENT = "/appointment";
+    public static final String CSV = "/csv";
     
     private EndpointConstants() {
         throw new IllegalStateException("Utility class");

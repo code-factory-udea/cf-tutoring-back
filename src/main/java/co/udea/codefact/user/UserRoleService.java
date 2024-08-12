@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import co.udea.codefact.utils.constants.MessagesConstants;
-import co.udea.codefact.utils.exceptions.UserRoleNotFoundException;
+import co.udea.codefact.utils.exceptions.DataNotFoundException;
 
 @Service
 public class UserRoleService {
@@ -22,7 +22,7 @@ public class UserRoleService {
     }
 
     public UserRole findRoleById(Long id) {
-        return this.userRoleRepository.findById(id).orElseThrow(() -> new UserRoleNotFoundException(MessagesConstants.USER_ROLE_NOT_FOUND));
+        return this.userRoleRepository.findById(id).orElseThrow(() -> new DataNotFoundException(MessagesConstants.USER_ROLE_NOT_FOUND));
     }
 
     public void createRoleIfNotExists(Long id, String role) {

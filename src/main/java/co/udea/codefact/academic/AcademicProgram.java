@@ -1,6 +1,5 @@
-package co.udea.codefact.subject;
+package co.udea.codefact.academic;
 
-import co.udea.codefact.academic.AcademicProgram;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -13,23 +12,20 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
-@Table(name = "subject")
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
-public class Subject {
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "academic_program")
+public class AcademicProgram {
     
     @Id
-    @Column(name = "id")
     private Long id;
-
-    @Column(name = "name", length = 64)
+    @Column(name = "name", nullable = false, unique = true, length = 64)
     private String name;
-
     @ManyToOne
-    @JoinColumn(name = "academic_program_id")
-    private AcademicProgram academicProgram;
+    @JoinColumn(name = "id_faculty", nullable = false)
+    private Faculty faculty;
 }

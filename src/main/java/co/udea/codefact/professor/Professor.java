@@ -11,13 +11,17 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "professor")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Setter
+@Getter
 public class Professor {
 
     @Id
@@ -32,4 +36,8 @@ public class Professor {
     @JoinColumn(name = "id_subject", nullable = true)
     private Subject subject;
     
+    public Boolean hasSubject() {
+        return this.subject != null;
+    }
+
 }
