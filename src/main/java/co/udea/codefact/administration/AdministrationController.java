@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import co.udea.codefact.appointment.AppointmentDTO;
 import co.udea.codefact.subject.SubjectRequestDTO;
 import co.udea.codefact.subject.SubjectResponseDTO;
 import co.udea.codefact.user.UserChangeRoleDTO;
@@ -53,14 +54,14 @@ public class AdministrationController {
     }
 
     
-    @Operation(summary = "Obtener estudiantes", description = "Obtener todos los usuarios con rol de estudiante")
+    @Operation(summary = "Obtener usuarios estudiantes", description = "Obtener todos los usuarios con rol de estudiante")
     @ApiResponse(responseCode = "200", description = "Se obtuvieron los estudiantes")
     @GetMapping(EndpointConstants.STUDENT)
     public ResponseEntity<List<UserDTO>> getStudents() {
         return new ResponseEntity<>(this.adminService.getUsersByRole(RoleConstants.STUDENT_ID), null, 200);
     }
 
-    @Operation(summary = "Obtener monitores", description = "Obtener todos los usuarios con rol de monitor")
+    @Operation(summary = "Obtener usuarios monitores", description = "Obtener todos los usuarios con rol de monitor")
     @ApiResponse(responseCode = "200", description = "Se obtuvieron los monitores")
     @GetMapping(EndpointConstants.TUTOR)
     public ResponseEntity<List<UserDTO>> getTutors() {
@@ -76,7 +77,7 @@ public class AdministrationController {
         return new ResponseEntity<>(MessagesConstants.RESPONSE_ASSIGN_SUBJECT_TO_TUTOR, null, 200);
     }
 
-    @Operation(summary = "Obtener profesores", description = "Obtener todos los usuarios con rol de profesor")
+    @Operation(summary = "Obtener usuarios profesores", description = "Obtener todos los usuarios con rol de profesor")
     @ApiResponse(responseCode = "200", description = "Se obtuvieron los profesores")
     @GetMapping(EndpointConstants.PROFESSOR)
     public ResponseEntity<List<UserDTO>> getProfessors() {
@@ -91,7 +92,7 @@ public class AdministrationController {
         return new ResponseEntity<>(MessagesConstants.RESPONSE_ASSIGN_SUBJECT_TO_TUTOR, null, 200);
     }
 
-    @Operation(summary = "Obtener administradores", description = "Obtener todos los usuarios con rol de administrador")
+    @Operation(summary = "Obtener usuarios administradores", description = "Obtener todos los usuarios con rol de administrador")
     @ApiResponse(responseCode = "200", description = "Se obtuvieron los administradores")
     @GetMapping(EndpointConstants.ADMIN)
     public ResponseEntity<List<UserDTO>> getAdmins() {
@@ -130,7 +131,7 @@ public class AdministrationController {
     @ApiResponse(responseCode = "200", description = "Se genero el csv con las informaciones de las monitorias")
     @GetMapping(EndpointConstants.APPOINTMENT+"/"+EndpointConstants.CSV)
     public ResponseEntity<byte[]> getAppointmentsCSV() {
-        String csv = this.adminService.appointmentsListToCSV();
+        String csv = this.adminService.appointmentsListToCSVFile();
         byte[] output = csv.getBytes(StandardCharsets.UTF_8);
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=monitorias.csv");
@@ -138,28 +139,6 @@ public class AdministrationController {
         return new ResponseEntity<>(output, headers, HttpStatus.OK);
     }
 
-    @ExceptionHandler(DataAlreadyExistsException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, String> handleDataAlreadyExistsException(DataAlreadyExistsException ex) {
-        Map<String, String> errorResponse = new HashMap<>();
-        errorResponse.put("message", ex.getMessage());
-        return errorResponse;
-    }
 
-    @ExceptionHandler(DataNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public Map<String, String> handleDataNotFoundException(DataNotFoundException ex) {
-        Map<String, String> errorResponse = new HashMap<>();
-        errorResponse.put("message", ex.getMessage());
-        return errorResponse;
-    }
-
-    @ExceptionHandler(InvalidRoleChangeException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, String> handleInvalidRoleChangeException(InvalidRoleChangeException ex) {
-        Map<String, String> errorResponse = new HashMap<>();
-        errorResponse.put("message", ex.getMessage());
-        return errorResponse;
-    }
 
 }
