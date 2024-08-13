@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import co.udea.codefact.appointment.AppointmentAllDataDTO;
 import co.udea.codefact.appointment.AppointmentDTO;
+import co.udea.codefact.professor.ProfessorDTO;
 import co.udea.codefact.subject.SubjectRequestDTO;
 import co.udea.codefact.subject.SubjectResponseDTO;
 import co.udea.codefact.tutor.TutorDTO;
@@ -159,9 +160,13 @@ public class AdministrationController {
     @Operation(summary = "Ver info de tutor", description = "Ver la información de un tutor")
     @GetMapping(EndpointConstants.TUTOR+"/{username}")
     public ResponseEntity<TutorDTO> getTutorInfo(@PathVariable String username){
-        return new ResponseEntity<>(this.adminService.getTutorDTO(username), HttpStatus.OK);
+        return new ResponseEntity<>(this.adminService.getTutorInfo(username), HttpStatus.OK);
     }
 
-    
+    @Operation(summary = "Ver info de profesor", description = "Ver la información de un profesor")
+    @GetMapping(EndpointConstants.PROFESSOR+"/{username}")
+    public ResponseEntity<ProfessorDTO> getProfessorInfo(@PathVariable String username){
+        return new ResponseEntity<>(this.adminService.getProfessorInfo(username), HttpStatus.OK);
+    }
 
 }

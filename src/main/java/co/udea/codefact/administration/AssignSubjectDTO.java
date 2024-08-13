@@ -8,6 +8,6 @@ import lombok.Setter;
 public class AssignSubjectDTO {
 
     private String username;
-    private Long subjectId;    
+    private Long subjectCode;    
     
 }

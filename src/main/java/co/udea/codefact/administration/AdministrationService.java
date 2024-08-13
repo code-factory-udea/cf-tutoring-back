@@ -12,6 +12,7 @@ import co.udea.codefact.appointment.AppointmentService;
 import co.udea.codefact.appointment.AppointmentAllDataDTO;
 import co.udea.codefact.appointment.AppointmentDTO;
 import co.udea.codefact.appointment.AppointmentDataCSV;
+import co.udea.codefact.professor.ProfessorDTO;
 import co.udea.codefact.professor.ProfessorService;
 import co.udea.codefact.subject.Subject;
 import co.udea.codefact.subject.SubjectRequestDTO;
@@ -110,13 +111,13 @@ public class AdministrationService {
 
     public void assignSubjectToTutor(AssignSubjectDTO tutorSubjectDTO){
         User user = this.userService.getUserByUsername(tutorSubjectDTO.getUsername());
-        Subject subject = this.subjectService.getSubject(tutorSubjectDTO.getSubjectId());
+        Subject subject = this.subjectService.getSubjectByCode(tutorSubjectDTO.getSubjectCode());
         this.tutorService.assignSubject(user, subject);
     }
 
     public void assignSubjectToProfessor(AssignSubjectDTO tutorSubjectDTO){
         User user = this.userService.getUserByUsername(tutorSubjectDTO.getUsername());
-        Subject subject = this.subjectService.getSubject(tutorSubjectDTO.getSubjectId());
+        Subject subject = this.subjectService.getSubjectByCode(tutorSubjectDTO.getSubjectCode());
         this.professorService.assignSubject(user, subject);
     }
 
@@ -124,8 +125,12 @@ public class AdministrationService {
         return this.subjectService.updateSubject(subjectDTO);
     }
 
-    public TutorDTO getTutorDTO(String username) {
+    public TutorDTO getTutorInfo(String username) {
         return this.tutorService.getTutorDTO(username.toLowerCase());
+    }
+
+    public ProfessorDTO getProfessorInfo(String username) {
+        return this.professorService.getProfessorDTO(username.toLowerCase());
     }
     
     public UserDTO changeUserRole(UserChangeRoleDTO userChangeRoleDTO) {
