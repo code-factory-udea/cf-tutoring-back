@@ -19,6 +19,7 @@ import co.udea.codefact.appointment.AppointmentAllDataDTO;
 import co.udea.codefact.appointment.AppointmentDTO;
 import co.udea.codefact.subject.SubjectRequestDTO;
 import co.udea.codefact.subject.SubjectResponseDTO;
+import co.udea.codefact.tutor.TutorDTO;
 import co.udea.codefact.user.UserChangeRoleDTO;
 import co.udea.codefact.user.UserDTO;
 import co.udea.codefact.user.UserRoleDTO;
@@ -153,6 +154,12 @@ public class AdministrationController {
     @PatchMapping(EndpointConstants.SUBJECT)
     public ResponseEntity<SubjectResponseDTO> updateSubject(@RequestBody SubjectRequestDTO subjectDTO) {
         return new ResponseEntity<>(this.adminService.updateSubject(subjectDTO), null, 200);
+    }
+
+    @Operation(summary = "Ver info de tutor", description = "Ver la información de un tutor")
+    @GetMapping(EndpointConstants.TUTOR+"/{username}")
+    public ResponseEntity<TutorDTO> getTutorInfo(@PathVariable String username){
+        return new ResponseEntity<>(this.adminService.getTutorDTO(username), HttpStatus.OK);
     }
 
     

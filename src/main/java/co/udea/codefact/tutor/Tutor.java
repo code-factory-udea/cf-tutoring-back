@@ -45,4 +45,5 @@ public class Tutor {
 
     @Column(name = "is_active")
     private Boolean isActive;
+
 }

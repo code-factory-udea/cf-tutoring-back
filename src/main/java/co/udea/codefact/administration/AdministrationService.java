@@ -17,6 +17,7 @@ import co.udea.codefact.subject.Subject;
 import co.udea.codefact.subject.SubjectRequestDTO;
 import co.udea.codefact.subject.SubjectResponseDTO;
 import co.udea.codefact.subject.SubjectService;
+import co.udea.codefact.tutor.TutorDTO;
 import co.udea.codefact.tutor.TutorService;
 import co.udea.codefact.user.User;
 import co.udea.codefact.user.UserChangeRoleDTO;
@@ -122,8 +123,13 @@ public class AdministrationService {
     public SubjectResponseDTO updateSubject(SubjectRequestDTO subjectDTO) {
         return this.subjectService.updateSubject(subjectDTO);
     }
+
+    public TutorDTO getTutorDTO(String username) {
+        return this.tutorService.getTutorDTO(username.toLowerCase());
+    }
     
     public UserDTO changeUserRole(UserChangeRoleDTO userChangeRoleDTO) {
+        
         User user = this.userService.getUserByUsername(userChangeRoleDTO.getUsername());
         Long oldRoleId = this.userRoleService.findRoleById(user.getRole().getId()).getId();
         
