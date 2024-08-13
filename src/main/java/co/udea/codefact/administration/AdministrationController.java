@@ -43,7 +43,7 @@ public class AdministrationController {
     @Operation(summary = "Cambiar el rol de un usuario", description = "Se puede cambiar el rol de un usuario, no todos los casos son permitidos")
     @ApiResponse(responseCode = "200", description = "Cambio de rol exitoso")
     @ApiResponse(responseCode = "400", description = "Cambio de rol no permitido")
-    @PatchMapping(EndpointConstants.USER+"/"+EndpointConstants.USER_ROLE)
+    @PatchMapping(EndpointConstants.USER+EndpointConstants.USER_ROLE)
     public ResponseEntity<UserDTO> changeRole(@RequestBody UserChangeRoleDTO userChangeRoleDTO) {
         return new ResponseEntity<>(this.adminService.changeUserRole(userChangeRoleDTO), null, 200);
     }
@@ -66,7 +66,7 @@ public class AdministrationController {
     @Operation(summary = "Asignar materia a tutor", description = "Se le asigna una materia a un tutor")
     @ApiResponse(responseCode = "200", description = "Materia asignada satisfactoriamente")
     @ApiResponse(responseCode = "400", description = "Error al asignar la materia al tutor")
-    @PostMapping(EndpointConstants.TUTOR+"/"+EndpointConstants.SUBJECT)
+    @PostMapping(EndpointConstants.TUTOR+EndpointConstants.SUBJECT)
     public ResponseEntity<String> assignSubjectToTutor(@RequestBody AssignSubjectDTO tutorSubjectDTO) {
         this.adminService.assignSubjectToTutor(tutorSubjectDTO);
         return new ResponseEntity<>(MessagesConstants.RESPONSE_ASSIGN_SUBJECT_TO_TUTOR, null, 200);
@@ -81,7 +81,7 @@ public class AdministrationController {
     
     @Operation(summary = "Asignar materia a un profesor", description = "Se le asigna una materia a un profesor")
     @ApiResponse(responseCode = "200", description = "Materia asignada satisfactoriamente")
-    @PostMapping(EndpointConstants.PROFESSOR+"/"+EndpointConstants.SUBJECT)
+    @PostMapping(EndpointConstants.PROFESSOR+EndpointConstants.SUBJECT)
     public ResponseEntity<String> assignSubjectToProfessor(@RequestBody AssignSubjectDTO tutorSubjectDTO) {
         this.adminService.assignSubjectToProfessor(tutorSubjectDTO);
         return new ResponseEntity<>(MessagesConstants.RESPONSE_ASSIGN_SUBJECT_TO_TUTOR, null, 200);
@@ -103,7 +103,7 @@ public class AdministrationController {
 
     @Operation(summary = "Busqueda por nombre de usuario", description = "Busca todos los usuarios que contengan el nombre dado")
     @ApiResponse(responseCode = "200", description = "Se obtuvieron los usuarios que contengan el nombre dado")
-    @GetMapping
+    @GetMapping(EndpointConstants.USER)
     public ResponseEntity<List<UserDTO>> searchUsers(@RequestParam String name) {
         return new ResponseEntity<>(this.adminService.getUsersByName(name), null, 200);
     }
@@ -117,14 +117,14 @@ public class AdministrationController {
 
     @Operation(summary = "Obtener roles", description = "Obtiene todos los roles disponibles")
     @ApiResponse(responseCode = "200", description = "Se obtuvieron los roles")
-    @GetMapping(EndpointConstants.USER_ROLE)
+    @GetMapping(EndpointConstants.ROLE)
     public ResponseEntity<List<UserRoleDTO>> getRoles() {
         return new ResponseEntity<>(this.adminService.getRoles(), null, 200);
     }
 
     @Operation(summary = "Obtener monitorias en csv", description = "Se obtiene la información de las monitorias en formato csv")
     @ApiResponse(responseCode = "200", description = "Se genero el csv con las informaciones de las monitorias")
-    @GetMapping(EndpointConstants.APPOINTMENT+"/"+EndpointConstants.CSV)
+    @GetMapping(EndpointConstants.APPOINTMENT+EndpointConstants.CSV)
     public ResponseEntity<byte[]> getAppointmentsCSV() {
         String csv = this.adminService.appointmentsListToCSVFile();
         byte[] output = csv.getBytes(StandardCharsets.UTF_8);
@@ -154,5 +154,7 @@ public class AdministrationController {
     public ResponseEntity<SubjectResponseDTO> updateSubject(@RequestBody SubjectRequestDTO subjectDTO) {
         return new ResponseEntity<>(this.adminService.updateSubject(subjectDTO), null, 200);
     }
+
+    
 
 }
