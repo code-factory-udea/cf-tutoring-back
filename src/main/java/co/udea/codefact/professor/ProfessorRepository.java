@@ -14,5 +14,9 @@ public interface ProfessorRepository extends JpaRepository<Professor, Long> {
 
     Optional<Professor> findTopByUserIdOrderByIdDesc(Long userId);
 
+    Optional<Professor> findByIdAndSubjectCode(Long id, Long subjectCode);
+
     List<Professor> findAllByUserId(Long id);
+
+
 }

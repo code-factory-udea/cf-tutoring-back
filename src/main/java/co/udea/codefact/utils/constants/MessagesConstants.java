@@ -16,6 +16,7 @@ public class MessagesConstants {
     public static final String SUBJECT_ALREADY_EXISTS = "La materia ya existe";
     public static final String APPOINTMENT_NOT_FOUND = "Monitoría no encontrada";
     public static final String NO_DATA = "N/A";
+    public static final String PROFESSOR_SUBJECT_NOT_FOUND = "Materia no asignada al profesor";
 
 
 
@@ -23,6 +24,7 @@ public class MessagesConstants {
 
     public static final String RESPONSE_ASSIGN_SUBJECT_TO_TUTOR = "Materia asignada al monitor";
     public static final String RESPONSE_ASSIGN_SUBJECT_TO_PROFESSOR = "Materia asignada al profesor";
+    public static final String RESPONSE_ASSIGN_SUBJECT_TO_PROFESSOR_DELETE = "Materia eliminada del profesor";
 
 
 

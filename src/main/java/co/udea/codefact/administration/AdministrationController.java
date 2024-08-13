@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import co.udea.codefact.appointment.AppointmentAllDataDTO;
 import co.udea.codefact.appointment.AppointmentDTO;
 import co.udea.codefact.professor.ProfessorDTO;
+import co.udea.codefact.professor.ProfessorDeleteDTO;
 import co.udea.codefact.subject.SubjectRequestDTO;
 import co.udea.codefact.subject.SubjectResponseDTO;
 import co.udea.codefact.tutor.TutorDTO;
@@ -167,6 +169,14 @@ public class AdministrationController {
     @GetMapping(EndpointConstants.PROFESSOR+"/{username}")
     public ResponseEntity<ProfessorDTO> getProfessorInfo(@PathVariable String username){
         return new ResponseEntity<>(this.adminService.getProfessorInfo(username), HttpStatus.OK);
+    }
+
+    @Operation(summary = "Eliminar materia de profesor", description = "Eliminar la materia asignada a un profesor")
+    @ApiResponse(responseCode = "200", description = "Se eliminó la materia del profesor")
+    @DeleteMapping(EndpointConstants.PROFESSOR+EndpointConstants.SUBJECT)
+    public ResponseEntity<String> deleteProfessorSubject(@RequestBody ProfessorDeleteDTO professorDeleteDTO) {
+        this.adminService.deleteProfessorSubject(professorDeleteDTO);
+        return new ResponseEntity<>(MessagesConstants.RESPONSE_ASSIGN_SUBJECT_TO_PROFESSOR_DELETE, null, 200);
     }
 
 }

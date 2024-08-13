@@ -84,4 +84,17 @@ public class ProfessorService {
                 .build();
 
     }
+
+    public Professor getProfessorById(Long id) {
+        return this.professorRepository.findById(id).orElseThrow(() -> new DataNotFoundException(MessagesConstants.PROFESSOR_NOT_FOUND));
+    }
+
+    public void deleteProfessorSubject(ProfessorDeleteDTO professorDeleteDTO) {
+        Professor professor = this.professorRepository.findByIdAndSubjectCode(professorDeleteDTO.getId(),professorDeleteDTO.getSubjectCode()).orElseThrow(() -> new DataNotFoundException(MessagesConstants.PROFESSOR_SUBJECT_NOT_FOUND));
+        User user = professor.getUser();
+        this.professorRepository.delete(professor);
+        if (this.professorRepository.findAllByUserId(professor.getUser().getId()).isEmpty()) {
+            this.createProfessor(user);
+        }
+    }
 }

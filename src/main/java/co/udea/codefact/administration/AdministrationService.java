@@ -13,6 +13,7 @@ import co.udea.codefact.appointment.AppointmentAllDataDTO;
 import co.udea.codefact.appointment.AppointmentDTO;
 import co.udea.codefact.appointment.AppointmentDataCSV;
 import co.udea.codefact.professor.ProfessorDTO;
+import co.udea.codefact.professor.ProfessorDeleteDTO;
 import co.udea.codefact.professor.ProfessorService;
 import co.udea.codefact.subject.Subject;
 import co.udea.codefact.subject.SubjectRequestDTO;
@@ -131,6 +132,10 @@ public class AdministrationService {
 
     public ProfessorDTO getProfessorInfo(String username) {
         return this.professorService.getProfessorDTO(username.toLowerCase());
+    }
+
+    public void deleteProfessorSubject(ProfessorDeleteDTO professorDeleteDTO) {
+        this.professorService.deleteProfessorSubject(professorDeleteDTO);
     }
     
     public UserDTO changeUserRole(UserChangeRoleDTO userChangeRoleDTO) {
