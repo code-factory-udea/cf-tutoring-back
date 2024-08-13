@@ -13,10 +13,10 @@ import lombok.Setter;
 @AllArgsConstructor
 public class TutorDTO {
     
-    public Long id;
-    public String name;
-    public String username;
-    public String subjectInfo;
-    public String academicProgramInfo;
+    private Long id;
+    private String name;
+    private String username;
+    private String subjectInfo;
+    private String academicProgramInfo;
 
 }

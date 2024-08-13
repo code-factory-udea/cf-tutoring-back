@@ -45,7 +45,7 @@ public class SubjectService {
         return this.subjectRepository.findById(id).orElseThrow(() -> new DataNotFoundException(MessagesConstants.SUBJECT_NOT_FOUND));
     }
 
-    private Subject getSubjectByCode(Long code) {
+    public Subject getSubjectByCode(Long code) {
         return this.subjectRepository.findByCode(code).orElseThrow(() -> new DataNotFoundException(MessagesConstants.SUBJECT_NOT_FOUND));
     }
     
