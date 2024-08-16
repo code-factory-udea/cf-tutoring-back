@@ -14,6 +14,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import co.udea.codefact.utils.constants.RoleConstants;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
@@ -34,6 +36,9 @@ public class SecurityConfiguration {
         http.csrf()
                 .disable()
                 .authorizeHttpRequests()
+                .requestMatchers("/admin/**").hasAnyAuthority(RoleConstants.ADMIN)
+                .requestMatchers("/appointment/** */").hasAnyAuthority(RoleConstants.STUDENT, RoleConstants.TUTOR)                
+                .requestMatchers("/subject/**").authenticated()
                 .requestMatchers("/swagger-ui/**","/v3/api-docs/**","/auth/**")
                 .permitAll()                .anyRequest()
                 .authenticated()
@@ -51,7 +56,7 @@ public class SecurityConfiguration {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(List.of("http://localhost:8080"));
+        configuration.setAllowedOrigins(List.of("*"));
         configuration.setAllowedMethods(List.of("GET","POST"));
         configuration.setAllowedHeaders(List.of("Authorization","Content-Type"));
 

@@ -13,7 +13,7 @@ import co.udea.codefact.user.UserRoleService;
 import co.udea.codefact.utils.constants.InitializerConstants;
 import co.udea.codefact.utils.constants.RoleConstants;
 
-@Component
+//@Component
 public class DatabaseInitializer implements ApplicationRunner {
 
     private final UserRoleService userRoleService;
@@ -32,7 +32,6 @@ public class DatabaseInitializer implements ApplicationRunner {
         this.facultyInitializer();
         this.academicProgramInitializer();
         this.subjectInitializer();
-        
     }
 
     private void userRoleInitializer() {
@@ -54,12 +53,12 @@ public class DatabaseInitializer implements ApplicationRunner {
     }
 
     private void subjectInitializer() {
-        SubjectRequestDTO logic_III = new SubjectRequestDTO(InitializerConstants.LOGIC_III_ID, InitializerConstants.LOGIC_III, InitializerConstants.SYSTEMS_ENGINEERING_ID);
-        this.subjectService.createSubject(logic_III);
-        SubjectRequestDTO logic_II = new SubjectRequestDTO(InitializerConstants.LOGIC_II_ID, InitializerConstants.LOGIC_II, InitializerConstants.SYSTEMS_ENGINEERING_ID);
-        this.subjectService.createSubject(logic_II);
-        SubjectRequestDTO logic_I = new SubjectRequestDTO(InitializerConstants.LOGIC_I_ID, InitializerConstants.LOGIC_I, InitializerConstants.SYSTEMS_ENGINEERING_ID);
-        this.subjectService.createSubject(logic_I);
+        SubjectRequestDTO logicIII = new SubjectRequestDTO(InitializerConstants.LOGIC_III_ID, InitializerConstants.LOGIC_III, InitializerConstants.SYSTEMS_ENGINEERING_ID);
+        this.subjectService.createSubject(logicIII);
+        SubjectRequestDTO logicII = new SubjectRequestDTO(InitializerConstants.LOGIC_II_ID, InitializerConstants.LOGIC_II, InitializerConstants.SYSTEMS_ENGINEERING_ID);
+        this.subjectService.createSubject(logicII);
+        SubjectRequestDTO logicI = new SubjectRequestDTO(InitializerConstants.LOGIC_I_ID, InitializerConstants.LOGIC_I, InitializerConstants.SYSTEMS_ENGINEERING_ID);
+        this.subjectService.createSubject(logicI);
         SubjectRequestDTO programmingTechniquesAndLaboratory = new SubjectRequestDTO(InitializerConstants.PROGRAMMING_TECHNIQUES_AND_LABORATORY_ID, InitializerConstants.PROGRAMMING_TECHNIQUES_AND_LABORATORY, InitializerConstants.SYSTEMS_ENGINEERING_ID);
         this.subjectService.createSubject(programmingTechniquesAndLaboratory);
     }

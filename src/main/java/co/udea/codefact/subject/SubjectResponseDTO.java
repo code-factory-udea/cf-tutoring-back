@@ -13,7 +13,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class SubjectResponseDTO {
 
-    private Long id;
+    private Long code;
     private String name;
     private String academicProgram;
     

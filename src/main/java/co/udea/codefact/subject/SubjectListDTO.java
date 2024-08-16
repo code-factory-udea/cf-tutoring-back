@@ -6,15 +6,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
 @Builder
+@Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SubjectRequestDTO {
+public class SubjectListDTO {
 
     private Long code;
     private String name;
-    private Long academicProgramId;
     
 }

@@ -12,6 +12,7 @@ import co.udea.codefact.tutor.TutorService;
 import co.udea.codefact.user.User;
 import co.udea.codefact.user.UserService;
 import co.udea.codefact.utils.auth.AuthenticationUtil;
+import co.udea.codefact.utils.constants.FormatConstants;
 import co.udea.codefact.utils.constants.MessagesConstants;
 import co.udea.codefact.utils.exceptions.DataNotFoundException;
 
@@ -57,8 +58,8 @@ public class AppointmentService {
         User tutorUser = tutor.getUser();
         return AppointmentDTO.builder()
             .id(appointment.getId())
-            .studentName(String.format("%s %s",student.getFirstName(),student.getLastName()))
-            .tutorName(String.format("%s %s", tutorUser.getFirstName(), tutorUser.getLastName()))
+            .studentName(String.format(FormatConstants.FULLNAME_FORMAT,student.getFirstName(),student.getLastName()))
+            .tutorName(String.format(FormatConstants.FULLNAME_FORMAT, tutorUser.getFirstName(), tutorUser.getLastName()))
             .date(date.toString())
             .creationDate(appointment.getCreationDate().toString())
             .isVirtual(appointmentCreationDTO.getIsVirtual())
@@ -91,8 +92,8 @@ public class AppointmentService {
             listAppointments.add(
                 AppointmentDTO.builder()
                 .id(appointment.getId())
-                .studentName(String.format("%s %s",student.getFirstName(),student.getLastName()))
-                .tutorName(String.format("%s %s", tutor.getFirstName(), tutor.getLastName()))
+                .studentName(String.format(FormatConstants.FULLNAME_FORMAT,student.getFirstName(),student.getLastName()))
+                .tutorName(String.format(FormatConstants.FULLNAME_FORMAT, tutor.getFirstName(), tutor.getLastName()))
                 .date(appointment.getDate().toString())
                 .creationDate(appointment.getCreationDate().toString())
                 .isVirtual(appointment.getIsVirtual())
@@ -120,8 +121,8 @@ public class AppointmentService {
         User tutor = appointment.getTutor().getUser();
 
         AppointmentAllDataDTO.AppointmentAllDataDTOBuilder appointmentDataBuilder = AppointmentAllDataDTO.builder()
-            .studentName(String.format("%s %s",student.getFirstName(),student.getLastName()))
-            .tutorName(String.format("%s %s", tutor.getFirstName(), tutor.getLastName()))
+            .studentName(String.format(FormatConstants.FULLNAME_FORMAT,student.getFirstName(),student.getLastName()))
+            .tutorName(String.format(FormatConstants.FULLNAME_FORMAT, tutor.getFirstName(), tutor.getLastName()))
             .date(appointment.getDate().toString())
             .creationDate(appointment.getCreationDate().toString())
             .isVirtual(appointment.getIsVirtual())
@@ -135,9 +136,9 @@ public class AppointmentService {
             return appointmentDataBuilder.build();
         }
         
-        appointmentDataBuilder.calification(MessagesConstants.NO_CALIFICATION);
-        appointmentDataBuilder.feedback(MessagesConstants.NO_CALIFICATION);
-        appointmentDataBuilder.calificationDate(MessagesConstants.NO_CALIFICATION);
+        appointmentDataBuilder.calification(MessagesConstants.NO_DATA);
+        appointmentDataBuilder.feedback(MessagesConstants.NO_DATA);
+        appointmentDataBuilder.calificationDate(MessagesConstants.NO_DATA);
         return appointmentDataBuilder.build();
     }
 

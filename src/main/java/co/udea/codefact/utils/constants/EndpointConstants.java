@@ -6,6 +6,7 @@ public class EndpointConstants {
     public static final String LOGIN = "/auth/login";
     public static final String USER = "/user";
     public static final String USER_ROLE = "/user-role";
+    public static final String ROLE = "/role";
     public static final String STUDENT = "/student";
     public static final String TUTOR = "/tutor";
     public static final String PROFESSOR = "/professor";

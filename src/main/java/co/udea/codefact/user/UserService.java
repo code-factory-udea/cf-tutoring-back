@@ -52,7 +52,8 @@ public class UserService {
                 .lastName(ldapResponse.getLastName())
                 .role(this.getRole(ldapResponse.getRole()))
                 .build();
-            return this.userRepository.save(user);
+            user = this.userRepository.save(user);
+            return user;
     }
 
     private UserRole getRole(String role) {
@@ -70,7 +71,7 @@ public class UserService {
         return this.userRoleService.findRoleByRole(role);
     }
 
-    
+
 
 }
 

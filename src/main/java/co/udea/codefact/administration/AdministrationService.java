@@ -12,11 +12,14 @@ import co.udea.codefact.appointment.AppointmentService;
 import co.udea.codefact.appointment.AppointmentAllDataDTO;
 import co.udea.codefact.appointment.AppointmentDTO;
 import co.udea.codefact.appointment.AppointmentDataCSV;
+import co.udea.codefact.professor.ProfessorDTO;
+import co.udea.codefact.professor.ProfessorDeleteDTO;
 import co.udea.codefact.professor.ProfessorService;
 import co.udea.codefact.subject.Subject;
 import co.udea.codefact.subject.SubjectRequestDTO;
 import co.udea.codefact.subject.SubjectResponseDTO;
 import co.udea.codefact.subject.SubjectService;
+import co.udea.codefact.tutor.TutorDTO;
 import co.udea.codefact.tutor.TutorService;
 import co.udea.codefact.user.User;
 import co.udea.codefact.user.UserChangeRoleDTO;
@@ -98,7 +101,45 @@ public class AdministrationService {
         return writer.toString();
     }
 
+    
+    public SubjectResponseDTO createSubject(SubjectRequestDTO subject){
+        return this.subjectService.createSubject(subject);
+    }
+
+    public List<UserRoleDTO> getRoles() {
+        return this.userRoleService.getRoles();
+    }
+
+    public void assignSubjectToTutor(AssignSubjectDTO tutorSubjectDTO){
+        User user = this.userService.getUserByUsername(tutorSubjectDTO.getUsername());
+        Subject subject = this.subjectService.getSubjectByCode(tutorSubjectDTO.getSubjectCode());
+        this.tutorService.assignSubject(user, subject);
+    }
+
+    public void assignSubjectToProfessor(AssignSubjectDTO tutorSubjectDTO){
+        User user = this.userService.getUserByUsername(tutorSubjectDTO.getUsername());
+        Subject subject = this.subjectService.getSubjectByCode(tutorSubjectDTO.getSubjectCode());
+        this.professorService.assignSubject(user, subject);
+    }
+
+    public SubjectResponseDTO updateSubject(SubjectRequestDTO subjectDTO) {
+        return this.subjectService.updateSubject(subjectDTO);
+    }
+
+    public TutorDTO getTutorInfo(String username) {
+        return this.tutorService.getTutorDTO(username.toLowerCase());
+    }
+
+    public ProfessorDTO getProfessorInfo(String username) {
+        return this.professorService.getProfessorDTO(username.toLowerCase());
+    }
+
+    public void deleteProfessorSubject(ProfessorDeleteDTO professorDeleteDTO) {
+        this.professorService.deleteProfessorSubject(professorDeleteDTO);
+    }
+    
     public UserDTO changeUserRole(UserChangeRoleDTO userChangeRoleDTO) {
+        
         User user = this.userService.getUserByUsername(userChangeRoleDTO.getUsername());
         Long oldRoleId = this.userRoleService.findRoleById(user.getRole().getId()).getId();
         
@@ -127,7 +168,6 @@ public class AdministrationService {
 
         return UserMapper.toUserDTO(this.userService.getUserByUsername(user.getUsername()));
     }
-
     
     private void changeRole(User user, UserRole newRole) {
         user.setRole(newRole);
@@ -152,26 +192,5 @@ public class AdministrationService {
         this.userService.saveUser(user);
     }
 
-    public SubjectResponseDTO createSubject(SubjectRequestDTO subject){
-        return this.subjectService.createSubject(subject);
-    }
-
-    public List<UserRoleDTO> getRoles() {
-        return this.userRoleService.getRoles();
-    }
-
-    public void assignSubjectToTutor(AssignSubjectDTO tutorSubjectDTO){
-        User user = this.userService.getUserByUsername(tutorSubjectDTO.getUsername());
-        Subject subject = this.subjectService.getSubject(tutorSubjectDTO.getSubjectId());
-        this.tutorService.assignSubject(user, subject);
-    }
-
-    public void assignSubjectToProfessor(AssignSubjectDTO tutorSubjectDTO){
-        User user = this.userService.getUserByUsername(tutorSubjectDTO.getUsername());
-        Subject subject = this.subjectService.getSubject(tutorSubjectDTO.getSubjectId());
-        this.professorService.assignSubject(user, subject);
-    }
-
-    
 
 }
