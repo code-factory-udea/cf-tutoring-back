@@ -5,8 +5,6 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import co.udea.codefact.login.LoginLDAPResponse;
-import co.udea.codefact.professor.ProfessorService;
-import co.udea.codefact.tutor.TutorService;
 import co.udea.codefact.utils.constants.MessagesConstants;
 import co.udea.codefact.utils.constants.RoleConstants;
 import co.udea.codefact.utils.exceptions.DataNotFoundException;
@@ -16,15 +14,11 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final UserRoleService userRoleService;
-    private final ProfessorService professorService;
-    private final TutorService tutorService;
 
 
-    public UserService(UserRepository userRepository, UserRoleService userRoleService, ProfessorService professorService, TutorService tutorService) {
+    public UserService(UserRepository userRepository, UserRoleService userRoleService) {
         this.userRepository = userRepository;
         this.userRoleService = userRoleService;
-        this.professorService = professorService;
-        this.tutorService = tutorService;
     }
 
     public List<User> getUsersByRole(Long roleId) {
@@ -59,7 +53,6 @@ public class UserService {
                 .role(this.getRole(ldapResponse.getRole()))
                 .build();
             user = this.userRepository.save(user);
-            this.createTutorOrProfessor(user);
             return user;
     }
 
@@ -78,13 +71,7 @@ public class UserService {
         return this.userRoleService.findRoleByRole(role);
     }
 
-    private void createTutorOrProfessor(User user) {
-        if (user.getRole().getRole().equals(RoleConstants.TUTOR)) {
-            this.tutorService.enableTutor(user);
-        } else if (user.getRole().getRole().equals(RoleConstants.PROFESSOR)) {
-            this.professorService.createProfessor(user);
-        }
-    }
+
 
 }
 
