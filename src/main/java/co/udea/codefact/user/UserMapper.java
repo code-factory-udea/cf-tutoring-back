@@ -1,8 +1,9 @@
 package co.udea.codefact.user;
 
+import co.udea.codefact.utils.constants.FormatConstants;
+
 public class UserMapper {
     
-    //Método estático
     public static UserDTO toLoginUserDTO(User user) {
         return UserDTO.builder()
             .username(user.getUsername())
@@ -14,7 +15,7 @@ public class UserMapper {
     public static UserDTO toUserDTO(User user) {
         return UserDTO.builder()
             .username(user.getUsername())
-            .name(String.format("%s %s", user.getFirstName(), user.getLastName()))
+            .name(String.format(FormatConstants.FULLNAME_FORMAT, user.getFirstName(), user.getLastName()))
             .role(user.getRole().getRole())
             .build();
     }

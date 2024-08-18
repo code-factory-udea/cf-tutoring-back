@@ -66,6 +66,15 @@ public class TutorService {
         tutor.get().setSubject(subject);
         this.tutorRepository.save(tutor.get());
     }
+
+    public void unassignSubject(User user) {
+        Optional<Tutor> tutor = this.tutorRepository.findByUserId(user.getId());
+        if (!tutor.isPresent()) {
+          throw new DataNotFoundException(MessagesConstants.TUTOR_NOT_FOUND);
+        }
+        tutor.get().setSubject(null);
+        this.tutorRepository.save(tutor.get());
+    }
     
     public TutorDTO getTutorDTO(String username) {
         User user = this.userService.getUserByUsername(username);
@@ -77,7 +86,6 @@ public class TutorService {
         this.getAditionalInfo(tutorDTOBuilder, tutor.getSubject());
         return tutorDTOBuilder.build();
     }
-
 
     private void getAditionalInfo(TutorDTO.TutorDTOBuilder builder, Subject subject) {
         if (subject == null) {
