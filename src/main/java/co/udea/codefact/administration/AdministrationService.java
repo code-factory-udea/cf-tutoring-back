@@ -9,6 +9,9 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import co.udea.codefact.appointment.AppointmentService;
+import co.udea.codefact.academic.AcademicProgramDTO;
+import co.udea.codefact.academic.AcademicService;
+import co.udea.codefact.academic.FacultyDTO;
 import co.udea.codefact.appointment.AppointmentAllDataDTO;
 import co.udea.codefact.appointment.AppointmentDTO;
 import co.udea.codefact.appointment.AppointmentDataCSV;
@@ -44,6 +47,7 @@ public class AdministrationService {
     private final ProfessorService professorService;
     private final SubjectService subjectService;
     private final AppointmentService appointmentService;
+    private final AcademicService academicService;
 
     public AdministrationService(
                             UserService userService, 
@@ -51,13 +55,15 @@ public class AdministrationService {
                             TutorService tutorService, 
                             ProfessorService professorService, 
                             SubjectService subjectService,
-                            AppointmentService appointmentService) {
+                            AppointmentService appointmentService,
+                            AcademicService academicService) {
         this.userService = userService;
         this.userRoleService = userRoleService;
         this.tutorService = tutorService;
         this.professorService = professorService;
         this.subjectService = subjectService;
         this.appointmentService = appointmentService;
+        this.academicService = academicService;
     }
     
     public List<UserDTO> getUsersByRole(Long roleId) {
@@ -136,6 +142,14 @@ public class AdministrationService {
 
     public void deleteProfessorSubject(ProfessorDeleteDTO professorDeleteDTO) {
         this.professorService.deleteProfessorSubject(professorDeleteDTO);
+    }
+
+    public void createAcademicProgram(AcademicProgramDTO academicProgramDTO) {
+        this.academicService.createAcademicProgram(academicProgramDTO);
+    }
+
+    public void createFaculty(FacultyDTO facultyDTO) {
+        this.academicService.createFaculty(facultyDTO);
     }
     
     public UserDTO changeUserRole(UserChangeRoleDTO userChangeRoleDTO) {
