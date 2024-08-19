@@ -43,12 +43,12 @@ public class DatabaseInitializer implements ApplicationRunner {
     }
 
     private void facultyInitializer() {
-        FacultyDTO engineerFaculty = new FacultyDTO(InitializerConstants.ENGINEER_FACULTY_ID, InitializerConstants.ENGINEER_FACULTY);
+        FacultyDTO engineerFaculty = new FacultyDTO(InitializerConstants.ENGINEER_FACULTY);
         this.academicService.createFaculty(engineerFaculty);
     }
 
     private void academicProgramInitializer() {
-        AcademicProgramDTO systemsEngineering = new AcademicProgramDTO(InitializerConstants.SYSTEMS_ENGINEERING_ID, InitializerConstants.SYSTEMS_ENGINEERING, InitializerConstants.ENGINEER_FACULTY_ID);
+        AcademicProgramDTO systemsEngineering = new AcademicProgramDTO(InitializerConstants.SYSTEMS_ENGINEERING_ID, InitializerConstants.SYSTEMS_ENGINEERING, 1L);
         this.academicService.createAcademicProgram(systemsEngineering);
     }
 

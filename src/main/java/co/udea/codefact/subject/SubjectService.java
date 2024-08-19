@@ -33,9 +33,9 @@ public class SubjectService {
         return SubjectMapper.toDTO(this.subjectRepository.save(subject));
     }
     
-    public List<SubjectListDTO> getSubjects() {
+    public List<SubjectListDTO> getSubjects(Long academicProgramId) {
         List<SubjectListDTO> subjects = new ArrayList<>(); ;
-        for (Subject subject : this.subjectRepository.findAll()) {
+        for (Subject subject : this.subjectRepository.findAllByAcademicProgramId(academicProgramId)) {
             subjects.add(SubjectMapper.toListDTO(subject));
         }
         return subjects;
