@@ -16,7 +16,6 @@ import co.udea.codefact.appointment.AppointmentAllDataDTO;
 import co.udea.codefact.appointment.AppointmentDTO;
 import co.udea.codefact.appointment.AppointmentDataCSV;
 import co.udea.codefact.professor.ProfessorDTO;
-import co.udea.codefact.professor.ProfessorDeleteDTO;
 import co.udea.codefact.professor.ProfessorService;
 import co.udea.codefact.subject.Subject;
 import co.udea.codefact.subject.SubjectRequestDTO;
@@ -140,8 +139,8 @@ public class AdministrationService {
         return this.professorService.getProfessorDTO(username.toLowerCase());
     }
 
-    public void deleteProfessorSubject(ProfessorDeleteDTO professorDeleteDTO) {
-        this.professorService.deleteProfessorSubject(professorDeleteDTO);
+    public void deleteProfessorSubject(Long idProfessor) {
+        this.professorService.deleteProfessorSubject(idProfessor);
     }
 
     public void createAcademicProgram(AcademicProgramDTO academicProgramDTO) {

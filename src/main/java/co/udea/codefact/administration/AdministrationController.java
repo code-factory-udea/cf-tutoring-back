@@ -21,7 +21,6 @@ import co.udea.codefact.academic.FacultyDTO;
 import co.udea.codefact.appointment.AppointmentAllDataDTO;
 import co.udea.codefact.appointment.AppointmentDTO;
 import co.udea.codefact.professor.ProfessorDTO;
-import co.udea.codefact.professor.ProfessorDeleteDTO;
 import co.udea.codefact.subject.SubjectRequestDTO;
 import co.udea.codefact.subject.SubjectResponseDTO;
 import co.udea.codefact.tutor.TutorDTO;
@@ -176,8 +175,8 @@ public class AdministrationController {
     @Operation(summary = "Eliminar materia de profesor", description = "Eliminar la materia asignada a un profesor")
     @ApiResponse(responseCode = "200", description = "Se eliminó la materia del profesor")
     @DeleteMapping(EndpointConstants.PROFESSOR+EndpointConstants.SUBJECT)
-    public ResponseEntity<String> deleteProfessorSubject(@RequestBody ProfessorDeleteDTO professorDeleteDTO) {
-        this.adminService.deleteProfessorSubject(professorDeleteDTO);
+    public ResponseEntity<String> deleteProfessorSubject(@RequestBody Long idProfessor) {
+        this.adminService.deleteProfessorSubject(idProfessor);
         return new ResponseEntity<>(MessagesConstants.RESPONSE_ASSIGN_SUBJECT_TO_PROFESSOR_DELETE, null, 200);
     }
 

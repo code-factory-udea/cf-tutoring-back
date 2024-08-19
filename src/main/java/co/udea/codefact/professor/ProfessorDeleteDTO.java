@@ -13,6 +13,6 @@ import lombok.Setter;
 @Setter
 public class ProfessorDeleteDTO {
     
-    private Long id;
+    private Long idProfessor;
     private Long subjectCode;
 }

@@ -15,7 +15,6 @@ import lombok.Setter;
 @Setter
 public class ProfessorDTO {
 
-    private Long id;
     private String name;
     private String username;
     private List<ProfessorSubjectInfo> professorSubjectInfo;
@@ -29,6 +28,7 @@ public class ProfessorDTO {
 @Setter
 class ProfessorSubjectInfo{
 
+    private Long idProfessor;
     private String subjectInfo;
     private String academicProgramInfo;
 

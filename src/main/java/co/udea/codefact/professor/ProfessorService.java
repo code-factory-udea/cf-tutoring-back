@@ -54,7 +54,6 @@ public class ProfessorService {
         if (professor.isPresent()) {
             User user = professor.get().getUser();
             return ProfessorDTO.builder()
-                    .id(professor.get().getId())
                     .name(String.format(FormatConstants.FULLNAME_FORMAT,user.getFirstName(), user.getLastName()) )
                     .username(user.getUsername())
                     .professorSubjectInfo(this.getProfessorSubjectInfo(professor.get()))
@@ -68,19 +67,21 @@ public class ProfessorService {
         List<ProfessorSubjectInfo> professorSubjectInfo = new ArrayList<>();
         List<Professor> professors = this.professorRepository.findAllByUserId(professor.getUser().getId());
         for (Professor p : professors) {
-            professorSubjectInfo.add(this.getSubjectInfo(ProfessorSubjectInfo.builder(), p.getSubject()));
+            professorSubjectInfo.add(this.getSubjectInfo(ProfessorSubjectInfo.builder(), p.getId(), p.getSubject()));
         }
         return professorSubjectInfo;
     }
 
-    private ProfessorSubjectInfo getSubjectInfo(ProfessorSubjectInfo.ProfessorSubjectInfoBuilder builder, Subject subject) {
+    private ProfessorSubjectInfo getSubjectInfo(ProfessorSubjectInfo.ProfessorSubjectInfoBuilder builder, Long idProfessor, Subject subject) {
         if (subject == null) {
             return builder
+                    .idProfessor(null)
                     .subjectInfo(MessagesConstants.NO_DATA)
                     .academicProgramInfo(MessagesConstants.NO_DATA)
                     .build();
         }
         return builder
+                .idProfessor(idProfessor)
                 .subjectInfo(String.format(FormatConstants.ACADEMIC_INFO_FORMAT, subject.getCode(), subject.getName()))
                 .academicProgramInfo(String.format(FormatConstants.ACADEMIC_INFO_FORMAT, subject.getAcademicProgram().getName(), subject.getAcademicProgram().getFaculty().getName()))
                 .build();
@@ -91,8 +92,8 @@ public class ProfessorService {
         return this.professorRepository.findById(id).orElseThrow(() -> new DataNotFoundException(MessagesConstants.PROFESSOR_NOT_FOUND));
     }
 
-    public void deleteProfessorSubject(ProfessorDeleteDTO professorDeleteDTO) {
-        Professor professor = this.professorRepository.findByIdAndSubjectCode(professorDeleteDTO.getId(),professorDeleteDTO.getSubjectCode()).orElseThrow(() -> new DataNotFoundException(MessagesConstants.PROFESSOR_SUBJECT_NOT_FOUND));
+    public void deleteProfessorSubject(Long idProfessor) {
+        Professor professor = this.getProfessorById(idProfessor);
         User user = professor.getUser();
         this.professorRepository.delete(professor);
         if (this.professorRepository.findAllByUserId(professor.getUser().getId()).isEmpty()) {
