@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import co.udea.codefact.academic.AcademicProgramDTO;
+import co.udea.codefact.academic.FacultyDTO;
 import co.udea.codefact.appointment.AppointmentAllDataDTO;
 import co.udea.codefact.appointment.AppointmentDTO;
 import co.udea.codefact.professor.ProfessorDTO;
@@ -88,7 +90,7 @@ public class AdministrationController {
     @PostMapping(EndpointConstants.PROFESSOR+EndpointConstants.SUBJECT)
     public ResponseEntity<String> assignSubjectToProfessor(@RequestBody AssignSubjectDTO tutorSubjectDTO) {
         this.adminService.assignSubjectToProfessor(tutorSubjectDTO);
-        return new ResponseEntity<>(MessagesConstants.RESPONSE_ASSIGN_SUBJECT_TO_TUTOR, null, 200);
+        return new ResponseEntity<>(MessagesConstants.RESPONSE_ASSIGN_SUBJECT_TO_PROFESSOR, null, 200);
     }
 
     @Operation(summary = "Obtener usuarios administradores", description = "Obtener todos los usuarios con rol de administrador")
@@ -179,4 +181,19 @@ public class AdministrationController {
         return new ResponseEntity<>(MessagesConstants.RESPONSE_ASSIGN_SUBJECT_TO_PROFESSOR_DELETE, null, 200);
     }
 
+    @Operation(summary = "Crear programa académico", description = "Crea un programa académico")
+    @ApiResponse(responseCode = "200", description = "Programa académico creado satisfactoriamente")
+    @PostMapping(EndpointConstants.ACADEMIC_PROGRAM)
+    public ResponseEntity<String> createAcademicProgram(@RequestBody AcademicProgramDTO academicProgramDTO) {
+        this.adminService.createAcademicProgram(academicProgramDTO);
+        return new ResponseEntity<>(MessagesConstants.RESPONSE_ACADEMIC_PROGRAM_CREATED, null, 200);
+    }
+
+    @Operation(summary = "Crear facultad", description = "Crea una facultad")
+    @ApiResponse(responseCode = "200", description = "Facultad creada satisfactoriamente")
+    @PostMapping(EndpointConstants.FACULTY)
+    public ResponseEntity<String> createFaculty(@RequestBody FacultyDTO facultyDTO) {
+        this.adminService.createFaculty(facultyDTO);
+        return new ResponseEntity<>(MessagesConstants.RESPONSE_FACULTY_CREATED, null, 200);
+    }
 }

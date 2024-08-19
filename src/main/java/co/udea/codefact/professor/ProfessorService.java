@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import co.udea.codefact.subject.Subject;
 import co.udea.codefact.user.User;
-import co.udea.codefact.user.UserService;
 import co.udea.codefact.utils.constants.FormatConstants;
 import co.udea.codefact.utils.constants.MessagesConstants;
 import co.udea.codefact.utils.exceptions.DataNotFoundException;
@@ -17,11 +16,10 @@ import co.udea.codefact.utils.exceptions.DataNotFoundException;
 public class ProfessorService {
     
     private final ProfessorRepository professorRepository;
-    private final UserService userService;
 
-    public ProfessorService(ProfessorRepository professorRepository, UserService userService) {
+    public ProfessorService(ProfessorRepository professorRepository) {
         this.professorRepository = professorRepository;
-        this.userService = userService;
+        
     }
 
     public Professor createProfessor(User user) {
@@ -52,14 +50,18 @@ public class ProfessorService {
     }
 
     public ProfessorDTO getProfessorDTO(String username) {
-        User user = this.userService.getUserByUsername(username);
-        Professor professor = this.getProfessorByUserId(user.getId());
-        return ProfessorDTO.builder()
-                .id(professor.getId())
-                .name(String.format(FormatConstants.FULLNAME_FORMAT,professor.getUser().getFirstName(), professor.getUser().getLastName()) )
-                .username(professor.getUser().getUsername())
-                .professorSubjectInfo(this.getProfessorSubjectInfo(professor))
-                .build();
+        Optional<Professor> professor = this.professorRepository.findFirstByUserUsername(username);
+        if (professor.isPresent()) {
+            User user = professor.get().getUser();
+            return ProfessorDTO.builder()
+                    .id(professor.get().getId())
+                    .name(String.format(FormatConstants.FULLNAME_FORMAT,user.getFirstName(), user.getLastName()) )
+                    .username(user.getUsername())
+                    .professorSubjectInfo(this.getProfessorSubjectInfo(professor.get()))
+                    .build();
+        }
+        throw new DataNotFoundException(MessagesConstants.PROFESSOR_NOT_FOUND_OR_UNASSIGNED);
+        
     }
 
     private List<ProfessorSubjectInfo> getProfessorSubjectInfo(Professor professor) {
