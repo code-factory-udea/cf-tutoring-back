@@ -23,6 +23,7 @@ import co.udea.codefact.appointment.AppointmentDTO;
 import co.udea.codefact.professor.ProfessorDTO;
 import co.udea.codefact.subject.SubjectRequestDTO;
 import co.udea.codefact.subject.SubjectResponseDTO;
+import co.udea.codefact.subject.SubjectUpdateDTO;
 import co.udea.codefact.tutor.TutorDTO;
 import co.udea.codefact.user.UserChangeRoleDTO;
 import co.udea.codefact.user.UserDTO;
@@ -75,6 +76,15 @@ public class AdministrationController {
     public ResponseEntity<String> assignSubjectToTutor(@RequestBody AssignSubjectDTO tutorSubjectDTO) {
         this.adminService.assignSubjectToTutor(tutorSubjectDTO);
         return new ResponseEntity<>(MessagesConstants.RESPONSE_ASSIGN_SUBJECT_TO_TUTOR, null, 200);
+    }
+
+    @Operation(summary = "Desasignar materia a tutor", description = "Se le elimina la materia a un tutor")
+    @ApiResponse(responseCode = "200", description = "Materia asignada satisfactoriamente")
+    @ApiResponse(responseCode = "400", description = "Error al asignar la materia al tutor")
+    @PatchMapping(EndpointConstants.TUTOR+EndpointConstants.SUBJECT)
+    public ResponseEntity<String> unassignSubjectToTutor(@RequestBody UnassignSubjectDTO data) {
+        this.adminService.unassignSubjectToTutor(data.getUsername());
+        return new ResponseEntity<>(MessagesConstants.RESPONSE_UNASSIGN_SUBJECT_TO_TUTOR, null, 200);
     }
 
     @Operation(summary = "Obtener usuarios profesores", description = "Obtener todos los usuarios con rol de profesor")
@@ -156,7 +166,7 @@ public class AdministrationController {
     @Operation(summary = "Modificar info de materia", description = "Modificar la información de una materia")
     @ApiResponse(responseCode = "200", description = "Se modificó la información de la materia")
     @PatchMapping(EndpointConstants.SUBJECT)
-    public ResponseEntity<SubjectResponseDTO> updateSubject(@RequestBody SubjectRequestDTO subjectDTO) {
+    public ResponseEntity<SubjectResponseDTO> updateSubject(@RequestBody SubjectUpdateDTO subjectDTO) {
         return new ResponseEntity<>(this.adminService.updateSubject(subjectDTO), null, 200);
     }
 

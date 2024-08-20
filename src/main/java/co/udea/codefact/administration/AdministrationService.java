@@ -21,6 +21,7 @@ import co.udea.codefact.subject.Subject;
 import co.udea.codefact.subject.SubjectRequestDTO;
 import co.udea.codefact.subject.SubjectResponseDTO;
 import co.udea.codefact.subject.SubjectService;
+import co.udea.codefact.subject.SubjectUpdateDTO;
 import co.udea.codefact.tutor.TutorDTO;
 import co.udea.codefact.tutor.TutorService;
 import co.udea.codefact.user.User;
@@ -121,13 +122,18 @@ public class AdministrationService {
         this.tutorService.assignSubject(user, subject);
     }
 
+    public void unassignSubjectToTutor(String username){
+        User user = this.userService.getUserByUsername(username);
+        this.tutorService.unassignSubject(user);
+    }
+
     public void assignSubjectToProfessor(AssignSubjectDTO tutorSubjectDTO){
         User user = this.userService.getUserByUsername(tutorSubjectDTO.getUsername());
         Subject subject = this.subjectService.getSubjectByCode(tutorSubjectDTO.getSubjectCode());
         this.professorService.assignSubject(user, subject);
     }
 
-    public SubjectResponseDTO updateSubject(SubjectRequestDTO subjectDTO) {
+    public SubjectResponseDTO updateSubject(SubjectUpdateDTO subjectDTO) {
         return this.subjectService.updateSubject(subjectDTO);
     }
 
@@ -168,10 +174,10 @@ public class AdministrationService {
 
         userRoleChange.put(new UserRoleChangeKey(RoleConstants.UNKNOWN_ID, RoleConstants.STUDENT_ID), () -> this.changeRole(finalUser, newRole));
         userRoleChange.put(new UserRoleChangeKey(RoleConstants.TUTOR_ID, RoleConstants.STUDENT_ID), () -> this.tutorToStudent(finalUser, newRole));
-        userRoleChange.put(new UserRoleChangeKey(RoleConstants.STUDENT_ID, RoleConstants.TUTOR_ID), () -> this.changeToTutor(finalUser, newRole));
-        userRoleChange.put(new UserRoleChangeKey(RoleConstants.UNKNOWN_ID, RoleConstants.TUTOR_ID), () -> this.changeToTutor(finalUser, newRole));
-        userRoleChange.put(new UserRoleChangeKey(RoleConstants.UNKNOWN_ID, RoleConstants.PROFESSOR_ID), () -> this.changeToProfessor(finalUser, newRole));
-        userRoleChange.put(new UserRoleChangeKey(RoleConstants.ADMIN_ID, RoleConstants.PROFESSOR_ID), () -> this.changeToProfessor(finalUser, newRole));
+        userRoleChange.put(new UserRoleChangeKey(RoleConstants.STUDENT_ID, RoleConstants.TUTOR_ID), () -> this.changeRole(finalUser, newRole));
+        userRoleChange.put(new UserRoleChangeKey(RoleConstants.UNKNOWN_ID, RoleConstants.TUTOR_ID), () -> this.changeRole(finalUser, newRole));
+        userRoleChange.put(new UserRoleChangeKey(RoleConstants.UNKNOWN_ID, RoleConstants.PROFESSOR_ID), () -> this.changeRole(finalUser, newRole));
+        userRoleChange.put(new UserRoleChangeKey(RoleConstants.ADMIN_ID, RoleConstants.PROFESSOR_ID), () -> this.changeRole(finalUser, newRole));
         userRoleChange.put(new UserRoleChangeKey(RoleConstants.UNKNOWN_ID, RoleConstants.ADMIN_ID), () -> this.changeRole(finalUser, newRole));
         userRoleChange.put(new UserRoleChangeKey(RoleConstants.PROFESSOR_ID, RoleConstants.ADMIN_ID), () -> this.changeRole(finalUser, newRole));
 
@@ -187,23 +193,10 @@ public class AdministrationService {
         this.userService.saveUser(user);
     }
     
-    private void changeToTutor(User user, UserRole newRole) {
-        this.tutorService.enableTutor(user);
-        user.setRole(newRole);
-        this.userService.saveUser(user);
-    }
-
     private void tutorToStudent(User user, UserRole newRole) {
         this.tutorService.disableTutor(user);
         user.setRole(newRole);
         this.userService.saveUser(user);
     }
-
-    private void changeToProfessor(User user, UserRole newRole) {
-        this.professorService.createProfessor(user);
-        user.setRole(newRole);
-        this.userService.saveUser(user);
-    }
-
 
 }
