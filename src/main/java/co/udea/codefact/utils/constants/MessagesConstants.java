@@ -12,6 +12,7 @@ public class MessagesConstants {
     public static final String SUBJECT_NOT_FOUND = "Materia no encontrada";
     public static final String PROFESSOR_NOT_FOUND = "Profesor no encontrado";
     public static final String PROFESSOR_NOT_FOUND_OR_UNASSIGNED = "No se ha encontrado información o no tiene materia asignada";
+    public static final String TUTOR_NOT_FOUND_OR_UNASSIGNED = "No se ha encontrado información o no tiene materia asignada";
     public static final String ACADEMIC_PROGRAM_ALREADY_EXISTS = "El programa académico ya existe";
     public static final String FACULTY_ALREADY_EXISTS = "La facultad ya existe";
     public static final String SUBJECT_ALREADY_EXISTS = "La materia ya existe";
@@ -22,8 +23,9 @@ public class MessagesConstants {
 
 
 
-
+    public static final String NO_PERMISSION = "No tiene permisos para realizar esta acción";
     public static final String RESPONSE_ASSIGN_SUBJECT_TO_TUTOR = "Materia asignada al monitor";
+    public static final String RESPONSE_UNASSIGN_SUBJECT_TO_TUTOR = "Materia eliminada al monitor";
     public static final String RESPONSE_ASSIGN_SUBJECT_TO_PROFESSOR = "Materia asignada al profesor";
     public static final String RESPONSE_ASSIGN_SUBJECT_TO_PROFESSOR_DELETE = "Materia eliminada del profesor";
 

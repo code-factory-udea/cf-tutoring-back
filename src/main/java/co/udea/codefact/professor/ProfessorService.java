@@ -22,6 +22,7 @@ public class ProfessorService {
         
     }
 
+    /*
     public Professor createProfessor(User user) {
         Optional<Professor> professor = this.professorRepository.findByUserId(user.getId());
         if (!professor.isPresent()) {
@@ -29,6 +30,7 @@ public class ProfessorService {
         }
         return professor.get();
     }
+    */
 
     public void deleteProfessor(Long id) {
         professorRepository.deleteById(id);
@@ -60,7 +62,6 @@ public class ProfessorService {
                     .build();
         }
         throw new DataNotFoundException(MessagesConstants.PROFESSOR_NOT_FOUND_OR_UNASSIGNED);
-        
     }
 
     private List<ProfessorSubjectInfo> getProfessorSubjectInfo(Professor professor) {
@@ -85,7 +86,6 @@ public class ProfessorService {
                 .subjectInfo(String.format(FormatConstants.ACADEMIC_INFO_FORMAT, subject.getCode(), subject.getName()))
                 .academicProgramInfo(String.format(FormatConstants.ACADEMIC_INFO_FORMAT, subject.getAcademicProgram().getName(), subject.getAcademicProgram().getFaculty().getName()))
                 .build();
-
     }
 
     public Professor getProfessorById(Long id) {
@@ -94,10 +94,6 @@ public class ProfessorService {
 
     public void deleteProfessorSubject(Long idProfessor) {
         Professor professor = this.getProfessorById(idProfessor);
-        User user = professor.getUser();
         this.professorRepository.delete(professor);
-        if (this.professorRepository.findAllByUserId(professor.getUser().getId()).isEmpty()) {
-            this.createProfessor(user);
-        }
     }
 }

@@ -49,8 +49,15 @@ public class SubjectService {
         return this.subjectRepository.findByCode(code).orElseThrow(() -> new DataNotFoundException(MessagesConstants.SUBJECT_NOT_FOUND));
     }
     
-    public SubjectResponseDTO updateSubject(SubjectRequestDTO subjectDTO) {
+    public SubjectResponseDTO updateSubject(SubjectUpdateDTO subjectDTO) {
         Subject subject = this.getSubjectByCode(subjectDTO.getCode());
+        if (subjectDTO.getNewCode() != null) {
+            Optional<Subject> subjectOptional = this.subjectRepository.findByCode(subjectDTO.getNewCode());
+            if (subjectOptional.isPresent()) {
+                throw new DataAlreadyExistsException(MessagesConstants.SUBJECT_ALREADY_EXISTS);
+            }
+            subject.setCode(subjectDTO.getNewCode());
+        }
         if (subjectDTO.getName() != null) {
             subject.setName(subjectDTO.getName());
         }
