@@ -23,8 +23,10 @@ public class AcademicProgram {
     
     @Id
     private Long id;
+    
     @Column(name = "name", nullable = false, unique = true, length = 64)
     private String name;
+
     @ManyToOne
     @JoinColumn(name = "id_faculty", nullable = false)
     private Faculty faculty;

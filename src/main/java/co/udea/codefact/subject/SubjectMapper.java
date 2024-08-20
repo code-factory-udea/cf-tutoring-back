@@ -9,7 +9,7 @@ public class SubjectMapper {
                     .academicProgram(subject.getAcademicProgram().getName())
                     .build();
         }
-        
+
         public static Subject toEntity(SubjectRequestDTO subjectDTO) {
             return Subject.builder()
                     .code(subjectDTO.getCode())

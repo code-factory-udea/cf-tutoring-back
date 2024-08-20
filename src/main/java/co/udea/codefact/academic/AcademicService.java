@@ -1,5 +1,8 @@
 package co.udea.codefact.academic;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import co.udea.codefact.utils.constants.MessagesConstants;
@@ -23,7 +26,6 @@ public class AcademicService {
             
         });
         Faculty faculty = Faculty.builder()
-                .id(facultyDTO.getId())
                 .name(facultyDTO.getName())
                 .build();
         return facultyRepository.save(faculty);
@@ -47,5 +49,21 @@ public class AcademicService {
 
     public Faculty getFaculty(Long id) {
         return this.facultyRepository.findById(id).orElseThrow(() -> new DataNotFoundException(MessagesConstants.FACULTY_NOT_FOUND));
+    }
+
+    public List<AcademicProgramResponseDTO> getAcademicPrograms() {
+        List<AcademicProgramResponseDTO> academicPrograms = new ArrayList<>();
+        for (AcademicProgram academicProgram : this.academicProgramRepository.findAll()) {
+            academicPrograms.add(AcademicMapper.toAcademicProgramResponseDTO(academicProgram));
+        }
+        return academicPrograms;
+    }
+
+    public List<FacultyResponseDTO> getFaculties() {
+        List<FacultyResponseDTO> faculties = new ArrayList<>();
+        for (Faculty faculty : this.facultyRepository.findAll()) {
+            faculties.add(AcademicMapper.toFacultyResponseDTO(faculty));
+        }
+        return faculties;
     }
 }

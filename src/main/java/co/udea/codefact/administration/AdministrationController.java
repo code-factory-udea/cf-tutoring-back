@@ -16,12 +16,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import co.udea.codefact.academic.AcademicProgramDTO;
+import co.udea.codefact.academic.FacultyDTO;
 import co.udea.codefact.appointment.AppointmentAllDataDTO;
 import co.udea.codefact.appointment.AppointmentDTO;
 import co.udea.codefact.professor.ProfessorDTO;
-import co.udea.codefact.professor.ProfessorDeleteDTO;
 import co.udea.codefact.subject.SubjectRequestDTO;
 import co.udea.codefact.subject.SubjectResponseDTO;
+import co.udea.codefact.subject.SubjectUpdateDTO;
 import co.udea.codefact.tutor.TutorDTO;
 import co.udea.codefact.user.UserChangeRoleDTO;
 import co.udea.codefact.user.UserDTO;
@@ -76,6 +78,15 @@ public class AdministrationController {
         return new ResponseEntity<>(MessagesConstants.RESPONSE_ASSIGN_SUBJECT_TO_TUTOR, null, 200);
     }
 
+    @Operation(summary = "Desasignar materia a tutor", description = "Se le elimina la materia a un tutor")
+    @ApiResponse(responseCode = "200", description = "Materia asignada satisfactoriamente")
+    @ApiResponse(responseCode = "400", description = "Error al asignar la materia al tutor")
+    @PatchMapping(EndpointConstants.TUTOR+EndpointConstants.SUBJECT)
+    public ResponseEntity<String> unassignSubjectToTutor(@RequestBody UnassignSubjectDTO data) {
+        this.adminService.unassignSubjectToTutor(data.getUsername());
+        return new ResponseEntity<>(MessagesConstants.RESPONSE_UNASSIGN_SUBJECT_TO_TUTOR, null, 200);
+    }
+
     @Operation(summary = "Obtener usuarios profesores", description = "Obtener todos los usuarios con rol de profesor")
     @ApiResponse(responseCode = "200", description = "Se obtuvieron los profesores")
     @GetMapping(EndpointConstants.PROFESSOR)
@@ -88,7 +99,7 @@ public class AdministrationController {
     @PostMapping(EndpointConstants.PROFESSOR+EndpointConstants.SUBJECT)
     public ResponseEntity<String> assignSubjectToProfessor(@RequestBody AssignSubjectDTO tutorSubjectDTO) {
         this.adminService.assignSubjectToProfessor(tutorSubjectDTO);
-        return new ResponseEntity<>(MessagesConstants.RESPONSE_ASSIGN_SUBJECT_TO_TUTOR, null, 200);
+        return new ResponseEntity<>(MessagesConstants.RESPONSE_ASSIGN_SUBJECT_TO_PROFESSOR, null, 200);
     }
 
     @Operation(summary = "Obtener usuarios administradores", description = "Obtener todos los usuarios con rol de administrador")
@@ -155,7 +166,7 @@ public class AdministrationController {
     @Operation(summary = "Modificar info de materia", description = "Modificar la información de una materia")
     @ApiResponse(responseCode = "200", description = "Se modificó la información de la materia")
     @PatchMapping(EndpointConstants.SUBJECT)
-    public ResponseEntity<SubjectResponseDTO> updateSubject(@RequestBody SubjectRequestDTO subjectDTO) {
+    public ResponseEntity<SubjectResponseDTO> updateSubject(@RequestBody SubjectUpdateDTO subjectDTO) {
         return new ResponseEntity<>(this.adminService.updateSubject(subjectDTO), null, 200);
     }
 
@@ -174,9 +185,24 @@ public class AdministrationController {
     @Operation(summary = "Eliminar materia de profesor", description = "Eliminar la materia asignada a un profesor")
     @ApiResponse(responseCode = "200", description = "Se eliminó la materia del profesor")
     @DeleteMapping(EndpointConstants.PROFESSOR+EndpointConstants.SUBJECT)
-    public ResponseEntity<String> deleteProfessorSubject(@RequestBody ProfessorDeleteDTO professorDeleteDTO) {
-        this.adminService.deleteProfessorSubject(professorDeleteDTO);
+    public ResponseEntity<String> deleteProfessorSubject(@RequestBody Long idProfessor) {
+        this.adminService.deleteProfessorSubject(idProfessor);
         return new ResponseEntity<>(MessagesConstants.RESPONSE_ASSIGN_SUBJECT_TO_PROFESSOR_DELETE, null, 200);
     }
 
+    @Operation(summary = "Crear programa académico", description = "Crea un programa académico")
+    @ApiResponse(responseCode = "200", description = "Programa académico creado satisfactoriamente")
+    @PostMapping(EndpointConstants.ACADEMIC_PROGRAM)
+    public ResponseEntity<String> createAcademicProgram(@RequestBody AcademicProgramDTO academicProgramDTO) {
+        this.adminService.createAcademicProgram(academicProgramDTO);
+        return new ResponseEntity<>(MessagesConstants.RESPONSE_ACADEMIC_PROGRAM_CREATED, null, 200);
+    }
+
+    @Operation(summary = "Crear facultad", description = "Crea una facultad")
+    @ApiResponse(responseCode = "200", description = "Facultad creada satisfactoriamente")
+    @PostMapping(EndpointConstants.FACULTY)
+    public ResponseEntity<String> createFaculty(@RequestBody FacultyDTO facultyDTO) {
+        this.adminService.createFaculty(facultyDTO);
+        return new ResponseEntity<>(MessagesConstants.RESPONSE_FACULTY_CREATED, null, 200);
+    }
 }

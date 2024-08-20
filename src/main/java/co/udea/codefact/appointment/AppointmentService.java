@@ -14,6 +14,7 @@ import co.udea.codefact.user.UserService;
 import co.udea.codefact.utils.auth.AuthenticationUtil;
 import co.udea.codefact.utils.constants.FormatConstants;
 import co.udea.codefact.utils.constants.MessagesConstants;
+import co.udea.codefact.utils.constants.RoleConstants;
 import co.udea.codefact.utils.exceptions.DataNotFoundException;
 
 @Service
@@ -43,6 +44,10 @@ public class AppointmentService {
 
     public AppointmentDTO createAppointment(AppointmentCreationDTO appointmentCreationDTO) {
         User student = this.getUser();
+        String role = student.getRole().getRole();
+        if (!role.equals(RoleConstants.TUTOR) && !role.equals(RoleConstants.STUDENT)) {
+            throw new DataNotFoundException(MessagesConstants.NO_PERMISSION);
+        }
         Tutor tutor = this.tutorService.getTutorById(appointmentCreationDTO.getTutorId());
         // TODO: Obtener bien la fecha con el DTO
         LocalDateTime date = LocalDateTime.now();

@@ -4,7 +4,6 @@ public class InitializerConstants {
 
     // Faculties 
     public static final String ENGINEER_FACULTY = "Facultad de Ingeniería";
-    public static final Long ENGINEER_FACULTY_ID = 1L;
     // End Faculties
 
 
