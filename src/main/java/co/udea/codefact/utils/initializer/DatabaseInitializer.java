@@ -2,14 +2,13 @@ package co.udea.codefact.utils.initializer;
 
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.stereotype.Component;
 
-import co.udea.codefact.academic.AcademicProgramDTO;
-import co.udea.codefact.academic.AcademicService;
-import co.udea.codefact.academic.FacultyDTO;
-import co.udea.codefact.subject.SubjectRequestDTO;
-import co.udea.codefact.subject.SubjectService;
-import co.udea.codefact.user.UserRoleService;
+import co.udea.codefact.academic.dto.AcademicProgramDTO;
+import co.udea.codefact.academic.service.AcademicService;
+import co.udea.codefact.academic.dto.FacultyDTO;
+import co.udea.codefact.subject.dto.SubjectRequestDTO;
+import co.udea.codefact.subject.service.SubjectService;
+import co.udea.codefact.user.service.UserRoleService;
 import co.udea.codefact.utils.constants.InitializerConstants;
 import co.udea.codefact.utils.constants.RoleConstants;
 

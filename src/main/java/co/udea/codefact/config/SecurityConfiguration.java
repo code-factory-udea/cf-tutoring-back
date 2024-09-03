@@ -2,6 +2,7 @@ package co.udea.codefact.config;
 
 import java.util.List;
 
+import co.udea.codefact.config.jwt.JWTAuthFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
