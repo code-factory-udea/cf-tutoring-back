@@ -32,8 +32,11 @@ public class UserService {
         return this.userRepository.findAllByRoleId(roleId);
     }
 
-    public Page<User> getUsersByRole(Long roleId, int page) {
+    public Page<User> getUsersByRole(Long roleId, int page, String name) {
         Pageable pageable = PageRequest.of(page, FormatConstants.ITEM_PER_PAGE);
+        if (name != null && !name.isEmpty()) {
+            return this.userRepository.findByRoleIdAndFirstNameOrLastNameContains(roleId, pageable, name);
+        }
         return this.userRepository.findAllByRoleId(roleId, pageable);
     }
 

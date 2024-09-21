@@ -78,11 +78,12 @@ public class AdministrationService {
         return listStudents;
     }
 
-    public UserPaginationDTO getUsersByRole(Long roleId, int page){
+    public UserPaginationDTO getUsersByRole(Long roleId, int page, String name){
         if (page - 1 < 0) throw new DataNotFoundException(MessagesConstants.NO_DATA);
-        Page<User> users = this.userService.getUsersByRole(roleId, page - 1 );
+        Page<User> users = this.userService.getUsersByRole(roleId, page - 1, name);
         this.getLimitPage(users, page - 1);
         List<UserDTO> usersList = users.map(UserMapper::toUserDTO).getContent();
+        System.out.println(usersList.size());
         return UserPaginationDTO.builder()
                 .totalPages(users.getTotalPages())
                 .currentPage(users.getNumber()+1)
