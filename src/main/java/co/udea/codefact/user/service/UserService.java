@@ -6,6 +6,10 @@ import java.util.Optional;
 import co.udea.codefact.user.entity.User;
 import co.udea.codefact.user.entity.UserRole;
 import co.udea.codefact.user.repository.UserRepository;
+import co.udea.codefact.utils.constants.FormatConstants;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import co.udea.codefact.login.dto.LoginLDAPResponse;
 import co.udea.codefact.utils.constants.MessagesConstants;
@@ -26,6 +30,11 @@ public class UserService {
 
     public List<User> getUsersByRole(Long roleId) {
         return this.userRepository.findAllByRoleId(roleId);
+    }
+
+    public Page<User> getUsersByRole(Long roleId, int page) {
+        Pageable pageable = PageRequest.of(page, FormatConstants.ITEM_PER_PAGE);
+        return this.userRepository.findAllByRoleId(roleId, pageable);
     }
 
     public List<User> getUsersByName(String name) {
