@@ -3,6 +3,7 @@ package co.udea.codefact.administration.controller;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+import co.udea.codefact.administration.dto.UserPaginationDTO;
 import co.udea.codefact.administration.service.AdministrationService;
 import co.udea.codefact.administration.dto.AssignSubjectDTO;
 import co.udea.codefact.administration.dto.UnassignSubjectDTO;
@@ -61,15 +62,15 @@ public class AdministrationController {
     @Operation(summary = "Obtener usuarios estudiantes", description = "Obtener todos los usuarios con rol de estudiante")
     @ApiResponse(responseCode = "200", description = "Se obtuvieron los estudiantes")
     @GetMapping(EndpointConstants.STUDENT)
-    public ResponseEntity<List<UserDTO>> getStudents() {
-        return new ResponseEntity<>(this.adminService.getUsersByRole(RoleConstants.STUDENT_ID), null, 200);
+    public ResponseEntity<UserPaginationDTO> getStudents(@RequestParam int page, @RequestParam(required = false) String name) {
+        return new ResponseEntity<>(this.adminService.getUsersByRole(RoleConstants.STUDENT_ID, page, name), null, 200);
     }
 
     @Operation(summary = "Obtener usuarios monitores", description = "Obtener todos los usuarios con rol de monitor")
     @ApiResponse(responseCode = "200", description = "Se obtuvieron los monitores")
     @GetMapping(EndpointConstants.TUTOR)
-    public ResponseEntity<List<UserDTO>> getTutors() {
-        return new ResponseEntity<>(this.adminService.getUsersByRole(RoleConstants.TUTOR_ID), null, 200);
+    public ResponseEntity<UserPaginationDTO>  getTutors(@RequestParam int page, @RequestParam(required = false) String name) {
+        return new ResponseEntity<>(this.adminService.getUsersByRole(RoleConstants.TUTOR_ID, page, name), null, 200);
     }
 
     @Operation(summary = "Asignar materia a tutor", description = "Se le asigna una materia a un tutor")
@@ -93,8 +94,8 @@ public class AdministrationController {
     @Operation(summary = "Obtener usuarios profesores", description = "Obtener todos los usuarios con rol de profesor")
     @ApiResponse(responseCode = "200", description = "Se obtuvieron los profesores")
     @GetMapping(EndpointConstants.PROFESSOR)
-    public ResponseEntity<List<UserDTO>> getProfessors() {
-        return new ResponseEntity<>(this.adminService.getUsersByRole(RoleConstants.PROFESSOR_ID), null, 200);
+    public ResponseEntity<UserPaginationDTO> getProfessors(@RequestParam int page, @RequestParam(required = false) String name) {
+        return new ResponseEntity<>(this.adminService.getUsersByRole(RoleConstants.PROFESSOR_ID, page, name), null, 200);
     }
     
     @Operation(summary = "Asignar materia a un profesor", description = "Se le asigna una materia a un profesor")
@@ -108,15 +109,15 @@ public class AdministrationController {
     @Operation(summary = "Obtener usuarios administradores", description = "Obtener todos los usuarios con rol de administrador")
     @ApiResponse(responseCode = "200", description = "Se obtuvieron los administradores")
     @GetMapping(EndpointConstants.ADMIN)
-    public ResponseEntity<List<UserDTO>> getAdmins() {
-        return new ResponseEntity<>(this.adminService.getUsersByRole(RoleConstants.ADMIN_ID), null, 200);
+    public ResponseEntity<UserPaginationDTO> getAdmins(@RequestParam int page, @RequestParam(required = false) String name) {
+        return new ResponseEntity<>(this.adminService.getUsersByRole(RoleConstants.ADMIN_ID, page, name), null, 200);
     }
 
     @Operation(summary = "Obtener usuarios no identificados", description = "Obtener todos los usuarios con rol no identificado")
     @ApiResponse(responseCode = "200", description = "Se obtuvieron los usuarios con rol no identificado")
     @GetMapping(EndpointConstants.OTHERS)
-    public ResponseEntity<List<UserDTO>> getAllUsers() {
-        return new ResponseEntity<>(this.adminService.getUsersByRole(RoleConstants.UNKNOWN_ID), null, 200);
+    public ResponseEntity<UserPaginationDTO> getNotIdentifiedUsers(@RequestParam int page, @RequestParam(required = false) String name) {
+        return new ResponseEntity<>(this.adminService.getUsersByRole(RoleConstants.UNKNOWN_ID, page, name), null, 200);
     }
 
     @Operation(summary = "Busqueda por nombre de usuario", description = "Busca todos los usuarios que contengan el nombre dado")

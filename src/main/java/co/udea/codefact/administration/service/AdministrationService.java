@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.Map;
 
 import co.udea.codefact.administration.dto.AssignSubjectDTO;
+import co.udea.codefact.administration.dto.UserPaginationDTO;
+import co.udea.codefact.utils.exceptions.DataNotFoundException;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import co.udea.codefact.appointment.service.AppointmentService;
@@ -73,6 +76,26 @@ public class AdministrationService {
             listStudents.add(UserMapper.toUserDTO(student));
         }
         return listStudents;
+    }
+
+    public UserPaginationDTO getUsersByRole(Long roleId, int page, String name){
+        if (page - 1 < 0) throw new DataNotFoundException(MessagesConstants.NO_DATA);
+        Page<User> users = this.userService.getUsersByRole(roleId, page - 1, name);
+        this.getLimitPage(users, page - 1);
+        List<UserDTO> usersList = users.map(UserMapper::toUserDTO).getContent();
+        System.out.println(usersList.size());
+        return UserPaginationDTO.builder()
+                .totalPages(users.getTotalPages())
+                .currentPage(users.getNumber()+1)
+                .userList(usersList)
+                .pageSize(usersList.size())
+                .hasNextPage(users.hasNext())
+                .build();
+    }
+
+    private <T> void getLimitPage(Page<T> pageList, int page){
+        if (pageList.getTotalPages() <= page)
+            throw new DataNotFoundException(MessagesConstants.NO_DATA);
     }
 
     public List<UserDTO> getUsersByName(String name) {
