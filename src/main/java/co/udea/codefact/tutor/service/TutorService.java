@@ -36,16 +36,18 @@ public class TutorService {
                 .orElseThrow(() -> new DataNotFoundException(MessagesConstants.TUTOR_NOT_FOUND));
     }
 
-    public Tutor getTutorByUser(User user) {
-        return this.tutorRepository.findByUserId(user.getId())
-                .orElseThrow(() -> new DataNotFoundException(MessagesConstants.TUTOR_NOT_FOUND));
+    public Optional<Tutor> getTutorByUser(User user) {
+        return this.tutorRepository.findByUserId(user.getId());
+
     }
 
     public void disableTutor(User user) {
-        Tutor tutor = this.getTutorByUser(user);
-        tutor.setIsActive(false);
-        this.tutorRepository.save(tutor);
-        this.tutorScheduleService.deleteTutorSchedules(tutor);
+        Optional<Tutor> tutor = this.getTutorByUser(user);
+        if (tutor.isPresent()) {
+            tutor.get().setIsActive(false);
+            this.tutorRepository.save(tutor.get());
+            this.tutorScheduleService.deleteTutorSchedules(tutor.get());
+        }
     }
 
     public void assignSubject(User user, Subject subject) {
