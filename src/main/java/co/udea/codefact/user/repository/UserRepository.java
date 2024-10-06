@@ -18,9 +18,6 @@ public interface UserRepository extends JpaRepository<User, Long>{
 
     List<User> findAllByRoleId(Long roleId);
 
-    @Query("SELECT u FROM User u WHERE LOWER(u.firstName) LIKE %:name% OR LOWER(u.lastName) LIKE %:name%")
-    List<User> findByFirstNameOrLastNameContaining(@Param("name")String name);
-
     Page<User> findAllByRoleId(Long roleId, Pageable pageable);
 
     @Query("SELECT u FROM User u WHERE u.role.id = :roleId AND ( LOWER(u.firstName) LIKE %:name% OR LOWER(u.lastName) LIKE %:name% )")

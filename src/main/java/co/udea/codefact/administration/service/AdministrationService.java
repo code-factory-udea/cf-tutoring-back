@@ -97,14 +97,6 @@ public class AdministrationService {
             throw new DataNotFoundException(MessagesConstants.NO_DATA);
     }
 
-    public List<UserDTO> getUsersByName(String name) {
-        List<UserDTO> listStudents = new ArrayList<>();
-        for (User student : this.userService.getUsersByName(name.toLowerCase())) {
-            listStudents.add(UserMapper.toUserDTO(student));
-        }
-        return listStudents;
-    }
-
     public AppointmentAllDataDTO getAppointmentByIdAsAdmin(Long appointmentId) {
         return this.appointmentService.getAppointmentByIdAsAdmin(appointmentId);
     }
