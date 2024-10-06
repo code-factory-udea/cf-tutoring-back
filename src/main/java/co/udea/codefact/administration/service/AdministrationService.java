@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import co.udea.codefact.administration.dto.AssignSubjectDTO;
+import co.udea.codefact.administration.dto.SubjectAssignmentDTO;
 import co.udea.codefact.administration.dto.UserPaginationDTO;
 import co.udea.codefact.utils.exceptions.DataNotFoundException;
 import org.springframework.data.domain.Page;
@@ -139,7 +139,7 @@ public class AdministrationService {
         return this.userRoleService.getRoles();
     }
 
-    public void assignSubjectToTutor(AssignSubjectDTO tutorSubjectDTO){
+    public void assignSubjectToTutor(SubjectAssignmentDTO tutorSubjectDTO){
         User user = this.userService.getUserByUsername(tutorSubjectDTO.getUsername());
         Subject subject = this.subjectService.getSubjectByCode(tutorSubjectDTO.getSubjectCode());
         this.tutorService.assignSubject(user, subject);
@@ -150,7 +150,7 @@ public class AdministrationService {
         this.tutorService.unassignSubject(user);
     }
 
-    public void assignSubjectToProfessor(AssignSubjectDTO tutorSubjectDTO){
+    public void assignSubjectToProfessor(SubjectAssignmentDTO tutorSubjectDTO){
         User user = this.userService.getUserByUsername(tutorSubjectDTO.getUsername());
         Subject subject = this.subjectService.getSubjectByCode(tutorSubjectDTO.getSubjectCode());
         this.professorService.assignSubject(user, subject);
