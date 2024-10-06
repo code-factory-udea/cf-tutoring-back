@@ -29,13 +29,13 @@ public class Professor {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "id_user")
+    @JoinColumn(name = "user_key", referencedColumnName = "username")
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "id_subject", nullable = true)
     private Subject subject;
-    
+
     public Boolean hasSubject() {
         return this.subject != null;
     }
