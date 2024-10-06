@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import co.udea.codefact.administration.dto.AssignSubjectDTO;
+import co.udea.codefact.administration.dto.SubjectAssignmentDTO;
 import co.udea.codefact.administration.dto.UserPaginationDTO;
 import co.udea.codefact.utils.exceptions.DataNotFoundException;
 import org.springframework.data.domain.Page;
@@ -83,7 +83,6 @@ public class AdministrationService {
         Page<User> users = this.userService.getUsersByRole(roleId, page - 1, name);
         this.getLimitPage(users, page - 1);
         List<UserDTO> usersList = users.map(UserMapper::toUserDTO).getContent();
-        System.out.println(usersList.size());
         return UserPaginationDTO.builder()
                 .totalPages(users.getTotalPages())
                 .currentPage(users.getNumber()+1)
@@ -94,16 +93,8 @@ public class AdministrationService {
     }
 
     private <T> void getLimitPage(Page<T> pageList, int page){
-        if (pageList.getTotalPages() <= page)
+        if (pageList.getTotalPages() <= page && pageList.getTotalPages() != 0)
             throw new DataNotFoundException(MessagesConstants.NO_DATA);
-    }
-
-    public List<UserDTO> getUsersByName(String name) {
-        List<UserDTO> listStudents = new ArrayList<>();
-        for (User student : this.userService.getUsersByName(name.toLowerCase())) {
-            listStudents.add(UserMapper.toUserDTO(student));
-        }
-        return listStudents;
     }
 
     public AppointmentAllDataDTO getAppointmentByIdAsAdmin(Long appointmentId) {
@@ -140,7 +131,7 @@ public class AdministrationService {
         return this.userRoleService.getRoles();
     }
 
-    public void assignSubjectToTutor(AssignSubjectDTO tutorSubjectDTO){
+    public void assignSubjectToTutor(SubjectAssignmentDTO tutorSubjectDTO){
         User user = this.userService.getUserByUsername(tutorSubjectDTO.getUsername());
         Subject subject = this.subjectService.getSubjectByCode(tutorSubjectDTO.getSubjectCode());
         this.tutorService.assignSubject(user, subject);
@@ -151,7 +142,7 @@ public class AdministrationService {
         this.tutorService.unassignSubject(user);
     }
 
-    public void assignSubjectToProfessor(AssignSubjectDTO tutorSubjectDTO){
+    public void assignSubjectToProfessor(SubjectAssignmentDTO tutorSubjectDTO){
         User user = this.userService.getUserByUsername(tutorSubjectDTO.getUsername());
         Subject subject = this.subjectService.getSubjectByCode(tutorSubjectDTO.getSubjectCode());
         this.professorService.assignSubject(user, subject);
@@ -162,11 +153,19 @@ public class AdministrationService {
     }
 
     public TutorDTO getTutorInfo(String username) {
-        return this.tutorService.getTutorDTO(username.toLowerCase());
+        User user = this.userService.getUserByUsername(username.toLowerCase());
+        if (!user.getRole().getRole().equals(RoleConstants.TUTOR)){
+            throw new DataNotFoundException(MessagesConstants.TUTOR_NOT_FOUND);
+        }
+        return this.tutorService.getTutorDTO(user);
     }
 
     public ProfessorDTO getProfessorInfo(String username) {
-        return this.professorService.getProfessorDTO(username.toLowerCase());
+        User user = this.userService.getUserByUsername(username.toLowerCase());
+        if (!user.getRole().getRole().equals(RoleConstants.PROFESSOR)) {
+            throw new DataNotFoundException(MessagesConstants.PROFESSOR_NOT_FOUND);
+        }
+        return this.professorService.getProfessorDTO(user);
     }
 
     public void deleteProfessorSubject(Long idProfessor) {

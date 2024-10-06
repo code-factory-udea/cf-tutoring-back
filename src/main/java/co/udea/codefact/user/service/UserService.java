@@ -40,10 +40,6 @@ public class UserService {
         return this.userRepository.findAllByRoleId(roleId, pageable);
     }
 
-    public List<User> getUsersByName(String name) {
-        return this.userRepository.findByFirstNameOrLastNameContaining(name.toLowerCase());
-    }
-
     public User getUserByUsername(String username) {
         return this.userRepository.findByUsername(username).orElseThrow(() -> new DataNotFoundException(MessagesConstants.USER_NOT_FOUND));
     }
