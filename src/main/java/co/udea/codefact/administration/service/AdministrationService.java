@@ -83,7 +83,6 @@ public class AdministrationService {
         Page<User> users = this.userService.getUsersByRole(roleId, page - 1, name);
         this.getLimitPage(users, page - 1);
         List<UserDTO> usersList = users.map(UserMapper::toUserDTO).getContent();
-        System.out.println(usersList.size());
         return UserPaginationDTO.builder()
                 .totalPages(users.getTotalPages())
                 .currentPage(users.getNumber()+1)
@@ -94,7 +93,7 @@ public class AdministrationService {
     }
 
     private <T> void getLimitPage(Page<T> pageList, int page){
-        if (pageList.getTotalPages() <= page)
+        if (pageList.getTotalPages() <= page && pageList.getTotalPages() != 0)
             throw new DataNotFoundException(MessagesConstants.NO_DATA);
     }
 
