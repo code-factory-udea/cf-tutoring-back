@@ -17,7 +17,7 @@ public class MessagesConstants {
     public static final String FACULTY_ALREADY_EXISTS = "La facultad ya existe";
     public static final String SUBJECT_ALREADY_EXISTS = "La materia ya existe";
     public static final String APPOINTMENT_NOT_FOUND = "Monitoría no encontrada";
-    public static final String NO_DATA = "N/A";
+    public static final String NO_DATA = "Sin asignar";
     public static final String PROFESSOR_SUBJECT_NOT_FOUND = "Materia no asignada al profesor";
 
 

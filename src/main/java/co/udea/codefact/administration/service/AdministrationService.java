@@ -161,11 +161,19 @@ public class AdministrationService {
     }
 
     public TutorDTO getTutorInfo(String username) {
-        return this.tutorService.getTutorDTO(username.toLowerCase());
+        User user = this.userService.getUserByUsername(username.toLowerCase());
+        if (!user.getRole().getRole().equals(RoleConstants.TUTOR)){
+            throw new DataNotFoundException(MessagesConstants.TUTOR_NOT_FOUND);
+        }
+        return this.tutorService.getTutorDTO(user);
     }
 
     public ProfessorDTO getProfessorInfo(String username) {
-        return this.professorService.getProfessorDTO(username.toLowerCase());
+        User user = this.userService.getUserByUsername(username.toLowerCase());
+        if (!user.getRole().getRole().equals(RoleConstants.PROFESSOR)) {
+            throw new DataNotFoundException(MessagesConstants.PROFESSOR_NOT_FOUND);
+        }
+        return this.professorService.getProfessorDTO(user);
     }
 
     public void deleteProfessorSubject(Long idProfessor) {

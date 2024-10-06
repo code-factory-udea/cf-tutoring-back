@@ -77,15 +77,18 @@ public class TutorService {
         this.tutorRepository.save(tutor.get());
     }
 
-    public TutorDTO getTutorDTO(String username) {
-        Tutor tutor = this.tutorRepository.findByUserUsername(username)
-                .orElseThrow(() -> new DataNotFoundException(MessagesConstants.TUTOR_NOT_FOUND_OR_UNASSIGNED));
-        User user = tutor.getUser();
+    public TutorDTO getTutorDTO(User user) {
+        Optional<Tutor> tutor = this.tutorRepository.findByUserUsername(user.getUsername());
         TutorDTO.TutorDTOBuilder tutorDTOBuilder = TutorDTO.builder()
-                .id(tutor.getId())
                 .name(String.format(FormatConstants.FULLNAME_FORMAT, user.getFirstName(), user.getLastName()))
                 .username(user.getUsername());
-        this.getAditionalInfo(tutorDTOBuilder, tutor.getSubject());
+        if (tutor.isPresent()) {
+                    tutorDTOBuilder
+                    .id(tutor.get().getId());
+                    this.getAditionalInfo(tutorDTOBuilder, tutor.get().getSubject());
+            return tutorDTOBuilder.build();
+        }
+        this.getAditionalInfo(tutorDTOBuilder, null);
         return tutorDTOBuilder.build();
     }
 

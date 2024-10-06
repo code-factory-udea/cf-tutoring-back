@@ -8,6 +8,7 @@ import co.udea.codefact.professor.dto.ProfessorDTO;
 import co.udea.codefact.professor.dto.ProfessorSubjectInfoDTO;
 import co.udea.codefact.professor.entity.Professor;
 import co.udea.codefact.professor.repository.ProfessorRepository;
+import co.udea.codefact.utils.constants.RoleConstants;
 import org.springframework.stereotype.Service;
 
 import co.udea.codefact.subject.entity.Subject;
@@ -23,24 +24,16 @@ public class ProfessorService {
 
     public ProfessorService(ProfessorRepository professorRepository) {
         this.professorRepository = professorRepository;
-        
     }
-
-    /*
-    public Professor createProfessor(User user) {
-        Optional<Professor> professor = this.professorRepository.findByUserId(user.getId());
-        if (!professor.isPresent()) {
-            return this.professorRepository.save(Professor.builder().user(user).build());
-        }
-        return professor.get();
-    }
-    */
 
     public void deleteProfessor(Long id) {
         professorRepository.deleteById(id);
     }
 
     public void assignSubject(User user, Subject subject) {
+        if (!user.getRole().getRole().equals(RoleConstants.PROFESSOR)) {
+            throw new DataNotFoundException(MessagesConstants.PROFESSOR_NOT_FOUND);
+        }
         Optional<Professor> professor = this.professorRepository.findTopByUserIdOrderByIdDesc(user.getId());
         if (professor.isPresent() && !professor.get().hasSubject()) {
             professor.get().setSubject(subject);
@@ -55,21 +48,25 @@ public class ProfessorService {
         return this.professorRepository.findByUserId(userId).orElseThrow(() -> new DataNotFoundException(MessagesConstants.PROFESSOR_NOT_FOUND));
     }
 
-    public ProfessorDTO getProfessorDTO(String username) {
-        Optional<Professor> professor = this.professorRepository.findFirstByUserUsername(username);
+    public ProfessorDTO getProfessorDTO(User user) {
+        Optional<Professor> professor = this.professorRepository.findFirstByUserUsername(user.getUsername());
+        ProfessorDTO.ProfessorDTOBuilder professorDTOBuilder = ProfessorDTO.builder()
+                .name(String.format(FormatConstants.FULLNAME_FORMAT,user.getFirstName(), user.getLastName()) )
+                .username(user.getUsername());
         if (professor.isPresent()) {
-            User user = professor.get().getUser();
-            return ProfessorDTO.builder()
-                    .name(String.format(FormatConstants.FULLNAME_FORMAT,user.getFirstName(), user.getLastName()) )
-                    .username(user.getUsername())
-                    .professorSubjectInfoDTO(this.getProfessorSubjectInfo(professor.get()))
-                    .build();
+            professorDTOBuilder.professorSubjectInfoDTO(this.getProfessorSubjectInfo(professor.get()));
+            return professorDTOBuilder.build();
         }
-        throw new DataNotFoundException(MessagesConstants.PROFESSOR_NOT_FOUND_OR_UNASSIGNED);
+        professorDTOBuilder.professorSubjectInfoDTO(this.getProfessorSubjectInfo(null));
+        return professorDTOBuilder.build();
     }
 
     private List<ProfessorSubjectInfoDTO> getProfessorSubjectInfo(Professor professor) {
         List<ProfessorSubjectInfoDTO> professorSubjectInfoDTO = new ArrayList<>();
+        if (professor == null) {
+            professorSubjectInfoDTO.add(this.getSubjectInfo(ProfessorSubjectInfoDTO.builder(), null, null));
+            return professorSubjectInfoDTO;
+        }
         List<Professor> professors = this.professorRepository.findAllByUserId(professor.getUser().getId());
         for (Professor p : professors) {
             professorSubjectInfoDTO.add(this.getSubjectInfo(ProfessorSubjectInfoDTO.builder(), p.getId(), p.getSubject()));
