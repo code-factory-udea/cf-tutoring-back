@@ -29,7 +29,7 @@ public class AcademicService {
         this.academicProgramRepository = academicProgramRepository;
     }
 
-    public Faculty createFaculty(FacultyDTO facultyDTO) {
+    public void createFaculty(FacultyDTO facultyDTO) {
         this.facultyRepository.findByName(facultyDTO.getName()).ifPresent(faculty -> {
             throw new DataAlreadyExistsException(MessagesConstants.FACULTY_ALREADY_EXISTS);
             
@@ -37,10 +37,10 @@ public class AcademicService {
         Faculty faculty = Faculty.builder()
                 .name(facultyDTO.getName())
                 .build();
-        return facultyRepository.save(faculty);
+        this.facultyRepository.save(faculty);
     }
 
-    public AcademicProgram createAcademicProgram(AcademicProgramDTO academicProgramDTO) {
+    public void createAcademicProgram(AcademicProgramDTO academicProgramDTO) {
         this.academicProgramRepository.findById(academicProgramDTO.getId()).ifPresent(academicProgram -> {
             throw new DataAlreadyExistsException(MessagesConstants.ACADEMIC_PROGRAM_ALREADY_EXISTS);
         });
@@ -49,7 +49,7 @@ public class AcademicService {
                 .name(academicProgramDTO.getName())
                 .faculty(this.getFaculty(academicProgramDTO.getFacultyId()))
                 .build();
-        return academicProgramRepository.save(academicProgram);
+        this.academicProgramRepository.save(academicProgram);
     }
 
     public AcademicProgram getAcademicProgram(Long id) {
@@ -60,9 +60,9 @@ public class AcademicService {
         return this.facultyRepository.findById(id).orElseThrow(() -> new DataNotFoundException(MessagesConstants.FACULTY_NOT_FOUND));
     }
 
-    public List<AcademicProgramResponseDTO> getAcademicPrograms() {
+    public List<AcademicProgramResponseDTO> getAcademicPrograms(Long facultyId) {
         List<AcademicProgramResponseDTO> academicPrograms = new ArrayList<>();
-        for (AcademicProgram academicProgram : this.academicProgramRepository.findAll()) {
+        for (AcademicProgram academicProgram : this.academicProgramRepository.findAllByFacultyId(facultyId)) {
             academicPrograms.add(AcademicMapper.toAcademicProgramResponseDTO(academicProgram));
         }
         return academicPrograms;
