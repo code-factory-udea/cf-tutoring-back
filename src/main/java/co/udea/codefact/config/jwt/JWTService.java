@@ -1,6 +1,7 @@
 package co.udea.codefact.config.jwt;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -66,7 +67,10 @@ public class JWTService {
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
+        if (isTokenExpired(token)){
+            throw new ExpiredJwtException(null, null, null);
+        }
+        return username.equals(userDetails.getUsername());
     }
 
     private boolean isTokenExpired(String token) {
