@@ -51,7 +51,7 @@ public class Appointment {
     private LocalDateTime creationDate;
 
     @Column(name = "is_virtual")
-    private Boolean isVirtual;
+    private boolean isVirtual;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)

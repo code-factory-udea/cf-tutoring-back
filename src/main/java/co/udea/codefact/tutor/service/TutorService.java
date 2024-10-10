@@ -8,7 +8,6 @@ import co.udea.codefact.tutor.repository.TutorRepository;
 import org.springframework.stereotype.Service;
 
 import co.udea.codefact.subject.entity.Subject;
-import co.udea.codefact.subject.service.SubjectService;
 import co.udea.codefact.user.entity.User;
 import co.udea.codefact.utils.constants.FormatConstants;
 import co.udea.codefact.utils.constants.MessagesConstants;
@@ -20,15 +19,12 @@ public class TutorService {
 
     private final TutorRepository tutorRepository;
     private final TutorScheduleService tutorScheduleService;
-    private final SubjectService subjectService;
 
     public TutorService(
             TutorRepository tutorRepository,
-            TutorScheduleService tutorScheduleService,
-            SubjectService subjectService) {
+            TutorScheduleService tutorScheduleService) {
         this.tutorRepository = tutorRepository;
         this.tutorScheduleService = tutorScheduleService;
-        this.subjectService = subjectService;
     }
 
     public Tutor getTutorById(Long id) {

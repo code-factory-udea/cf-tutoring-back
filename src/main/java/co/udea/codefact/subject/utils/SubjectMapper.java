@@ -28,5 +28,9 @@ public class SubjectMapper {
                     .name(subject.getName())
                     .build();
         }
+
+        private SubjectMapper(){
+            throw new IllegalStateException("Utility class");
+        }
     
 }

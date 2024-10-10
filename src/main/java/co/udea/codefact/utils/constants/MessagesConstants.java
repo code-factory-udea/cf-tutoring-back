@@ -33,7 +33,7 @@ public class MessagesConstants {
     public static final String RESPONSE_FACULTY_CREATED = "Facultad creada exitosamente";
 
 
-
+    public static final String ERROR_EXCEPTION_MESSAGE_BODY = "message";
 
 
     private MessagesConstants() {

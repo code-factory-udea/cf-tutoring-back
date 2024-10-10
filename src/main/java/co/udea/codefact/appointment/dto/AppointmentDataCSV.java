@@ -15,10 +15,10 @@ public class AppointmentDataCSV {
     
     private Long id;
     private String date;
-    private Boolean isVirtual;
+    private boolean isVirtual;
     private String appointmentStatus;
     private Long subjectId;
     private Long academicProgramId;
-    private Integer calification; 
+    private Integer calification;
 
 }

@@ -36,7 +36,7 @@ public class Professor {
     @JoinColumn(name = "id_subject", nullable = true)
     private Subject subject;
 
-    public Boolean hasSubject() {
+    public boolean hasSubject() {
         return this.subject != null;
     }
 

@@ -20,4 +20,8 @@ public class AcademicMapper {
                 .name(faculty.getName())
                 .build();
     }
+
+    private AcademicMapper() {
+        throw new IllegalStateException("Utility class");
+    }
 }

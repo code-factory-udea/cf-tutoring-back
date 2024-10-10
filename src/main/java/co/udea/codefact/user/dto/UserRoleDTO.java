@@ -14,7 +14,7 @@ import lombok.Setter;
 @Builder
 public class UserRoleDTO {
 
-    public Long id;
-    public String role; 
+    private Long id;
+    private String role;
     
 }
