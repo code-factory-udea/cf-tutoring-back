@@ -65,7 +65,7 @@ public class TutorService {
 
     public void unassignSubject(User user) {
         Optional<Tutor> tutor = this.tutorRepository.findByUserId(user.getId());
-        if (!tutor.isPresent()) {
+        if (tutor.isEmpty()) {
             throw new DataNotFoundException(MessagesConstants.TUTOR_NOT_FOUND);
         }
         if (tutor.get().getSubject() == null) {

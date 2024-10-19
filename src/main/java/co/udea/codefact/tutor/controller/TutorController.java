@@ -2,6 +2,7 @@ package co.udea.codefact.tutor.controller;
 
 
 import co.udea.codefact.tutor.dto.TutorScheduleDTO;
+import co.udea.codefact.tutor.entity.TutorSchedule;
 import co.udea.codefact.tutor.service.TutorScheduleService;
 import co.udea.codefact.utils.constants.EndpointConstants;
 import co.udea.codefact.utils.constants.MessagesConstants;
@@ -11,6 +12,8 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(EndpointConstants.TUTOR)
@@ -30,6 +33,9 @@ public class TutorController {
         return new ResponseEntity<>(MessagesConstants.TUTOR_SCHEDULE_CREATED, HttpStatus.OK);
     }
 
-
-
+    @GetMapping(EndpointConstants.SCHEDULE)
+    public ResponseEntity<List<TutorSchedule>> getSchedule(){
+        return new ResponseEntity<>(this.tutorScheduleService.getTutorSchedules(), HttpStatus.OK);
+    }
+    
 }

@@ -11,7 +11,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TutorScheduleRepository extends JpaRepository<TutorSchedule, Long> {
-    
+
+
+    List<TutorSchedule> findByTutor(Tutor tutor);
     List<TutorSchedule> findByTutorId(Long tutorId);
 
     void deleteByTutor(Tutor tutor);

@@ -35,7 +35,6 @@ public class TutorScheduleService {
         }
         Tutor tutor = this.tutorService.getTutorByUsername(this.authenticationUtil.getAuthenticatedUser())
                 .orElseThrow(() -> new DataNotFoundException(MessagesConstants.TUTOR_WITHOUT_SUBJECT));
-        System.out.println("Antes del if");
         System.out.println(this.tutorScheduleRepository.existsByTutorAndDayAndStartTimeLessThanEqualAndEndTimeGreaterThanEqual(
                 tutor, scheduleDTO.getDay(), scheduleDTO.getStartTime(), scheduleDTO.getEndTime()));
         if (this.tutorScheduleRepository.existsByTutorAndDayAndStartTimeLessThanEqualAndEndTimeGreaterThanEqual(
@@ -43,7 +42,6 @@ public class TutorScheduleService {
         ) {
             throw new TutorErrorException("Ya tienes un horario registrado en esta franja");
         }
-        System.out.println("Después del if");
         TutorSchedule tutorSchedule = TutorSchedule.builder()
                 .tutor(tutor)
                 .day(scheduleDTO.getDay())
@@ -54,13 +52,20 @@ public class TutorScheduleService {
         this.tutorScheduleRepository.save(tutorSchedule);
     }
 
-
     public void deleteTutorSchedules(Tutor tutor) {
         List<TutorSchedule> schedules = this.tutorScheduleRepository.findByTutorId(tutor.getId());
         this.tutorScheduleRepository.deleteAll(schedules);
     }
 
-    public List<TutorSchedule> getTutorSchedules(Long tutorId) {
-        return this.tutorScheduleRepository.findByTutorId(tutorId);
+    public List<TutorSchedule> getTutorSchedules() {
+        Tutor tutor = this.tutorService.getTutorByUsername(this.authenticationUtil.getAuthenticatedUser())
+                .orElseThrow(() -> new DataNotFoundException(MessagesConstants.TUTOR_WITHOUT_SUBJECT));
+        return this.tutorScheduleRepository.findByTutor(tutor);
+    }
+
+    public List<TutorSchedule> getTutorSchedules(String username) {
+        Tutor tutor = this.tutorService.getTutorByUsername(username)
+                .orElseThrow(() -> new DataNotFoundException(MessagesConstants.TUTOR_WITHOUT_SUBJECT));
+        return this.tutorScheduleRepository.findByTutor(tutor);
     }
 }
