@@ -44,6 +44,15 @@ public class TutorScheduleService {
         this.tutorScheduleRepository.save(tutorSchedule);
     }
 
+    public void deleteTutorSchedule(Long id, Tutor tutor){
+        TutorSchedule tutorSchedule = this.tutorScheduleRepository.findById(id).orElseThrow(
+                () -> new DataNotFoundException(MessagesConstants.TUTOR_SCHEDULE_NOT_FOUND));
+        if (!tutorSchedule.getTutor().equals(tutor)){
+            throw new DataNotFoundException(MessagesConstants.NO_PERMISSION);
+        }
+        this.tutorScheduleRepository.delete(tutorSchedule);
+    }
+
     public void deleteTutorSchedules(Tutor tutor) {
         List<TutorSchedule> schedules = this.tutorScheduleRepository.findByTutorId(tutor.getId());
         this.tutorScheduleRepository.deleteAll(schedules);

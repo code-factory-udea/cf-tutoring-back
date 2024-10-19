@@ -1,6 +1,7 @@
 package co.udea.codefact.tutor.controller;
 
 
+import co.udea.codefact.tutor.dto.DeleteTutorScheduleDTO;
 import co.udea.codefact.tutor.dto.TutorScheduleDTO;
 import co.udea.codefact.tutor.service.TutorService;
 import co.udea.codefact.utils.constants.EndpointConstants;
@@ -44,5 +45,13 @@ public class TutorController {
     @GetMapping(EndpointConstants.SCHEDULE+"/{username}")
     public ResponseEntity<List<TutorScheduleDTO>> getTutorSchedule(@PathVariable String username){
         return new ResponseEntity<>(this.tutorService.getTutorSchedules(username), HttpStatus.OK);
+    }
+
+    @Operation(summary = "Eliminar un horario de tutor", description = "Un tutor puede eliminar uno de sus horarios registrados")
+    @ApiResponse(responseCode = "200", description = "Horario eliminado exitosamente")
+    @DeleteMapping(EndpointConstants.SCHEDULE)
+    public ResponseEntity<String> deleteTutorSchedule(@RequestBody DeleteTutorScheduleDTO scheduleDTO){
+        this.tutorService.deleteTutorSchedule(scheduleDTO);
+        return new ResponseEntity<>(MessagesConstants.RESPONSE_TUTOR_SCHEDULE_DELETED, HttpStatus.OK);
     }
 }

@@ -3,6 +3,7 @@ package co.udea.codefact.tutor.service;
 import java.util.List;
 import java.util.Optional;
 
+import co.udea.codefact.tutor.dto.DeleteTutorScheduleDTO;
 import co.udea.codefact.tutor.dto.TutorDTO;
 import co.udea.codefact.tutor.dto.TutorScheduleDTO;
 import co.udea.codefact.tutor.entity.Tutor;
@@ -53,7 +54,7 @@ public class TutorService {
         if (tutor.isPresent()) {
             tutor.get().setActive(false);
             this.tutorRepository.save(tutor.get());
-            //this.tutorScheduleService.deleteTutorSchedules(tutor.get());
+            this.tutorScheduleService.deleteTutorSchedules(tutor.get());
         }
     }
 
@@ -128,4 +129,9 @@ public class TutorService {
         return TutorScheduleMapper.toListDTO(this.tutorScheduleService.getTutorSchedules(tutor));
     }
 
+    public void deleteTutorSchedule(DeleteTutorScheduleDTO scheduleDTO){
+        Tutor tutor = this.getTutorByUsername(this.authenticationUtil.getAuthenticatedUser())
+                .orElseThrow(() -> new DataNotFoundException(MessagesConstants.TUTOR_WITHOUT_SUBJECT));
+        this.tutorScheduleService.deleteTutorSchedule(scheduleDTO.getId(), tutor);
+    }
 }
