@@ -13,42 +13,34 @@ import co.udea.codefact.utils.exceptions.InvalidBodyException;
 import co.udea.codefact.utils.exceptions.TutorErrorException;
 import org.springframework.stereotype.Service;
 
+import static co.udea.codefact.tutor.utils.TutorScheduleMapper.translateStringToDayOfWeek;
+
 @Service
 public class TutorScheduleService {
     
     private final TutorScheduleRepository tutorScheduleRepository;
-    private final AuthenticationUtil authenticationUtil;
-    private final TutorService tutorService;
 
 
-    public TutorScheduleService(TutorScheduleRepository tutorScheduleRepository,
-                                TutorService tutorService,
-                                AuthenticationUtil authenticationUtil) {
+    public TutorScheduleService(TutorScheduleRepository tutorScheduleRepository) {
         this.tutorScheduleRepository = tutorScheduleRepository;
-        this.tutorService = tutorService;
-        this.authenticationUtil = authenticationUtil;
     }
 
-    public void createTutorSchedule(TutorScheduleDTO scheduleDTO) {
+    public void createTutorSchedule(TutorScheduleDTO scheduleDTO, Tutor tutor) {
         if (!scheduleDTO.getStartTime().isBefore(scheduleDTO.getEndTime())) {
             throw new InvalidBodyException("La hora de inicio no puede ser mayor a la de finalización");
         }
-        Tutor tutor = this.tutorService.getTutorByUsername(this.authenticationUtil.getAuthenticatedUser())
-                .orElseThrow(() -> new DataNotFoundException(MessagesConstants.TUTOR_WITHOUT_SUBJECT));
-        System.out.println(this.tutorScheduleRepository.existsByTutorAndDayAndStartTimeLessThanEqualAndEndTimeGreaterThanEqual(
-                tutor, scheduleDTO.getDay(), scheduleDTO.getStartTime(), scheduleDTO.getEndTime()));
+
         if (this.tutorScheduleRepository.existsByTutorAndDayAndStartTimeLessThanEqualAndEndTimeGreaterThanEqual(
-                tutor, scheduleDTO.getDay(), scheduleDTO.getStartTime(), scheduleDTO.getEndTime())
+                tutor, translateStringToDayOfWeek(scheduleDTO.getDay()), scheduleDTO.getStartTime(), scheduleDTO.getEndTime())
         ) {
             throw new TutorErrorException("Ya tienes un horario registrado en esta franja");
         }
         TutorSchedule tutorSchedule = TutorSchedule.builder()
                 .tutor(tutor)
-                .day(scheduleDTO.getDay())
+                .day(translateStringToDayOfWeek(scheduleDTO.getDay()))
                 .startTime(scheduleDTO.getStartTime())
                 .endTime(scheduleDTO.getEndTime())
                 .build();
-        System.out.println(tutorSchedule);
         this.tutorScheduleRepository.save(tutorSchedule);
     }
 
@@ -57,15 +49,8 @@ public class TutorScheduleService {
         this.tutorScheduleRepository.deleteAll(schedules);
     }
 
-    public List<TutorSchedule> getTutorSchedules() {
-        Tutor tutor = this.tutorService.getTutorByUsername(this.authenticationUtil.getAuthenticatedUser())
-                .orElseThrow(() -> new DataNotFoundException(MessagesConstants.TUTOR_WITHOUT_SUBJECT));
+    public List<TutorSchedule> getTutorSchedules(Tutor tutor) {
         return this.tutorScheduleRepository.findByTutor(tutor);
     }
 
-    public List<TutorSchedule> getTutorSchedules(String username) {
-        Tutor tutor = this.tutorService.getTutorByUsername(username)
-                .orElseThrow(() -> new DataNotFoundException(MessagesConstants.TUTOR_WITHOUT_SUBJECT));
-        return this.tutorScheduleRepository.findByTutor(tutor);
-    }
 }
