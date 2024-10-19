@@ -1,20 +1,17 @@
 package co.udea.codefact.utils.controller;
 
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.Map;
 
 import co.udea.codefact.utils.constants.MessagesConstants;
+import co.udea.codefact.utils.exceptions.*;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import co.udea.codefact.utils.exceptions.DataAlreadyExistsException;
-import co.udea.codefact.utils.exceptions.DataNotFoundException;
-import co.udea.codefact.utils.exceptions.InvalidCredentialsException;
-import co.udea.codefact.utils.exceptions.InvalidRoleChangeException;
 
 @RestControllerAdvice
 public class GlobalHandlerAdvice {
@@ -59,6 +56,14 @@ public class GlobalHandlerAdvice {
         return errorResponse;
     }
 
+    @ExceptionHandler(InvalidBodyException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public Map<String, String> handleInvalidBodyException(InvalidBodyException ex) {
+        Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put(MessagesConstants.ERROR_EXCEPTION_MESSAGE_BODY, ex.getMessage());
+        return errorResponse;
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, String> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
@@ -68,6 +73,22 @@ public class GlobalHandlerAdvice {
             errorMessage.append(error.getDefaultMessage()).append(". ")
         );
         errorResponse.put(MessagesConstants.ERROR_EXCEPTION_MESSAGE_BODY, errorMessage.toString());
+        return errorResponse;
+    }
+
+    @ExceptionHandler(TutorErrorException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Map<String, String> handleScheduleNoCreatedException(TutorErrorException ex) {
+        Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put(MessagesConstants.ERROR_EXCEPTION_MESSAGE_BODY, ex.getMessage());
+        return errorResponse;
+    }
+
+    @ExceptionHandler(DateTimeParseException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Map<String, String> handleDateTimeParseException() {
+        Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put(MessagesConstants.ERROR_EXCEPTION_MESSAGE_BODY, MessagesConstants.ERROR_PARSING_HOUR_DAY);
         return errorResponse;
     }
 }
