@@ -6,8 +6,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class DeleteProfessorSubjectDTO {
+public class DeleteSubjectDTO {
 
-    @NotNull(message = "El id del profesor a eliminar no puede ser nulo")
-    private Long idProfessor;
+    @NotNull(message = "El id a eliminar no puede ser nulo")
+    private Long id;
 }

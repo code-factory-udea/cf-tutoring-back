@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import co.udea.codefact.administration.dto.DeleteSubjectDTO;
 import co.udea.codefact.administration.dto.SubjectAssignmentDTO;
 import co.udea.codefact.administration.dto.UserPaginationDTO;
 import co.udea.codefact.utils.exceptions.DataNotFoundException;
@@ -137,9 +138,8 @@ public class AdministrationService {
         this.tutorService.assignSubject(user, subject);
     }
 
-    public void unassignSubjectToTutor(String username){
-        User user = this.userService.getUserByUsername(username);
-        this.tutorService.unassignSubject(user);
+    public void unassignSubjectToTutor(DeleteSubjectDTO dto){
+        this.tutorService.unassignSubject(dto.getId());
     }
 
     public void assignSubjectToProfessor(SubjectAssignmentDTO tutorSubjectDTO){
