@@ -9,5 +9,5 @@ import lombok.Setter;
 public class DeleteProfessorSubjectDTO {
 
     @NotNull(message = "El id del profesor a eliminar no puede ser nulo")
-    private Long id;
+    private Long idProfessor;
 }

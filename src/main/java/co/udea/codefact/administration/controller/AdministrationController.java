@@ -184,7 +184,7 @@ public class AdministrationController {
     @ApiResponse(responseCode = "200", description = "Se eliminó la materia del profesor")
     @DeleteMapping(EndpointConstants.PROFESSOR+EndpointConstants.SUBJECT)
     public ResponseEntity<String> deleteProfessorSubject(@Valid @RequestBody DeleteProfessorSubjectDTO deleteProfessorSubjectDTO) {
-        this.adminService.deleteProfessorSubject(deleteProfessorSubjectDTO.getId());
+        this.adminService.deleteProfessorSubject(deleteProfessorSubjectDTO.getIdProfessor());
         return new ResponseEntity<>(MessagesConstants.RESPONSE_ASSIGN_SUBJECT_TO_PROFESSOR_DELETE, null, 200);
     }
 
