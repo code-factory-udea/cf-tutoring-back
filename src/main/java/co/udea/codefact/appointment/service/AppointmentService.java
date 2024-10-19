@@ -89,7 +89,7 @@ public class AppointmentService {
                 AppointmentDataCSV.builder()
                 .id(appointment.getId())
                 .date(appointment.getDate().toString())
-                .isVirtual(appointment.getIsVirtual())
+                .isVirtual(appointment.isVirtual())
                 .appointmentStatus(appointment.getStatus().toString())
                 .subjectId(appointment.getTutor().getSubject().getId())
                 .academicProgramId(appointment.getTutor().getSubject().getAcademicProgram().getId())
@@ -111,7 +111,7 @@ public class AppointmentService {
                 .tutorName(String.format(FormatConstants.FULLNAME_FORMAT, tutor.getFirstName(), tutor.getLastName()))
                 .date(appointment.getDate().toString())
                 .creationDate(appointment.getCreationDate().toString())
-                .isVirtual(appointment.getIsVirtual())
+                .isVirtual(appointment.isVirtual())
                 .status(appointment.getStatus())
                 .build());
         }
@@ -140,7 +140,7 @@ public class AppointmentService {
             .tutorName(String.format(FormatConstants.FULLNAME_FORMAT, tutor.getFirstName(), tutor.getLastName()))
             .date(appointment.getDate().toString())
             .creationDate(appointment.getCreationDate().toString())
-            .isVirtual(appointment.getIsVirtual())
+            .isVirtual(appointment.isVirtual())
             .status(appointment.getStatus());
 
         if (appointment.getStatus().equals(AppointmentStatus.COMPLETED)) {

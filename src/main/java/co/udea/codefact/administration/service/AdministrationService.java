@@ -113,7 +113,7 @@ public class AdministrationService {
             writer.append(String.format("%d,%s,%b,%s,%d,%d,%d\n",
                 appointmentDataCSV.getId(),
                 appointmentDataCSV.getDate(),
-                appointmentDataCSV.getIsVirtual(),
+                appointmentDataCSV.isVirtual(),
                 appointmentDataCSV.getAppointmentStatus(),
                 appointmentDataCSV.getSubjectId(),
                 appointmentDataCSV.getAcademicProgramId(),
