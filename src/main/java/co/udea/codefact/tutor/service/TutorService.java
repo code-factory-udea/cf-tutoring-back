@@ -1,10 +1,15 @@
 package co.udea.codefact.tutor.service;
 
+import java.util.List;
 import java.util.Optional;
 
+import co.udea.codefact.tutor.dto.DeleteTutorScheduleDTO;
 import co.udea.codefact.tutor.dto.TutorDTO;
+import co.udea.codefact.tutor.dto.TutorScheduleDTO;
 import co.udea.codefact.tutor.entity.Tutor;
+import co.udea.codefact.tutor.entity.TutorSchedule;
 import co.udea.codefact.tutor.repository.TutorRepository;
+import co.udea.codefact.tutor.utils.TutorScheduleMapper;
 import co.udea.codefact.utils.auth.AuthenticationUtil;
 import org.springframework.stereotype.Service;
 
@@ -19,11 +24,16 @@ import co.udea.codefact.utils.exceptions.DataNotFoundException;
 public class TutorService {
 
     private final TutorRepository tutorRepository;
+    private final AuthenticationUtil authenticationUtil;
+    private final TutorScheduleService tutorScheduleService;
 
     public TutorService(
-            TutorRepository tutorRepository) {
+            TutorRepository tutorRepository,
+            TutorScheduleService tutorScheduleService,
+            AuthenticationUtil authenticationUtil) {
         this.tutorRepository = tutorRepository;
-
+        this.authenticationUtil = authenticationUtil;
+        this.tutorScheduleService = tutorScheduleService;
     }
 
     public Tutor getTutorById(Long id) {
@@ -44,7 +54,7 @@ public class TutorService {
         if (tutor.isPresent()) {
             tutor.get().setActive(false);
             this.tutorRepository.save(tutor.get());
-            //this.tutorScheduleService.deleteTutorSchedules(tutor.get());
+            this.tutorScheduleService.deleteTutorSchedules(tutor.get());
         }
     }
 
@@ -99,5 +109,29 @@ public class TutorService {
         builder.subjectInfo(String.format(FormatConstants.ACADEMIC_INFO_FORMAT, subject.getCode(), subject.getName()));
         builder.academicProgramInfo(String.format(FormatConstants.ACADEMIC_INFO_FORMAT,
                 subject.getAcademicProgram().getName(), subject.getAcademicProgram().getFaculty().getName()));
+    }
+
+    public void createTutorSchedule (TutorScheduleDTO scheduleDTO){
+    Tutor tutor = this.getTutorByUsername(this.authenticationUtil.getAuthenticatedUser())
+            .orElseThrow(() -> new DataNotFoundException(MessagesConstants.TUTOR_WITHOUT_SUBJECT));
+    this.tutorScheduleService.createTutorSchedule(scheduleDTO, tutor);
+    }
+
+    public List<TutorScheduleDTO> getTutorSchedules(){
+        Tutor tutor = this.getTutorByUsername(this.authenticationUtil.getAuthenticatedUser())
+                .orElseThrow(() -> new DataNotFoundException(MessagesConstants.TUTOR_WITHOUT_SUBJECT));
+        return TutorScheduleMapper.toListDTO(this.tutorScheduleService.getTutorSchedules(tutor));
+    }
+
+    public List<TutorScheduleDTO> getTutorSchedules(String username) {
+        Tutor tutor = this.getTutorByUsername(username)
+                .orElseThrow(() -> new DataNotFoundException(MessagesConstants.TUTOR_WITHOUT_SUBJECT));
+        return TutorScheduleMapper.toListDTO(this.tutorScheduleService.getTutorSchedules(tutor));
+    }
+
+    public void deleteTutorSchedule(DeleteTutorScheduleDTO scheduleDTO){
+        Tutor tutor = this.getTutorByUsername(this.authenticationUtil.getAuthenticatedUser())
+                .orElseThrow(() -> new DataNotFoundException(MessagesConstants.TUTOR_WITHOUT_SUBJECT));
+        this.tutorScheduleService.deleteTutorSchedule(scheduleDTO.getId(), tutor);
     }
 }

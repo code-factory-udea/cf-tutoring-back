@@ -9,6 +9,7 @@ import co.udea.codefact.professor.dto.ProfessorSubjectInfoDTO;
 import co.udea.codefact.professor.entity.Professor;
 import co.udea.codefact.professor.repository.ProfessorRepository;
 import co.udea.codefact.utils.constants.RoleConstants;
+import co.udea.codefact.utils.exceptions.DataAlreadyExistsException;
 import org.springframework.stereotype.Service;
 
 import co.udea.codefact.subject.entity.Subject;
@@ -39,6 +40,9 @@ public class ProfessorService {
             professor.get().setSubject(subject);
             this.professorRepository.save(professor.get());
             return;
+        }
+        if (this.professorRepository.existsByUserUsernameAndSubjectId(user.getUsername(), subject.getId())){
+            throw new DataAlreadyExistsException(MessagesConstants.PROFESSOR_SUBJECT_ALREADY_EXISTS);
         }
         Professor newProfessor = Professor.builder().user(user).subject(subject).build();
         this.professorRepository.save(newProfessor);

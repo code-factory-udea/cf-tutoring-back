@@ -1,9 +1,9 @@
 package co.udea.codefact.tutor.controller;
 
 
+import co.udea.codefact.tutor.dto.DeleteTutorScheduleDTO;
 import co.udea.codefact.tutor.dto.TutorScheduleDTO;
-import co.udea.codefact.tutor.entity.TutorSchedule;
-import co.udea.codefact.tutor.service.TutorScheduleService;
+import co.udea.codefact.tutor.service.TutorService;
 import co.udea.codefact.utils.constants.EndpointConstants;
 import co.udea.codefact.utils.constants.MessagesConstants;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,23 +19,39 @@ import java.util.List;
 @RequestMapping(EndpointConstants.TUTOR)
 public class TutorController {
 
-    private final TutorScheduleService tutorScheduleService;
+    private final TutorService tutorService;
 
-    public TutorController(TutorScheduleService tutorScheduleService) {
-        this.tutorScheduleService = tutorScheduleService;
+    public TutorController(TutorService tutorService) {
+        this.tutorService = tutorService;
     }
 
     @Operation(summary = "Crear horario de tutor", description = "Un tutor crea su horario de disponibilidad para recibir solicitudes")
     @ApiResponse(responseCode = "200", description = "Se crea el horario satisfactoriamente" )
     @PostMapping(EndpointConstants.SCHEDULE)
     public ResponseEntity<String> createSchedule(@Valid @RequestBody TutorScheduleDTO scheduleDTO){
-        this.tutorScheduleService.createTutorSchedule(scheduleDTO);
+        this.tutorService.createTutorSchedule(scheduleDTO);
         return new ResponseEntity<>(MessagesConstants.TUTOR_SCHEDULE_CREATED, HttpStatus.OK);
     }
 
+    @Operation(summary = "Obtener los horarios de tutor", description = "Un tutor obtiene sus horarios registrados")
+    @ApiResponse(responseCode = "200", description = "Los horarios se obtuvieron correctamente")
     @GetMapping(EndpointConstants.SCHEDULE)
-    public ResponseEntity<List<TutorSchedule>> getSchedule(){
-        return new ResponseEntity<>(this.tutorScheduleService.getTutorSchedules(), HttpStatus.OK);
+    public ResponseEntity<List<TutorScheduleDTO>> getTutorSchedule(){
+        return new ResponseEntity<>(this.tutorService.getTutorSchedules(), HttpStatus.OK);
     }
-    
+
+    @Operation(summary = "Obtener los horarios de tutor", description = "Un usuario obtiene los horarios registrados por el tutor seleccionado")
+    @ApiResponse(responseCode = "200", description = "Los horarios se obtuvieron correctamente")
+    @GetMapping(EndpointConstants.SCHEDULE+"/{username}")
+    public ResponseEntity<List<TutorScheduleDTO>> getTutorSchedule(@PathVariable String username){
+        return new ResponseEntity<>(this.tutorService.getTutorSchedules(username), HttpStatus.OK);
+    }
+
+    @Operation(summary = "Eliminar un horario de tutor", description = "Un tutor puede eliminar uno de sus horarios registrados")
+    @ApiResponse(responseCode = "200", description = "Horario eliminado exitosamente")
+    @DeleteMapping(EndpointConstants.SCHEDULE)
+    public ResponseEntity<String> deleteTutorSchedule(@RequestBody DeleteTutorScheduleDTO scheduleDTO){
+        this.tutorService.deleteTutorSchedule(scheduleDTO);
+        return new ResponseEntity<>(MessagesConstants.RESPONSE_TUTOR_SCHEDULE_DELETED, HttpStatus.OK);
+    }
 }
