@@ -41,7 +41,7 @@ public class SubjectService {
     }
     
     public List<SubjectListDTO> getSubjects(Long academicProgramId) {
-        List<SubjectListDTO> subjects = new ArrayList<>(); ;
+        List<SubjectListDTO> subjects = new ArrayList<>();
         for (Subject subject : this.subjectRepository.findAllByAcademicProgramId(academicProgramId)) {
             subjects.add(SubjectMapper.toListDTO(subject));
         }

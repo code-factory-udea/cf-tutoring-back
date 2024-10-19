@@ -20,8 +20,7 @@ public class UserRoleChangeKey {
     
         @Override
         public boolean equals(Object obj) {
-            if (obj instanceof UserRoleChangeKey) {
-                UserRoleChangeKey key = (UserRoleChangeKey) obj;
+            if (obj instanceof UserRoleChangeKey key) {
                 return this.oldRoleId.equals(key.oldRoleId) && this.newRoleId.equals(key.newRoleId);
             }
             return false;

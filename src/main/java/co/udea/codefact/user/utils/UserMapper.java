@@ -22,5 +22,8 @@ public class UserMapper {
             .build();
     }
 
+    private UserMapper() {
+        throw new IllegalStateException("Utility class");
+    }
     
 }

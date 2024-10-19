@@ -5,7 +5,6 @@ import java.util.List;
 import co.udea.codefact.config.jwt.JWTAuthFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -41,7 +40,9 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(
                         authRequest ->
                                 authRequest.requestMatchers("/admin/**").hasAnyAuthority(RoleConstants.ADMIN)
-                                .requestMatchers("/appointment/**").hasAnyAuthority(RoleConstants.STUDENT, RoleConstants.TUTOR)
+                                .requestMatchers("/appointment/**").hasAnyAuthority(RoleConstants.STUDENT,
+                                                RoleConstants.TUTOR)
+                                .requestMatchers("/tutor/**").hasAnyAuthority(RoleConstants.TUTOR)
                                 .requestMatchers("/subject/**").authenticated()
                                 .requestMatchers("/swagger-ui/**","/v3/api-docs/**","/auth/**").permitAll()
                                         .anyRequest()

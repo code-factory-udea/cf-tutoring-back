@@ -41,9 +41,9 @@ public class Tutor {
     private Subject subject;
 
     @Column(name = "virtual_meeting_link", nullable = true)
-    private String VirtualMeetingLink;
+    private String virtualMeetingLink;
 
     @Column(name = "is_active")
-    private Boolean isActive;
+    private boolean isActive;
 
 }

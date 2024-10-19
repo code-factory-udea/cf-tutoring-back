@@ -12,4 +12,8 @@ public class UserRoleMapper {
             .role(userRole.getRole())
             .build();
     }
+
+    private UserRoleMapper(){
+        throw new IllegalStateException("Utility class");
+    }
 }

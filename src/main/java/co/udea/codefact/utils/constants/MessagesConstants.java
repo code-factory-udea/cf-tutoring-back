@@ -21,7 +21,7 @@ public class MessagesConstants {
     public static final String PROFESSOR_SUBJECT_NOT_FOUND = "Materia no asignada al profesor";
 
 
-
+    public static final String TUTOR_WITHOUT_SUBJECT = "Se debe asignar una materia primero";
 
     public static final String NO_PERMISSION = "No tiene permisos para realizar esta acción";
     public static final String RESPONSE_ASSIGN_SUBJECT_TO_TUTOR = "Materia asignada al monitor";
@@ -32,8 +32,10 @@ public class MessagesConstants {
     public static final String RESPONSE_ACADEMIC_PROGRAM_CREATED = "Programa académico creado exitosamente";
     public static final String RESPONSE_FACULTY_CREATED = "Facultad creada exitosamente";
 
+    public static final String ERROR_EXCEPTION_MESSAGE_BODY = "message";
+    public static final String ERROR_PARSING_HOUR_DAY = "Ingresa un horario válido";
 
-
+    public static final String TUTOR_SCHEDULE_CREATED = "El horario se ha creado correctamente";
 
 
     private MessagesConstants() {

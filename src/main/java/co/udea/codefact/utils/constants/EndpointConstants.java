@@ -17,6 +17,7 @@ public class EndpointConstants {
     public static final String FACULTY = "/faculty";
     public static final String SUBJECT = "/subject";
     public static final String APPOINTMENT = "/appointment";
+    public static final String SCHEDULE = "/schedule";
     public static final String CSV = "/csv";
     
     private EndpointConstants() {

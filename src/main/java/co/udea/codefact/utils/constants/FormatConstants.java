@@ -7,5 +7,9 @@ public class FormatConstants {
 
 
     public static final int ITEM_PER_PAGE = 10;
+
+    private FormatConstants() {
+        throw new IllegalStateException("Utility class");
+    }
     
 }

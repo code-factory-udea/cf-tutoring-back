@@ -5,10 +5,10 @@ import java.util.Optional;
 import co.udea.codefact.tutor.dto.TutorDTO;
 import co.udea.codefact.tutor.entity.Tutor;
 import co.udea.codefact.tutor.repository.TutorRepository;
+import co.udea.codefact.utils.auth.AuthenticationUtil;
 import org.springframework.stereotype.Service;
 
 import co.udea.codefact.subject.entity.Subject;
-import co.udea.codefact.subject.service.SubjectService;
 import co.udea.codefact.user.entity.User;
 import co.udea.codefact.utils.constants.FormatConstants;
 import co.udea.codefact.utils.constants.MessagesConstants;
@@ -19,16 +19,11 @@ import co.udea.codefact.utils.exceptions.DataNotFoundException;
 public class TutorService {
 
     private final TutorRepository tutorRepository;
-    private final TutorScheduleService tutorScheduleService;
-    private final SubjectService subjectService;
 
     public TutorService(
-            TutorRepository tutorRepository,
-            TutorScheduleService tutorScheduleService,
-            SubjectService subjectService) {
+            TutorRepository tutorRepository) {
         this.tutorRepository = tutorRepository;
-        this.tutorScheduleService = tutorScheduleService;
-        this.subjectService = subjectService;
+
     }
 
     public Tutor getTutorById(Long id) {
@@ -38,15 +33,18 @@ public class TutorService {
 
     public Optional<Tutor> getTutorByUser(User user) {
         return this.tutorRepository.findByUserId(user.getId());
+    }
 
+    public Optional<Tutor> getTutorByUsername(String username) {
+        return this.tutorRepository.findByUserUsername(username);
     }
 
     public void disableTutor(User user) {
         Optional<Tutor> tutor = this.getTutorByUser(user);
         if (tutor.isPresent()) {
-            tutor.get().setIsActive(false);
+            tutor.get().setActive(false);
             this.tutorRepository.save(tutor.get());
-            this.tutorScheduleService.deleteTutorSchedules(tutor.get());
+            //this.tutorScheduleService.deleteTutorSchedules(tutor.get());
         }
     }
 
@@ -56,7 +54,7 @@ public class TutorService {
         }
         Optional<Tutor> tutor = this.tutorRepository.findByUserId(user.getId());
         if (tutor.isPresent()) {
-            tutor.get().setIsActive(true);
+            tutor.get().setActive(true);
             tutor.get().setSubject(subject);
             this.tutorRepository.save(tutor.get());
             return;
@@ -67,7 +65,7 @@ public class TutorService {
 
     public void unassignSubject(User user) {
         Optional<Tutor> tutor = this.tutorRepository.findByUserId(user.getId());
-        if (!tutor.isPresent()) {
+        if (tutor.isEmpty()) {
             throw new DataNotFoundException(MessagesConstants.TUTOR_NOT_FOUND);
         }
         if (tutor.get().getSubject() == null) {
