@@ -205,8 +205,12 @@ public class AdministrationService {
         userRoleChange.put(new UserRoleChangeKey(RoleConstants.PROFESSOR_ID, RoleConstants.ADMIN_ID), () -> this.changeRole(finalUser, newRole));
 
         UserRoleChangeKey userRoleChangeKey = new UserRoleChangeKey(oldRoleId, newRoleId);
-        userRoleChange.getOrDefault(userRoleChangeKey, () -> { 
-            throw new InvalidRoleChangeException(MessagesConstants.INVALID_ROLE_CHANGE); }).run();
+
+        userRoleChange.getOrDefault(userRoleChangeKey, () -> {
+            throw new InvalidRoleChangeException(
+                    String.format("No se puede cambiar el rol de '%s' a '%s'", user.getRole().getRole(), newRole.getRole())
+                    );
+        }).run();
 
         return UserMapper.toUserDTO(this.userService.getUserByUsername(user.getUsername()));
     }
