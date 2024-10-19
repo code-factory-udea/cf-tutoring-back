@@ -3,7 +3,7 @@ package co.udea.codefact.administration.controller;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-import co.udea.codefact.administration.dto.DeleteProfessorSubjectDTO;
+import co.udea.codefact.administration.dto.DeleteSubjectDTO;
 import co.udea.codefact.administration.dto.UserPaginationDTO;
 import co.udea.codefact.administration.service.AdministrationService;
 import co.udea.codefact.administration.dto.SubjectAssignmentDTO;
@@ -87,8 +87,8 @@ public class AdministrationController {
     @ApiResponse(responseCode = "200", description = "Materia asignada satisfactoriamente")
     @ApiResponse(responseCode = "400", description = "Error al asignar la materia al tutor")
     @PatchMapping(EndpointConstants.TUTOR+EndpointConstants.SUBJECT)
-    public ResponseEntity<String> unassignSubjectToTutor(@Valid @RequestBody SubjectAssignmentDTO data) {
-        this.adminService.unassignSubjectToTutor(data.getUsername());
+    public ResponseEntity<String> unassignSubjectToTutor(@Valid @RequestBody DeleteSubjectDTO dto) {
+        this.adminService.unassignSubjectToTutor(dto);
         return new ResponseEntity<>(MessagesConstants.RESPONSE_UNASSIGN_SUBJECT_TO_TUTOR, null, 200);
     }
 
@@ -183,8 +183,8 @@ public class AdministrationController {
     @Operation(summary = "Eliminar materia de profesor", description = "Eliminar la materia asignada a un profesor")
     @ApiResponse(responseCode = "200", description = "Se eliminó la materia del profesor")
     @DeleteMapping(EndpointConstants.PROFESSOR+EndpointConstants.SUBJECT)
-    public ResponseEntity<String> deleteProfessorSubject(@Valid @RequestBody DeleteProfessorSubjectDTO deleteProfessorSubjectDTO) {
-        this.adminService.deleteProfessorSubject(deleteProfessorSubjectDTO.getIdProfessor());
+    public ResponseEntity<String> deleteProfessorSubject(@Valid @RequestBody DeleteSubjectDTO deleteProfessorSubjectDTO) {
+        this.adminService.deleteProfessorSubject(deleteProfessorSubjectDTO.getId());
         return new ResponseEntity<>(MessagesConstants.RESPONSE_ASSIGN_SUBJECT_TO_PROFESSOR_DELETE, null, 200);
     }
 

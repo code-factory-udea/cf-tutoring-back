@@ -73,8 +73,8 @@ public class TutorService {
         this.tutorRepository.save(newTutor);
     }
 
-    public void unassignSubject(User user) {
-        Optional<Tutor> tutor = this.tutorRepository.findByUserId(user.getId());
+    public void unassignSubject(Long id) {
+        Optional<Tutor> tutor = this.tutorRepository.findByUserId(id);
         if (tutor.isEmpty()) {
             throw new DataNotFoundException(MessagesConstants.TUTOR_NOT_FOUND);
         }
