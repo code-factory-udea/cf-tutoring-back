@@ -91,9 +91,8 @@ public class TutorService {
                 .name(String.format(FormatConstants.FULLNAME_FORMAT, user.getFirstName(), user.getLastName()))
                 .username(user.getUsername());
         if (tutor.isPresent()) {
-                    tutorDTOBuilder
-                    .id(tutor.get().getId());
-                    this.getAditionalInfo(tutorDTOBuilder, tutor.get().getSubject());
+            tutorDTOBuilder.id(tutor.get().getId());
+            this.getAditionalInfo(tutorDTOBuilder, tutor.get().getSubject());
             return tutorDTOBuilder.build();
         }
         this.getAditionalInfo(tutorDTOBuilder, null);
@@ -111,13 +110,13 @@ public class TutorService {
                 subject.getAcademicProgram().getName(), subject.getAcademicProgram().getFaculty().getName()));
     }
 
-    public void createTutorSchedule (TutorScheduleDTO scheduleDTO){
-    Tutor tutor = this.getTutorByUsername(this.authenticationUtil.getAuthenticatedUser())
-            .orElseThrow(() -> new DataNotFoundException(MessagesConstants.TUTOR_WITHOUT_SUBJECT));
-    this.tutorScheduleService.createTutorSchedule(scheduleDTO, tutor);
+    public void createTutorSchedule(TutorScheduleDTO scheduleDTO) {
+        Tutor tutor = this.getTutorByUsername(this.authenticationUtil.getAuthenticatedUser())
+                .orElseThrow(() -> new DataNotFoundException(MessagesConstants.TUTOR_WITHOUT_SUBJECT));
+        this.tutorScheduleService.createTutorSchedule(scheduleDTO, tutor);
     }
 
-    public List<TutorScheduleDTO> getTutorSchedules(){
+    public List<TutorScheduleDTO> getTutorSchedules() {
         Tutor tutor = this.getTutorByUsername(this.authenticationUtil.getAuthenticatedUser())
                 .orElseThrow(() -> new DataNotFoundException(MessagesConstants.TUTOR_WITHOUT_SUBJECT));
         return TutorScheduleMapper.toListDTO(this.tutorScheduleService.getTutorSchedules(tutor));
@@ -129,7 +128,7 @@ public class TutorService {
         return TutorScheduleMapper.toListDTO(this.tutorScheduleService.getTutorSchedules(tutor));
     }
 
-    public void deleteTutorSchedule(DeleteTutorScheduleDTO scheduleDTO){
+    public void deleteTutorSchedule(DeleteTutorScheduleDTO scheduleDTO) {
         Tutor tutor = this.getTutorByUsername(this.authenticationUtil.getAuthenticatedUser())
                 .orElseThrow(() -> new DataNotFoundException(MessagesConstants.TUTOR_WITHOUT_SUBJECT));
         this.tutorScheduleService.deleteTutorSchedule(scheduleDTO.getId(), tutor);

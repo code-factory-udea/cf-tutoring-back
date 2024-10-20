@@ -58,19 +58,15 @@ public class SubjectService {
     
     public SubjectResponseDTO updateSubject(SubjectUpdateDTO subjectDTO) {
         Subject subject = this.getSubjectByCode(subjectDTO.getCode());
-        if (subjectDTO.getNewCode() != null) {
+        if (subjectDTO.getNewCode() != null ) {
             Optional<Subject> subjectOptional = this.subjectRepository.findByCode(subjectDTO.getNewCode());
-            if (subjectOptional.isPresent()) {
+            if (subjectOptional.isPresent() && !subjectDTO.getNewCode().equals(subject.getCode())) {
                 throw new DataAlreadyExistsException(MessagesConstants.SUBJECT_ALREADY_EXISTS);
             }
             subject.setCode(subjectDTO.getNewCode());
         }
-        if (subjectDTO.getName() != null) {
+        if (subjectDTO.getName() != null && !subject.getName().equals(subjectDTO.getName())) {
             subject.setName(subjectDTO.getName());
-        }
-        if (subjectDTO.getAcademicProgramId() != null) {
-            AcademicProgram academic = this.academicService.getAcademicProgram(subjectDTO.getAcademicProgramId());
-            subject.setAcademicProgram(academic);
         }
         return SubjectMapper.toDTO(this.subjectRepository.save(subject));
     }

@@ -19,6 +19,5 @@ public class SubjectUpdateDTO {
     private Long code;
     private Long newCode;
     private String name;
-    private Long academicProgramId;
-    
+
 }
