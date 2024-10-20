@@ -9,6 +9,7 @@ import java.util.Map;
 import co.udea.codefact.administration.dto.DeleteSubjectDTO;
 import co.udea.codefact.administration.dto.SubjectAssignmentDTO;
 import co.udea.codefact.administration.dto.UserPaginationDTO;
+import co.udea.codefact.utils.constants.FormatConstants;
 import co.udea.codefact.utils.exceptions.DataNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -208,7 +209,7 @@ public class AdministrationService {
 
         userRoleChange.getOrDefault(userRoleChangeKey, () -> {
             throw new InvalidRoleChangeException(
-                    String.format("No se puede cambiar el rol de '%s' a '%s'", user.getRole().getRole(), newRole.getRole())
+                    String.format(FormatConstants.ERROR_ROL_CHANGE, user.getRole().getRole(), newRole.getRole())
                     );
         }).run();
 

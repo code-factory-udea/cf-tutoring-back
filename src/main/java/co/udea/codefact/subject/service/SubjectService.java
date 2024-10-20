@@ -68,10 +68,6 @@ public class SubjectService {
         if (subjectDTO.getName() != null) {
             subject.setName(subjectDTO.getName());
         }
-        if (subjectDTO.getAcademicProgramId() != null) {
-            AcademicProgram academic = this.academicService.getAcademicProgram(subjectDTO.getAcademicProgramId());
-            subject.setAcademicProgram(academic);
-        }
         return SubjectMapper.toDTO(this.subjectRepository.save(subject));
     }
 
