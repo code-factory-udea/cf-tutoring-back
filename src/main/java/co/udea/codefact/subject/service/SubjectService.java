@@ -58,9 +58,9 @@ public class SubjectService {
     
     public SubjectResponseDTO updateSubject(SubjectUpdateDTO subjectDTO) {
         Subject subject = this.getSubjectByCode(subjectDTO.getCode());
-        if (subjectDTO.getNewCode() != null && !subjectDTO.getNewCode().equals(subject.getCode())) {
+        if (subjectDTO.getNewCode() != null ) {
             Optional<Subject> subjectOptional = this.subjectRepository.findByCode(subjectDTO.getNewCode());
-            if (subjectOptional.isPresent()) {
+            if (subjectOptional.isPresent() && !subjectDTO.getNewCode().equals(subject.getCode())) {
                 throw new DataAlreadyExistsException(MessagesConstants.SUBJECT_ALREADY_EXISTS);
             }
             subject.setCode(subjectDTO.getNewCode());
