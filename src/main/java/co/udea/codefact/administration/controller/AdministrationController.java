@@ -3,6 +3,7 @@ package co.udea.codefact.administration.controller;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+import co.udea.codefact.academic.dto.UpdateAcademicProgramDTO;
 import co.udea.codefact.administration.dto.DeleteSubjectDTO;
 import co.udea.codefact.administration.dto.UserPaginationDTO;
 import co.udea.codefact.administration.service.AdministrationService;
@@ -202,5 +203,14 @@ public class AdministrationController {
     public ResponseEntity<String> createFaculty(@Valid @RequestBody FacultyDTO facultyDTO) {
         this.adminService.createFaculty(facultyDTO);
         return new ResponseEntity<>(MessagesConstants.RESPONSE_FACULTY_CREATED, null, 200);
+    }
+
+    @Operation(summary = "Obtener programas académicos", description = "Obtener todos los programas académicos")
+    @ApiResponse(responseCode = "200", description = "Se obtuvieron los programas académicos")
+    @PatchMapping(EndpointConstants.ACADEMIC_PROGRAM)
+    public ResponseEntity<String> updateAcademicProgram(
+            @Valid @RequestBody UpdateAcademicProgramDTO updateAcademicProgramDTO) {
+        this.adminService.updateAcademicProgramInfo(updateAcademicProgramDTO);
+        return new ResponseEntity<>(MessagesConstants.RESPONSE_ACADEMIC_PROGRAM_UPDATED, HttpStatus.OK);
     }
 }

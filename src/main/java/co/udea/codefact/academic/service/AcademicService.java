@@ -3,12 +3,13 @@ package co.udea.codefact.academic.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import co.udea.codefact.academic.repository.AcademicProgramRepository;
-import co.udea.codefact.academic.repository.FacultyRepository;
 import co.udea.codefact.academic.dto.AcademicProgramDTO;
 import co.udea.codefact.academic.dto.AcademicProgramResponseDTO;
 import co.udea.codefact.academic.dto.FacultyDTO;
 import co.udea.codefact.academic.dto.FacultyResponseDTO;
+import co.udea.codefact.academic.dto.UpdateAcademicProgramDTO;
+import co.udea.codefact.academic.repository.AcademicProgramRepository;
+import co.udea.codefact.academic.repository.FacultyRepository;
 import co.udea.codefact.academic.entity.AcademicProgram;
 import co.udea.codefact.academic.entity.Faculty;
 import co.udea.codefact.academic.utils.AcademicMapper;
@@ -50,6 +51,23 @@ public class AcademicService {
                 .faculty(this.getFaculty(academicProgramDTO.getFacultyId()))
                 .build();
         this.academicProgramRepository.save(academicProgram);
+    }
+
+    public void updateAcademicProgramInfo(UpdateAcademicProgramDTO updateAcademicProgramDTO){
+        boolean hasChanges = false;
+        AcademicProgram academicProgram = this.getAcademicProgram(updateAcademicProgramDTO.getId());
+        if(!updateAcademicProgramDTO.getName().equals(academicProgram.getName())){
+            academicProgram.setName(updateAcademicProgramDTO.getName());
+            hasChanges = true;
+        }
+        if (!updateAcademicProgramDTO.getFacultyId().equals(academicProgram.getFaculty().getId())) {
+            Faculty faculty = this.getFaculty(updateAcademicProgramDTO.getFacultyId());
+            academicProgram.setFaculty(faculty);
+            hasChanges = true;
+        }
+        if (hasChanges) {
+            this.academicProgramRepository.save(academicProgram);
+        }
     }
 
     public AcademicProgram getAcademicProgram(Long id) {

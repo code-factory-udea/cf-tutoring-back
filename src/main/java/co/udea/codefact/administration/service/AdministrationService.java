@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import co.udea.codefact.academic.dto.UpdateAcademicProgramDTO;
 import co.udea.codefact.administration.dto.DeleteSubjectDTO;
 import co.udea.codefact.administration.dto.SubjectAssignmentDTO;
 import co.udea.codefact.administration.dto.UserPaginationDTO;
@@ -175,6 +176,10 @@ public class AdministrationService {
 
     public void createAcademicProgram(AcademicProgramDTO academicProgramDTO) {
         this.academicService.createAcademicProgram(academicProgramDTO);
+    }
+
+    public void updateAcademicProgramInfo(UpdateAcademicProgramDTO updateAcademicProgramDTO){
+        this.academicService.updateAcademicProgramInfo(updateAcademicProgramDTO);
     }
 
     public void createFaculty(FacultyDTO facultyDTO) {
