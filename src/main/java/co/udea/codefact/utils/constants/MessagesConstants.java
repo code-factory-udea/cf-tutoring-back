@@ -32,6 +32,7 @@ public class MessagesConstants {
     public static final String RESPONSE_ASSIGN_SUBJECT_TO_PROFESSOR_DELETE = "Materia eliminada del profesor";
 
     public static final String RESPONSE_ACADEMIC_PROGRAM_CREATED = "Programa académico creado exitosamente";
+    public static final String RESPONSE_ACADEMIC_PROGRAM_UPDATED = "Programa académico actualizado exitosamente";
     public static final String RESPONSE_FACULTY_CREATED = "Facultad creada exitosamente";
 
     public static final String RESPONSE_TUTOR_SCHEDULE_DELETED = "El horario ha sido eliminado";
