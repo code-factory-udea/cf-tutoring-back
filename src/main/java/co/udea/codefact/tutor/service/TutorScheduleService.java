@@ -29,10 +29,11 @@ public class TutorScheduleService {
         if (!scheduleDTO.getStartTime().isBefore(scheduleDTO.getEndTime())) {
             throw new InvalidBodyException("La hora de inicio no puede ser mayor a la de finalización");
         }
-
-        if (this.tutorScheduleRepository.existsByTutorAndDayAndStartTimeLessThanEqualAndEndTimeGreaterThanEqual(
-                tutor, translateStringToDayOfWeek(scheduleDTO.getDay()), scheduleDTO.getStartTime(), scheduleDTO.getEndTime())
-        ) {
+        if (this.tutorScheduleRepository.existsOverlappingSchedule(
+                tutor.getId(),
+                translateStringToDayOfWeek(scheduleDTO.getDay()).toString(),
+                scheduleDTO.getStartTime(),
+                scheduleDTO.getEndTime())) {
             throw new TutorErrorException("Ya tienes un horario registrado en esta franja");
         }
         TutorSchedule tutorSchedule = TutorSchedule.builder()
