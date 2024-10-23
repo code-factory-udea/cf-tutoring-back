@@ -205,8 +205,8 @@ public class AdministrationController {
         return new ResponseEntity<>(MessagesConstants.RESPONSE_FACULTY_CREATED, null, 200);
     }
 
-    @Operation(summary = "Obtener programas académicos", description = "Obtener todos los programas académicos")
-    @ApiResponse(responseCode = "200", description = "Se obtuvieron los programas académicos")
+    @Operation(summary = "Actualizar info de programa académico", description = "Actualiza la información de un programa académico")
+    @ApiResponse(responseCode = "200", description = "Se actualiza el programa académico ")
     @PatchMapping(EndpointConstants.ACADEMIC_PROGRAM)
     public ResponseEntity<String> updateAcademicProgram(
             @Valid @RequestBody UpdateAcademicProgramDTO updateAcademicProgramDTO) {
