@@ -6,6 +6,7 @@ import java.util.Optional;
 import co.udea.codefact.tutor.dto.DeleteTutorScheduleDTO;
 import co.udea.codefact.tutor.dto.TutorDTO;
 import co.udea.codefact.tutor.dto.TutorScheduleDTO;
+import co.udea.codefact.tutor.dto.VirtualLinkDTO;
 import co.udea.codefact.tutor.entity.Tutor;
 import co.udea.codefact.tutor.repository.TutorRepository;
 import co.udea.codefact.tutor.utils.TutorScheduleMapper;
@@ -130,10 +131,16 @@ public class TutorService {
         this.tutorScheduleService.deleteTutorSchedule(scheduleDTO.getId(), tutor);
     }
 
+    public void assignVirtualLink(VirtualLinkDTO virtualLink){
+        Tutor tutor = this.getTutorAuthenticated();
+        tutor.setVirtualMeetingLink(virtualLink.getLink());
+        this.tutorRepository.save(tutor);
+    }
     public Tutor getTutorAuthenticated(){
         return this.getTutorByUsername(this.getUser())
                 .orElseThrow(() -> new DataNotFoundException(MessagesConstants.TUTOR_WITHOUT_SUBJECT));
     }
+
     private String getUser(){
         return this.authenticationUtil.getAuthenticatedUser();
     }

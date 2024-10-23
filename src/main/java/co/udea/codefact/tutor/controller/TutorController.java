@@ -3,6 +3,7 @@ package co.udea.codefact.tutor.controller;
 
 import co.udea.codefact.tutor.dto.DeleteTutorScheduleDTO;
 import co.udea.codefact.tutor.dto.TutorScheduleDTO;
+import co.udea.codefact.tutor.dto.VirtualLinkDTO;
 import co.udea.codefact.tutor.service.TutorService;
 import co.udea.codefact.utils.constants.EndpointConstants;
 import co.udea.codefact.utils.constants.MessagesConstants;
@@ -54,4 +55,13 @@ public class TutorController {
         this.tutorService.deleteTutorSchedule(scheduleDTO);
         return new ResponseEntity<>(MessagesConstants.RESPONSE_TUTOR_SCHEDULE_DELETED, HttpStatus.OK);
     }
+
+    @Operation(summary = "Asignar link de reuniones de tutor", description = "Un tutor asigna el link en el que atenderá a los estudiantes")
+    @ApiResponse(responseCode = "200", description = "Se agrega el link de reuniones al tutor" )
+    @PostMapping("/virtual")
+    public ResponseEntity<String> assignVirtualLink(@Valid @RequestBody VirtualLinkDTO virtualLinkDTO){
+        this.tutorService.assignVirtualLink(virtualLinkDTO);
+        return new ResponseEntity<>(MessagesConstants.TUTOR_SCHEDULE_CREATED, HttpStatus.OK);
+    }
+
 }
