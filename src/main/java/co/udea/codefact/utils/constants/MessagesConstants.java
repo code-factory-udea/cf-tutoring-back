@@ -21,7 +21,7 @@ public class MessagesConstants {
     public static final String PROFESSOR_SUBJECT_NOT_FOUND = "Materia no asignada al profesor";
     public static final String PROFESSOR_SUBJECT_ALREADY_EXISTS = "Ya tiene esta materia asignada";
     public static final String TUTOR_SCHEDULE_NOT_FOUND = "Tutor no encontrado";
-
+    public static final String TUTOR_APPOINTMENT_FINAL_STATUS = "Esta solicitud de monitoría ya tuvo una respuesta";
 
     public static final String TUTOR_WITHOUT_SUBJECT = "Se debe asignar una materia primero";
 
@@ -35,11 +35,16 @@ public class MessagesConstants {
     public static final String RESPONSE_ACADEMIC_PROGRAM_UPDATED = "Programa académico actualizado exitosamente";
     public static final String RESPONSE_FACULTY_CREATED = "Facultad creada exitosamente";
 
+    public static final String RESPONSE_TUTOR_APPOINTMENT_ACCEPTED = "La monitoría ha sido aceptada, el estudiante será notificado";
+    public static final String RESPONSE_TUTOR_APPOINTMENT_REJECTED = "La solicitud de monitoría ha sido rechazada";
+
+
     public static final String RESPONSE_TUTOR_SCHEDULE_DELETED = "El horario ha sido eliminado";
 
     public static final String ERROR_EXCEPTION_MESSAGE_BODY = "message";
 
     public static final String ERROR_PARSING_HOUR_DAY = "Ingresa un horario válido";
+    public static final String ERROR_RESPONSE_APPOINTMENT_INVALID = "La respuesta a la solicitud de monitoria no es válida";
 
     public static final String TUTOR_SCHEDULE_CREATED = "El horario se ha creado correctamente";
 

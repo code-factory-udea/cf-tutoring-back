@@ -14,5 +14,8 @@ public class ConstraintsConstants {
 
     public static final String USER_ROLE_NOT_NULL = "El rol del usuario no puede ser nulo";
 
+    public static final String ID_NOT_NULL = "El ID no puede ser nulo";
+    public static final String APPOINTMENT_RESPONSE_NOT_NULL = "La respuesta a la solicitud de monitoría no puede ser nula";
+
     private ConstraintsConstants() { throw new IllegalStateException("Utility class"); }
 }
