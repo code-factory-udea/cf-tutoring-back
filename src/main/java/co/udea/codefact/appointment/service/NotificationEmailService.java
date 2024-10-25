@@ -22,20 +22,6 @@ public class NotificationEmailService {
     }
 
     @Async
-    public void sendNotification(NotificationInfo info) {
-        try {
-            MimeMessage mimeMessage = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-            helper.setSubject(info.getSubject());
-            helper.setTo(String.format(FormatConstants.EMAIL_FORMAT, info.getRecipient()));
-            helper.setText(info.getBody(), true);
-            mailSender.send(mimeMessage);
-        } catch (MessagingException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Async
     public void sendAppointmentConfirmationEmail(Appointment appointment) {
         String modality = this.getModality(appointment);
         Tutor tutor = appointment.getTutor();
@@ -119,6 +105,19 @@ public class NotificationEmailService {
                 .recipient(recipient)
                 .build());
 
+    }
+
+    private void sendNotification(NotificationInfo info) {
+        try {
+            MimeMessage mimeMessage = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+            helper.setSubject(info.getSubject());
+            helper.setTo(String.format(FormatConstants.EMAIL_FORMAT, info.getRecipient()));
+            helper.setText(info.getBody(), true);
+            mailSender.send(mimeMessage);
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private String getModality(Appointment appointment) {
