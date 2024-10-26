@@ -1,11 +1,9 @@
 package co.udea.codefact.appointment.service;
 
-import co.udea.codefact.appointment.dto.AppointmentCreationDTO;
-import co.udea.codefact.appointment.dto.AppointmentDTO;
-import co.udea.codefact.appointment.dto.AppointmentTutorDTO;
+import co.udea.codefact.appointment.dto.*;
+import co.udea.codefact.appointment.utils.AppointmentStatus;
 import co.udea.codefact.tutor.entity.Tutor;
 import co.udea.codefact.tutor.service.TutorService;
-import co.udea.codefact.appointment.dto.AppointmentTutorResponseDTO;
 import co.udea.codefact.user.entity.User;
 import co.udea.codefact.user.service.UserService;
 import co.udea.codefact.utils.auth.AuthenticationUtil;
@@ -42,14 +40,14 @@ public class AppointmentFacade {
         return this.appointmentStudentService.requestAppointment(appointmentCreationDTO, user);
     }
 
-    public List<AppointmentTutorDTO> tutorAppointmentsRequest(){
+    public List<AppointmentTutorDTO> tutorAppointmentsRequest(AppointmentGetTutorDTO appointmentGetTutorDTO){
         Tutor tutor = this.tutorService.getTutorAuthenticated();
-        return this.appointmentTutorService.getAppointmentsRequestAsTutor(tutor);
+        return this.appointmentTutorService.getAppointmentsRequestAsTutor(tutor, appointmentGetTutorDTO.getStatus());
     }
 
     public String tutorResponseToAppointment(AppointmentTutorResponseDTO tutorResponseDTO){
         Tutor tutor = this.tutorService.getTutorAuthenticated();
-        return this.appointmentTutorService.responseToAppoinment(tutor, tutorResponseDTO);
+        return this.appointmentTutorService.responseToAppointment(tutor, tutorResponseDTO);
 
     }
     private String getUser() {

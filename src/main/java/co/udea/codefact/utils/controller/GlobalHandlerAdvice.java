@@ -12,6 +12,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 @RestControllerAdvice
 public class GlobalHandlerAdvice {
@@ -91,4 +92,13 @@ public class GlobalHandlerAdvice {
         errorResponse.put(MessagesConstants.ERROR_EXCEPTION_MESSAGE_BODY, MessagesConstants.ERROR_PARSING_HOUR_DAY);
         return errorResponse;
     }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Map<String, String> handleInvalidEnumException(MethodArgumentTypeMismatchException ex) {
+        Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put(MessagesConstants.ERROR_EXCEPTION_MESSAGE_BODY, MessagesConstants.ERROR_PARSING_HOUR_DAY);
+        return errorResponse;
+    }
+
 }

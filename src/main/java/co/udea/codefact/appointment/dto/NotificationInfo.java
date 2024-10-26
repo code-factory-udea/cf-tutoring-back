@@ -9,7 +9,7 @@ import lombok.Setter;
 @Builder
 public class NotificationInfo {
 
-    String subject;
-    String body;
-    String recipient;
+    private String subject;
+    private String body;
+    private String recipient;
 }

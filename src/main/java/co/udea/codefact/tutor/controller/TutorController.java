@@ -51,7 +51,7 @@ public class TutorController {
     @Operation(summary = "Eliminar un horario de tutor", description = "Un tutor puede eliminar uno de sus horarios registrados")
     @ApiResponse(responseCode = "200", description = "Horario eliminado exitosamente")
     @DeleteMapping(EndpointConstants.SCHEDULE)
-    public ResponseEntity<String> deleteTutorSchedule(@RequestBody DeleteTutorScheduleDTO scheduleDTO){
+    public ResponseEntity<String> deleteTutorSchedule(@Valid @RequestBody DeleteTutorScheduleDTO scheduleDTO){
         this.tutorService.deleteTutorSchedule(scheduleDTO);
         return new ResponseEntity<>(MessagesConstants.RESPONSE_TUTOR_SCHEDULE_DELETED, HttpStatus.OK);
     }
