@@ -2,7 +2,6 @@ package co.udea.codefact.tutor.controller;
 
 
 import co.udea.codefact.tutor.dto.CreateTutorScheduleDTO;
-import co.udea.codefact.tutor.dto.DeleteTutorScheduleDTO;
 import co.udea.codefact.tutor.dto.TutorScheduleDTO;
 import co.udea.codefact.tutor.dto.VirtualLinkDTO;
 import co.udea.codefact.tutor.service.TutorService;
@@ -10,6 +9,7 @@ import co.udea.codefact.utils.constants.EndpointConstants;
 import co.udea.codefact.utils.constants.MessagesConstants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "Tutores", description = "Endpoints para la gestión de la información de usuarios tutores")
 @RestController
 @RequestMapping(EndpointConstants.TUTOR)
 public class TutorController {
@@ -51,9 +52,9 @@ public class TutorController {
 
     @Operation(summary = "Eliminar un horario de tutor", description = "Un tutor puede eliminar uno de sus horarios registrados")
     @ApiResponse(responseCode = "200", description = "Horario eliminado exitosamente")
-    @DeleteMapping(EndpointConstants.SCHEDULE)
-    public ResponseEntity<String> deleteTutorSchedule(@Valid @RequestBody DeleteTutorScheduleDTO scheduleDTO){
-        this.tutorService.deleteTutorSchedule(scheduleDTO);
+    @DeleteMapping(EndpointConstants.SCHEDULE+"/{scheduleId}")
+    public ResponseEntity<String> deleteTutorSchedule(@PathVariable Long scheduleId){
+        this.tutorService.deleteTutorSchedule(scheduleId);
         return new ResponseEntity<>(MessagesConstants.RESPONSE_TUTOR_SCHEDULE_DELETED, HttpStatus.OK);
     }
 
