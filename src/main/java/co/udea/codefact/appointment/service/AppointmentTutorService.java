@@ -1,5 +1,6 @@
 package co.udea.codefact.appointment.service;
 
+import co.udea.codefact.appointment.dto.AppointmentIDDTO;
 import co.udea.codefact.appointment.dto.AppointmentTutorDTO;
 import co.udea.codefact.appointment.dto.AppointmentTutorResponseDTO;
 import co.udea.codefact.appointment.entity.Appointment;
@@ -53,6 +54,13 @@ public class AppointmentTutorService {
         };
     }
 
+    public String completeAppointment(Tutor tutor, AppointmentIDDTO appointmentIDDTO){
+        Appointment appointment = this.getAndValidateAppointment(tutor, appointmentIDDTO.getId(), AppointmentStatus.ACCEPTED);
+        appointment.setStatus(AppointmentStatus.COMPLETED);
+        this.appointmentRepository.save(appointment);
+        return MessagesConstants.RESPONSE_TUTOR_APPOINTMENT_COMPLETED;
+    }
+
     private String approveAppointment(Tutor tutor, Long appointmentId) {
         Appointment appointment = this.getAndValidateAppointment(tutor, appointmentId, AppointmentStatus.PENDING);
         this.validateTutorSchedule(appointment);
@@ -64,7 +72,7 @@ public class AppointmentTutorService {
     }
 
     private String rejectAppointment(Tutor tutor, Long appointmentId) {
-        Appointment appointment = this.getAndValidateAppointment(tutor, appointmentId, AppointmentStatus.ACCEPTED);
+        Appointment appointment = this.getAndValidateAppointment(tutor, appointmentId, AppointmentStatus.PENDING);
         appointment.setStatus(AppointmentStatus.REJECTED);
         this.appointmentRepository.save(appointment);
         return MessagesConstants.RESPONSE_TUTOR_APPOINTMENT_REJECTED;

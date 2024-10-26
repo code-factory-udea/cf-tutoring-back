@@ -35,8 +35,15 @@ public class AppointmentController {
     @Operation(summary = "Tutor - Respuesta a solicitud de monitoría", description = "Un tutor responde a una solicitud de monitoría que recibió anteriormente")
     @ApiResponse(responseCode = "200", description = "Se envió correctamente la respuesta a la solicitud")
     @PostMapping(EndpointConstants.TUTOR)
-    public ResponseEntity<String> tutorResponseToAppointmentRequest(AppointmentTutorResponseDTO tutorResponseDTO){
+    public ResponseEntity<String> tutorResponseToAppointmentRequest(@Valid @RequestBody AppointmentTutorResponseDTO tutorResponseDTO){
         return new ResponseEntity<>(this.appointmentFacade.tutorResponseToAppointment(tutorResponseDTO), HttpStatus.OK);
+    }
+
+    @Operation(summary = "Tutor - Completa una monitoría", description = "Un tutor completa una monitoría que realizó")
+    @ApiResponse(responseCode = "200", description = "Se cambia el estado de la monitoría y se habilita su calificación")
+    @PatchMapping(EndpointConstants.TUTOR)
+    public ResponseEntity<String> tutorCompleteAppointment(@Valid @RequestBody AppointmentIDDTO tutorResponseDTO){
+        return new ResponseEntity<>(this.appointmentFacade.tutorCompleteAppointment(tutorResponseDTO), HttpStatus.OK);
     }
 
     @Operation(summary = "Tutor - Obtener las solicitudes de tutoría de un monitor con base a su estado", description = "Un tutor carga las solicitudes que a recibido")
