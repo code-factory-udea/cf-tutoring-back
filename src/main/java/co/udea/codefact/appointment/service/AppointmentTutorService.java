@@ -29,9 +29,9 @@ public class AppointmentTutorService {
         this.notificationEmailService = notificationEmailService;
     }
 
-    public List<AppointmentTutorDTO> getAppointmentsRequestAsTutor(Tutor tutor) {
+    public List<AppointmentTutorDTO> getAppointmentsRequestAsTutor(Tutor tutor, AppointmentStatus status) {
         List<AppointmentTutorDTO> appointmentTutorDTOS = new ArrayList<>();
-        for (Appointment appointment : this.appointmentRepository.findAllByTutorAndStatus(tutor, AppointmentStatus.PENDING)) {
+        for (Appointment appointment : this.appointmentRepository.findAllByTutorAndStatus(tutor, status)) {
             appointmentTutorDTOS.add(AppointmentMapper.toAppointmentTutorDTO(appointment));
         }
         return appointmentTutorDTOS;
@@ -44,7 +44,7 @@ public class AppointmentTutorService {
         this.notificationEmailService.sendAppointmentCancellationByTutorEmail(appointment);
     }
 
-    public String responseToAppoinment(Tutor tutor, AppointmentTutorResponseDTO tutorResponseDTO) {
+    public String responseToAppointment(Tutor tutor, AppointmentTutorResponseDTO tutorResponseDTO) {
         AppointmentResponse tutorResponse = tutorResponseDTO.getAppointmentResponse();
         return switch (tutorResponse) {
             case APPROVE -> approveAppointment(tutor, tutorResponseDTO.getId());
