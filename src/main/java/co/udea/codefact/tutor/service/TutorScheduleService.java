@@ -13,7 +13,6 @@ import co.udea.codefact.utils.exceptions.InvalidBodyException;
 import co.udea.codefact.utils.exceptions.TutorErrorException;
 import org.springframework.stereotype.Service;
 
-import static co.udea.codefact.tutor.utils.TutorScheduleMapper.translateStringToDayOfWeek;
 
 @Service
 public class TutorScheduleService {
@@ -31,14 +30,14 @@ public class TutorScheduleService {
         }
         if (this.tutorScheduleRepository.existsOverlappingSchedule(
                 tutor.getId(),
-                translateStringToDayOfWeek(scheduleDTO.getDay()).toString(),
+                scheduleDTO.getDay().toString(),
                 scheduleDTO.getStartTime(),
                 scheduleDTO.getEndTime())) {
             throw new TutorErrorException("Ya tienes un horario registrado en esta franja");
         }
         TutorSchedule tutorSchedule = TutorSchedule.builder()
                 .tutor(tutor)
-                .day(translateStringToDayOfWeek(scheduleDTO.getDay()))
+                .day((scheduleDTO.getDay()))
                 .startTime(scheduleDTO.getStartTime())
                 .endTime(scheduleDTO.getEndTime())
                 .build();

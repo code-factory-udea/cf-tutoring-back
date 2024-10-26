@@ -3,6 +3,7 @@ package co.udea.codefact.appointment.entity;
 import java.time.LocalDateTime;
 
 import co.udea.codefact.appointment.utils.AppointmentStatus;
+import co.udea.codefact.subject.entity.Subject;
 import co.udea.codefact.tutor.entity.Tutor;
 import co.udea.codefact.user.entity.User;
 import jakarta.persistence.Column;
@@ -43,6 +44,10 @@ public class Appointment {
     @ManyToOne
     @JoinColumn(name = "tutor_id")
     private Tutor tutor;
+
+    @ManyToOne
+    @JoinColumn(name = "subject_id")
+    private Subject subject;
 
     @Column(name = "date")
     private LocalDateTime date;

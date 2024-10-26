@@ -6,8 +6,8 @@ import java.util.Optional;
 import co.udea.codefact.tutor.dto.DeleteTutorScheduleDTO;
 import co.udea.codefact.tutor.dto.TutorDTO;
 import co.udea.codefact.tutor.dto.TutorScheduleDTO;
+import co.udea.codefact.tutor.dto.VirtualLinkDTO;
 import co.udea.codefact.tutor.entity.Tutor;
-import co.udea.codefact.tutor.entity.TutorSchedule;
 import co.udea.codefact.tutor.repository.TutorRepository;
 import co.udea.codefact.tutor.utils.TutorScheduleMapper;
 import co.udea.codefact.utils.auth.AuthenticationUtil;
@@ -111,14 +111,12 @@ public class TutorService {
     }
 
     public void createTutorSchedule(TutorScheduleDTO scheduleDTO) {
-        Tutor tutor = this.getTutorByUsername(this.authenticationUtil.getAuthenticatedUser())
-                .orElseThrow(() -> new DataNotFoundException(MessagesConstants.TUTOR_WITHOUT_SUBJECT));
+        Tutor tutor = this.getTutorAuthenticated();
         this.tutorScheduleService.createTutorSchedule(scheduleDTO, tutor);
     }
 
     public List<TutorScheduleDTO> getTutorSchedules() {
-        Tutor tutor = this.getTutorByUsername(this.authenticationUtil.getAuthenticatedUser())
-                .orElseThrow(() -> new DataNotFoundException(MessagesConstants.TUTOR_WITHOUT_SUBJECT));
+        Tutor tutor = this.getTutorAuthenticated();
         return TutorScheduleMapper.toListDTO(this.tutorScheduleService.getTutorSchedules(tutor));
     }
 
@@ -129,8 +127,21 @@ public class TutorService {
     }
 
     public void deleteTutorSchedule(DeleteTutorScheduleDTO scheduleDTO) {
-        Tutor tutor = this.getTutorByUsername(this.authenticationUtil.getAuthenticatedUser())
-                .orElseThrow(() -> new DataNotFoundException(MessagesConstants.TUTOR_WITHOUT_SUBJECT));
+        Tutor tutor = this.getTutorAuthenticated();
         this.tutorScheduleService.deleteTutorSchedule(scheduleDTO.getId(), tutor);
+    }
+
+    public void assignVirtualLink(VirtualLinkDTO virtualLink){
+        Tutor tutor = this.getTutorAuthenticated();
+        tutor.setVirtualMeetingLink(virtualLink.getLink());
+        this.tutorRepository.save(tutor);
+    }
+    public Tutor getTutorAuthenticated(){
+        return this.getTutorByUsername(this.getUser())
+                .orElseThrow(() -> new DataNotFoundException(MessagesConstants.TUTOR_WITHOUT_SUBJECT));
+    }
+
+    private String getUser(){
+        return this.authenticationUtil.getAuthenticatedUser();
     }
 }
