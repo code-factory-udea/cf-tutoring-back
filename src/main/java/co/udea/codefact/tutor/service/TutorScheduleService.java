@@ -1,5 +1,6 @@
 package co.udea.codefact.tutor.service;
 
+import java.time.DayOfWeek;
 import java.util.List;
 
 import co.udea.codefact.tutor.dto.TutorScheduleDTO;
@@ -37,7 +38,7 @@ public class TutorScheduleService {
         }
         TutorSchedule tutorSchedule = TutorSchedule.builder()
                 .tutor(tutor)
-                .day((scheduleDTO.getDay()))
+                .day(DayOfWeek.valueOf((scheduleDTO.getDay())))
                 .startTime(scheduleDTO.getStartTime())
                 .endTime(scheduleDTO.getEndTime())
                 .build();

@@ -42,7 +42,7 @@ public class AppointmentFacade {
 
     public List<AppointmentTutorDTO> tutorAppointmentsRequest(AppointmentGetTutorDTO appointmentGetTutorDTO){
         Tutor tutor = this.tutorService.getTutorAuthenticated();
-        return this.appointmentTutorService.getAppointmentsRequestAsTutor(tutor, appointmentGetTutorDTO.getStatus());
+        return this.appointmentTutorService.getAppointmentsRequestAsTutor(tutor, AppointmentStatus.valueOf(appointmentGetTutorDTO.getStatus()));
     }
 
     public String tutorResponseToAppointment(AppointmentTutorResponseDTO tutorResponseDTO){

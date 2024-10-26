@@ -42,7 +42,7 @@ public class AppointmentController {
     @Operation(summary = "Tutor - Obtener las solicitudes de tutoría de un monitor con base a su estado", description = "Un tutor carga las solicitudes que a recibido")
     @ApiResponse(responseCode = "200", description = "Se cargan las solicitudes")
     @GetMapping(EndpointConstants.TUTOR)
-    public ResponseEntity<List<AppointmentTutorDTO>> tutorGetAllAppointmentRequest(AppointmentGetTutorDTO appointmentGetTutorDTO){
+    public ResponseEntity<List<AppointmentTutorDTO>> tutorGetAllAppointmentRequest(@Valid AppointmentGetTutorDTO appointmentGetTutorDTO){
         return new ResponseEntity<>(this.appointmentFacade.tutorAppointmentsRequest(appointmentGetTutorDTO), HttpStatus.OK);
     }
 

@@ -17,7 +17,7 @@ public class TutorScheduleMapper {
         List<TutorScheduleDTO> tutorScheduleDTOs = new ArrayList<>();
         for (TutorSchedule tutorSchedule : tutorSchedules) {
             tutorScheduleDTOs.add(TutorScheduleDTO.builder()
-                            .day(tutorSchedule.getDay())
+                            .day(tutorSchedule.getDay().toString())
                             .startTime(tutorSchedule.getStartTime())
                             .endTime(tutorSchedule.getEndTime())
                             .build());

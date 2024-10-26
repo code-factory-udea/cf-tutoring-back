@@ -45,7 +45,7 @@ public class AppointmentTutorService {
     }
 
     public String responseToAppointment(Tutor tutor, AppointmentTutorResponseDTO tutorResponseDTO) {
-        AppointmentResponse tutorResponse = tutorResponseDTO.getAppointmentResponse();
+        AppointmentResponse tutorResponse = AppointmentResponse.valueOf(tutorResponseDTO.getAppointmentResponse());
         return switch (tutorResponse) {
             case APPROVE -> approveAppointment(tutor, tutorResponseDTO.getId());
             case REJECT -> rejectAppointment(tutor, tutorResponseDTO.getId());

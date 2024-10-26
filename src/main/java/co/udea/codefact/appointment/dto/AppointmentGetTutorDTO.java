@@ -1,7 +1,7 @@
 package co.udea.codefact.appointment.dto;
 
 import co.udea.codefact.appointment.utils.AppointmentStatus;
-import co.udea.codefact.utils.ValidEnum;
+import co.udea.codefact.utils.validators.ValidEnum;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,5 +10,5 @@ import lombok.Setter;
 public class AppointmentGetTutorDTO {
 
     @ValidEnum(enumClass = AppointmentStatus.class, message = "Invalid status value")
-    private AppointmentStatus status;
+    private String status;
 }
