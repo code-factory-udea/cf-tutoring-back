@@ -21,7 +21,7 @@ public class MessagesConstants {
     public static final String PROFESSOR_SUBJECT_NOT_FOUND = "Materia no asignada al profesor";
     public static final String PROFESSOR_SUBJECT_ALREADY_EXISTS = "Ya tiene esta materia asignada";
     public static final String TUTOR_SCHEDULE_NOT_FOUND = "Tutor no encontrado";
-    public static final String TUTOR_APPOINTMENT_FINAL_STATUS = "Esta solicitud de monitoría ya tuvo una respuesta";
+    public static final String TUTOR_APPOINTMENT_FINAL_STATUS = "Esta solicitud de monitoría no está en el estado esperado";
 
     public static final String TUTOR_WITHOUT_SUBJECT = "Se debe asignar una materia primero";
 
