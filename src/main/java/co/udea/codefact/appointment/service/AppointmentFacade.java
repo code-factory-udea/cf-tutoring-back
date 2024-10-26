@@ -45,12 +45,6 @@ public class AppointmentFacade {
         return this.appointmentTutorService.getAppointmentsRequestAsTutor(tutor, AppointmentStatus.valueOf(appointmentGetTutorDTO.getStatus()));
     }
 
-    public AppointmentAllDataDTO tutorAppointmentsRequest(AppointmentIDDTO appointmentIDDTO){
-        Tutor tutor = this.tutorService.getTutorAuthenticated();
-        return null;
-        //return this.appointmentTutorService.getAppointmentCompleted(tutor, AppointmentStatus.valueOf(appointmentGetTutorDTO.getStatus()));
-    }
-
     public String tutorResponseToAppointment(AppointmentTutorResponseDTO tutorResponseDTO){
         Tutor tutor = this.tutorService.getTutorAuthenticated();
         return this.appointmentTutorService.responseToAppointment(tutor, tutorResponseDTO);
