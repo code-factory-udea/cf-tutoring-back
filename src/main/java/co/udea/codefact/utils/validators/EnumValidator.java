@@ -16,7 +16,6 @@ public class EnumValidator implements ConstraintValidator<ValidEnum, String> {
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        System.out.println("entro al valid");
         if (value == null) {
             return true;
         }

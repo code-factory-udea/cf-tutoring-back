@@ -12,10 +12,8 @@ import java.time.LocalTime;
 @Getter
 @Setter
 @Builder
-public class TutorScheduleDTO {
+public class CreateTutorScheduleDTO {
 
-    @NotNull
-    private Long id;
     @NotNull
     @ValidEnum(enumClass = DayOfWeek.class, message = "Invalid status value")
     private String day;
@@ -23,5 +21,4 @@ public class TutorScheduleDTO {
     private LocalTime startTime;
     @NotNull
     private LocalTime endTime;
-
 }

@@ -3,6 +3,7 @@ package co.udea.codefact.tutor.service;
 import java.time.DayOfWeek;
 import java.util.List;
 
+import co.udea.codefact.tutor.dto.CreateTutorScheduleDTO;
 import co.udea.codefact.tutor.dto.TutorScheduleDTO;
 import co.udea.codefact.tutor.entity.Tutor;
 import co.udea.codefact.tutor.entity.TutorSchedule;
@@ -25,13 +26,13 @@ public class TutorScheduleService {
         this.tutorScheduleRepository = tutorScheduleRepository;
     }
 
-    public void createTutorSchedule(TutorScheduleDTO scheduleDTO, Tutor tutor) {
+    public void createTutorSchedule(CreateTutorScheduleDTO scheduleDTO, Tutor tutor) {
         if (!scheduleDTO.getStartTime().isBefore(scheduleDTO.getEndTime())) {
             throw new InvalidBodyException("La hora de inicio no puede ser mayor a la de finalización");
         }
         if (this.tutorScheduleRepository.existsOverlappingSchedule(
                 tutor.getId(),
-                scheduleDTO.getDay().toString(),
+                scheduleDTO.getDay(),
                 scheduleDTO.getStartTime(),
                 scheduleDTO.getEndTime())) {
             throw new TutorErrorException("Ya tienes un horario registrado en esta franja");

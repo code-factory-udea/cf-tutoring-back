@@ -1,6 +1,7 @@
 package co.udea.codefact.tutor.controller;
 
 
+import co.udea.codefact.tutor.dto.CreateTutorScheduleDTO;
 import co.udea.codefact.tutor.dto.DeleteTutorScheduleDTO;
 import co.udea.codefact.tutor.dto.TutorScheduleDTO;
 import co.udea.codefact.tutor.dto.VirtualLinkDTO;
@@ -29,7 +30,7 @@ public class TutorController {
     @Operation(summary = "Crear horario de tutor", description = "Un tutor crea su horario de disponibilidad para recibir solicitudes")
     @ApiResponse(responseCode = "200", description = "Se crea el horario satisfactoriamente" )
     @PostMapping(EndpointConstants.SCHEDULE)
-    public ResponseEntity<String> createSchedule(@Valid @RequestBody TutorScheduleDTO scheduleDTO){
+    public ResponseEntity<String> createSchedule(@Valid @RequestBody CreateTutorScheduleDTO scheduleDTO){
         this.tutorService.createTutorSchedule(scheduleDTO);
         return new ResponseEntity<>(MessagesConstants.TUTOR_SCHEDULE_CREATED, HttpStatus.OK);
     }

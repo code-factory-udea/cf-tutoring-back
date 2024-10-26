@@ -3,10 +3,7 @@ package co.udea.codefact.tutor.service;
 import java.util.List;
 import java.util.Optional;
 
-import co.udea.codefact.tutor.dto.DeleteTutorScheduleDTO;
-import co.udea.codefact.tutor.dto.TutorDTO;
-import co.udea.codefact.tutor.dto.TutorScheduleDTO;
-import co.udea.codefact.tutor.dto.VirtualLinkDTO;
+import co.udea.codefact.tutor.dto.*;
 import co.udea.codefact.tutor.entity.Tutor;
 import co.udea.codefact.tutor.repository.TutorRepository;
 import co.udea.codefact.tutor.utils.TutorScheduleMapper;
@@ -110,7 +107,7 @@ public class TutorService {
                 subject.getAcademicProgram().getName(), subject.getAcademicProgram().getFaculty().getName()));
     }
 
-    public void createTutorSchedule(TutorScheduleDTO scheduleDTO) {
+    public void createTutorSchedule(CreateTutorScheduleDTO scheduleDTO) {
         Tutor tutor = this.getTutorAuthenticated();
         this.tutorScheduleService.createTutorSchedule(scheduleDTO, tutor);
     }
