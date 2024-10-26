@@ -1,10 +1,13 @@
 package co.udea.codefact.appointment.service;
 
+import co.udea.codefact.appointment.dto.AppointmentAllDataDTO;
 import co.udea.codefact.appointment.dto.AppointmentIDDTO;
 import co.udea.codefact.appointment.dto.AppointmentTutorDTO;
 import co.udea.codefact.appointment.dto.AppointmentTutorResponseDTO;
 import co.udea.codefact.appointment.entity.Appointment;
+import co.udea.codefact.appointment.entity.SatisfactionSurvey;
 import co.udea.codefact.appointment.repository.AppointmentRepository;
+import co.udea.codefact.appointment.repository.SatisfactionSurveyRepository;
 import co.udea.codefact.appointment.utils.AppointmentResponse;
 import co.udea.codefact.appointment.utils.AppointmentMapper;
 import co.udea.codefact.appointment.utils.AppointmentStatus;
@@ -22,12 +25,15 @@ import java.util.List;
 public class AppointmentTutorService {
     private final AppointmentRepository appointmentRepository;
     private final NotificationEmailService notificationEmailService;
+    private final SatisfactionSurveyRepository satisfactionSurveyRepository;
 
 
     public AppointmentTutorService(AppointmentRepository appointmentRepository,
-                                   NotificationEmailService notificationEmailService) {
+                                   NotificationEmailService notificationEmailService,
+                                   SatisfactionSurveyRepository satisfactionSurveyRepository) {
         this.appointmentRepository = appointmentRepository;
         this.notificationEmailService = notificationEmailService;
+        this.satisfactionSurveyRepository = satisfactionSurveyRepository;
     }
 
     public List<AppointmentTutorDTO> getAppointmentsRequestAsTutor(Tutor tutor, AppointmentStatus status) {
@@ -46,6 +52,20 @@ public class AppointmentTutorService {
         return MessagesConstants.RESPONSE_TUTOR_APPOINTMENT_CANCELLED;
     }
 
+    public String completeAppointment(Tutor tutor, AppointmentIDDTO appointmentIDDTO){
+        Appointment appointment = this.getAndValidateAppointment(tutor, appointmentIDDTO.getId(), AppointmentStatus.ACCEPTED);
+        appointment.setStatus(AppointmentStatus.COMPLETED);
+        this.appointmentRepository.save(appointment);
+        return MessagesConstants.RESPONSE_TUTOR_APPOINTMENT_COMPLETED;
+    }
+
+    public AppointmentAllDataDTO getCompletedAppointmentInfo(Tutor tutor, Long appointmentId) {
+        Appointment appointment = this.getAndValidateAppointment(tutor, appointmentId, AppointmentStatus.COMPLETED);
+        SatisfactionSurvey satisfactionSurvey = this.satisfactionSurveyRepository
+                .findByAppointmentId(appointment.getId()).orElse(null);
+        return AppointmentMapper.toAppointmentAllDataDTO(appointment, satisfactionSurvey);
+    }
+
     public String responseToAppointment(Tutor tutor, AppointmentTutorResponseDTO tutorResponseDTO) {
         AppointmentResponse tutorResponse = AppointmentResponse.valueOf(tutorResponseDTO.getAppointmentResponse());
         return switch (tutorResponse) {
@@ -53,13 +73,6 @@ public class AppointmentTutorService {
             case REJECT -> rejectAppointment(tutor, tutorResponseDTO.getId());
             default -> throw new InvalidBodyException(MessagesConstants.ERROR_RESPONSE_APPOINTMENT_INVALID);
         };
-    }
-
-    public String completeAppointment(Tutor tutor, AppointmentIDDTO appointmentIDDTO){
-        Appointment appointment = this.getAndValidateAppointment(tutor, appointmentIDDTO.getId(), AppointmentStatus.ACCEPTED);
-        appointment.setStatus(AppointmentStatus.COMPLETED);
-        this.appointmentRepository.save(appointment);
-        return MessagesConstants.RESPONSE_TUTOR_APPOINTMENT_COMPLETED;
     }
 
     private String approveAppointment(Tutor tutor, Long appointmentId) {
@@ -79,7 +92,6 @@ public class AppointmentTutorService {
         return MessagesConstants.RESPONSE_TUTOR_APPOINTMENT_REJECTED;
     }
 
-
     private Appointment getAndValidateAppointment(Tutor tutor, Long appointmentId, AppointmentStatus status) {
         Appointment appointment = getAppointment(appointmentId);
         if (!appointment.getStatus().equals(status)) {
@@ -92,9 +104,11 @@ public class AppointmentTutorService {
     }
 
     private Appointment getAppointment(Long appointmentId) {
-        return this.appointmentRepository.findById(appointmentId).orElseThrow(); //Falta
+        return this.appointmentRepository.findById(appointmentId).orElseThrow(
+                () -> new DataNotFoundException(MessagesConstants.APPOINTMENT_NOT_FOUND));
     }
 
+    //TODO: Validar que tenga disponibilidad
     private void validateTutorSchedule(Appointment appointment) {
 
     }

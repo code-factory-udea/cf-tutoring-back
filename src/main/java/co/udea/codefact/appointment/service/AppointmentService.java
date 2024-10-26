@@ -69,29 +69,9 @@ public class AppointmentService {
     }
 
     private AppointmentAllDataDTO getAppointmentData(Appointment appointment) {
-        User student = appointment.getStudent();
-        User tutor = appointment.getTutor().getUser();
-
-        AppointmentAllDataDTO.AppointmentAllDataDTOBuilder appointmentDataBuilder = AppointmentAllDataDTO.builder()
-                .studentName(String.format(FormatConstants.FULLNAME_FORMAT, student.getFirstName(), student.getLastName()))
-                .tutorName(String.format(FormatConstants.FULLNAME_FORMAT, tutor.getFirstName(), tutor.getLastName()))
-                .date(appointment.getDate().toString())
-                .creationDate(appointment.getCreationDate().toString())
-                .isVirtual(appointment.isVirtual())
-                .status(appointment.getStatus());
-
-        if (appointment.getStatus().equals(AppointmentStatus.COMPLETED)) {
-            SatisfactionSurvey satisfactionSurvey = this.getSatisfactionSurvey(appointment.getId());
-            appointmentDataBuilder.feedback(satisfactionSurvey.getFeedback());
-            appointmentDataBuilder.calification(satisfactionSurvey.getCalification().toString());
-            appointmentDataBuilder.calificationDate(satisfactionSurvey.getCreationDate().toString());
-            return appointmentDataBuilder.build();
-        }
-
-        appointmentDataBuilder.calification(MessagesConstants.NO_DATA);
-        appointmentDataBuilder.feedback(MessagesConstants.NO_DATA);
-        appointmentDataBuilder.calificationDate(MessagesConstants.NO_DATA);
-        return appointmentDataBuilder.build();
+        SatisfactionSurvey satisfactionSurvey = this.satisfactionSurveyRepository
+                .findByAppointmentId(appointment.getId()).orElse(null);
+        return AppointmentMapper.toAppointmentAllDataDTO(appointment, satisfactionSurvey);
     }
 
     private Appointment getAppointment(Long appointmentId) {
@@ -101,6 +81,5 @@ public class AppointmentService {
     private SatisfactionSurvey getSatisfactionSurvey(Long appointmentId) {
         return this.satisfactionSurveyRepository.findByAppointmentId(appointmentId).orElseThrow(() -> new DataNotFoundException(MessagesConstants.APPOINTMENT_NOT_FOUND));
     }
-
 
 }

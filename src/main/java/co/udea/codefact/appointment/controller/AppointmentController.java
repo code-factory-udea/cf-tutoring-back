@@ -60,5 +60,11 @@ public class AppointmentController {
         return new ResponseEntity<>(this.appointmentFacade.tutorAppointmentsRequest(appointmentGetTutorDTO), HttpStatus.OK);
     }
 
+    @Operation(summary = "Tutor - Obtener las solicitudes de tutoría de un monitor con base a su estado", description = "Un tutor carga las solicitudes que a recibido")
+    @ApiResponse(responseCode = "200", description = "Se cargan las solicitudes")
+    @GetMapping(EndpointConstants.TUTOR+"{appointmentId}")
+    public ResponseEntity<AppointmentAllDataDTO> tutorGetAppointmentCompleted(@PathVariable Long appointmentId){
+        return new ResponseEntity<>(this.appointmentFacade.getCompletedAppointmentInfo(appointmentId), HttpStatus.OK);
+    }
 
 }
