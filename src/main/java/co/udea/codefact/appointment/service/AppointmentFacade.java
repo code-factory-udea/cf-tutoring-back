@@ -54,6 +54,12 @@ public class AppointmentFacade {
         Tutor tutor = this.tutorService.getTutorAuthenticated();
         return this.appointmentTutorService.completeAppointment(tutor, appointmentIDDTO);
     }
+
+    public String tutorCancelAppointment(AppointmentIDDTO appointmentIDDTO){
+        Tutor tutor = this.tutorService.getTutorAuthenticated();
+        return this.appointmentTutorService.cancelAppointment(tutor, appointmentIDDTO);
+    }
+
     private String getUser() {
         return this.authenticationUtil.getAuthenticatedUser();
     }

@@ -38,11 +38,12 @@ public class AppointmentTutorService {
         return appointmentTutorDTOS;
     }
 
-    public void cancelAppointment(Tutor tutor, Long appointmentId) {
-        Appointment appointment = this.getAndValidateAppointment(tutor, appointmentId, AppointmentStatus.ACCEPTED);
+    public String cancelAppointment(Tutor tutor, AppointmentIDDTO appointmentIDDTO) {
+        Appointment appointment = this.getAndValidateAppointment(tutor, appointmentIDDTO.getId(), AppointmentStatus.ACCEPTED);
         appointment.setStatus(AppointmentStatus.CANCELLED);
         this.appointmentRepository.save(appointment);
         this.notificationEmailService.sendAppointmentCancellationByTutorEmail(appointment);
+        return MessagesConstants.RESPONSE_TUTOR_APPOINTMENT_CANCELLED;
     }
 
     public String responseToAppointment(Tutor tutor, AppointmentTutorResponseDTO tutorResponseDTO) {
