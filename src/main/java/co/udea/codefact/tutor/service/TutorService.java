@@ -123,9 +123,9 @@ public class TutorService {
         return TutorScheduleMapper.toListDTO(this.tutorScheduleService.getTutorSchedules(tutor));
     }
 
-    public void deleteTutorSchedule(DeleteTutorScheduleDTO scheduleDTO) {
+    public void deleteTutorSchedule(Long scheduleId) {
         Tutor tutor = this.getTutorAuthenticated();
-        this.tutorScheduleService.deleteTutorSchedule(scheduleDTO.getId(), tutor);
+        this.tutorScheduleService.deleteTutorSchedule(scheduleId, tutor);
     }
 
     public void assignVirtualLink(VirtualLinkDTO virtualLink){
