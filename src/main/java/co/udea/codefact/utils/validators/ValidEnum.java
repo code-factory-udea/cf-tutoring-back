@@ -1,4 +1,4 @@
-package co.udea.codefact.utils;
+package co.udea.codefact.utils.validators;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;

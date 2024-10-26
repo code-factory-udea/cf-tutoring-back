@@ -1,5 +1,6 @@
 package co.udea.codefact.appointment.service;
 
+import co.udea.codefact.appointment.dto.AppointmentIDDTO;
 import co.udea.codefact.appointment.dto.AppointmentTutorDTO;
 import co.udea.codefact.appointment.dto.AppointmentTutorResponseDTO;
 import co.udea.codefact.appointment.entity.Appointment;
@@ -37,20 +38,28 @@ public class AppointmentTutorService {
         return appointmentTutorDTOS;
     }
 
-    public void cancelAppointment(Tutor tutor, Long appointmentId) {
-        Appointment appointment = this.getAndValidateAppointment(tutor, appointmentId, AppointmentStatus.ACCEPTED);
+    public String cancelAppointment(Tutor tutor, AppointmentIDDTO appointmentIDDTO) {
+        Appointment appointment = this.getAndValidateAppointment(tutor, appointmentIDDTO.getId(), AppointmentStatus.ACCEPTED);
         appointment.setStatus(AppointmentStatus.CANCELLED);
         this.appointmentRepository.save(appointment);
         this.notificationEmailService.sendAppointmentCancellationByTutorEmail(appointment);
+        return MessagesConstants.RESPONSE_TUTOR_APPOINTMENT_CANCELLED;
     }
 
     public String responseToAppointment(Tutor tutor, AppointmentTutorResponseDTO tutorResponseDTO) {
-        AppointmentResponse tutorResponse = tutorResponseDTO.getAppointmentResponse();
+        AppointmentResponse tutorResponse = AppointmentResponse.valueOf(tutorResponseDTO.getAppointmentResponse());
         return switch (tutorResponse) {
             case APPROVE -> approveAppointment(tutor, tutorResponseDTO.getId());
             case REJECT -> rejectAppointment(tutor, tutorResponseDTO.getId());
             default -> throw new InvalidBodyException(MessagesConstants.ERROR_RESPONSE_APPOINTMENT_INVALID);
         };
+    }
+
+    public String completeAppointment(Tutor tutor, AppointmentIDDTO appointmentIDDTO){
+        Appointment appointment = this.getAndValidateAppointment(tutor, appointmentIDDTO.getId(), AppointmentStatus.ACCEPTED);
+        appointment.setStatus(AppointmentStatus.COMPLETED);
+        this.appointmentRepository.save(appointment);
+        return MessagesConstants.RESPONSE_TUTOR_APPOINTMENT_COMPLETED;
     }
 
     private String approveAppointment(Tutor tutor, Long appointmentId) {
@@ -64,7 +73,7 @@ public class AppointmentTutorService {
     }
 
     private String rejectAppointment(Tutor tutor, Long appointmentId) {
-        Appointment appointment = this.getAndValidateAppointment(tutor, appointmentId, AppointmentStatus.ACCEPTED);
+        Appointment appointment = this.getAndValidateAppointment(tutor, appointmentId, AppointmentStatus.PENDING);
         appointment.setStatus(AppointmentStatus.REJECTED);
         this.appointmentRepository.save(appointment);
         return MessagesConstants.RESPONSE_TUTOR_APPOINTMENT_REJECTED;

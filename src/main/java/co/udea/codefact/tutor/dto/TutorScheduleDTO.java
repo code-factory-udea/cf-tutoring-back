@@ -1,5 +1,6 @@
 package co.udea.codefact.tutor.dto;
 
+import co.udea.codefact.utils.validators.ValidEnum;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,7 +15,8 @@ import java.time.LocalTime;
 public class TutorScheduleDTO {
 
     @NotNull
-    private DayOfWeek day;
+    @ValidEnum(enumClass = DayOfWeek.class, message = "Invalid status value")
+    private String day;
     @NotNull
     private LocalTime startTime;
     @NotNull

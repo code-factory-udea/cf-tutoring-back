@@ -1,4 +1,4 @@
-package co.udea.codefact.utils;
+package co.udea.codefact.utils.validators;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
@@ -18,22 +18,17 @@ public class EnumValidator implements ConstraintValidator<ValidEnum, String> {
     public boolean isValid(String value, ConstraintValidatorContext context) {
         System.out.println("entro al valid");
         if (value == null) {
-            return true; // Si el campo es opcional, considera válido un valor nulo.
+            return true;
         }
-
         boolean isValid = Arrays.stream(enumClass.getEnumConstants())
                 .anyMatch(e -> e.name().equals(value));
-
         if (!isValid) {
-            // Generar los valores válidos del enum.
             String validValues = Arrays.stream(enumClass.getEnumConstants())
                     .map(Enum::name)
                     .collect(Collectors.joining(", "));
-
-            // Personalizar el mensaje de error con los valores válidos.
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate(
-                    "Invalid value. Valid values are: " + validValues
+                    "Valor inválido. Los válidos son: " + validValues
             ).addConstraintViolation();
         }
         return isValid;

@@ -42,14 +42,24 @@ public class AppointmentFacade {
 
     public List<AppointmentTutorDTO> tutorAppointmentsRequest(AppointmentGetTutorDTO appointmentGetTutorDTO){
         Tutor tutor = this.tutorService.getTutorAuthenticated();
-        return this.appointmentTutorService.getAppointmentsRequestAsTutor(tutor, appointmentGetTutorDTO.getStatus());
+        return this.appointmentTutorService.getAppointmentsRequestAsTutor(tutor, AppointmentStatus.valueOf(appointmentGetTutorDTO.getStatus()));
     }
 
     public String tutorResponseToAppointment(AppointmentTutorResponseDTO tutorResponseDTO){
         Tutor tutor = this.tutorService.getTutorAuthenticated();
         return this.appointmentTutorService.responseToAppointment(tutor, tutorResponseDTO);
-
     }
+
+    public String tutorCompleteAppointment(AppointmentIDDTO appointmentIDDTO){
+        Tutor tutor = this.tutorService.getTutorAuthenticated();
+        return this.appointmentTutorService.completeAppointment(tutor, appointmentIDDTO);
+    }
+
+    public String tutorCancelAppointment(AppointmentIDDTO appointmentIDDTO){
+        Tutor tutor = this.tutorService.getTutorAuthenticated();
+        return this.appointmentTutorService.cancelAppointment(tutor, appointmentIDDTO);
+    }
+
     private String getUser() {
         return this.authenticationUtil.getAuthenticatedUser();
     }
