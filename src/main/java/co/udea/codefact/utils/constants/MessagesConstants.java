@@ -49,6 +49,7 @@ public class MessagesConstants {
     public static final String ERROR_RESPONSE_APPOINTMENT_INVALID = "La respuesta a la solicitud de monitoria no es válida";
 
     public static final String TUTOR_SCHEDULE_CREATED = "El horario se ha creado correctamente";
+    public static final String TUTOR_LINK_ASSIGNED = "El link se ha asignado correctamente";
 
 
     private MessagesConstants() {

@@ -136,6 +136,12 @@ public class TutorService {
         tutor.setVirtualMeetingLink(virtualLink.getLink());
         this.tutorRepository.save(tutor);
     }
+    public VirtualLinkDTO getVirtualLink(){
+        Tutor tutor = this.getTutorAuthenticated();
+        String link =  tutor.getVirtualMeetingLink() != null ? tutor.getVirtualMeetingLink() : "El link no ha sido asignado";
+        return VirtualLinkDTO.builder().link(link).build();
+    }
+
     public Tutor getTutorAuthenticated(){
         return this.getTutorByUsername(this.getUser())
                 .orElseThrow(() -> new DataNotFoundException(MessagesConstants.TUTOR_WITHOUT_SUBJECT));

@@ -61,7 +61,14 @@ public class TutorController {
     @PostMapping("/virtual")
     public ResponseEntity<String> assignVirtualLink(@Valid @RequestBody VirtualLinkDTO virtualLinkDTO){
         this.tutorService.assignVirtualLink(virtualLinkDTO);
-        return new ResponseEntity<>(MessagesConstants.TUTOR_SCHEDULE_CREATED, HttpStatus.OK);
+        return new ResponseEntity<>(MessagesConstants.TUTOR_LINK_ASSIGNED, HttpStatus.OK);
+    }
+
+    @Operation(summary = "Obtener link de reuniones de tutor", description = "Obtiene el link en el que atenderá a los estudiantes")
+    @ApiResponse(responseCode = "200", description = "Se obtiene el link de reuniones del tutor" )
+    @GetMapping("/virtual")
+    public ResponseEntity<VirtualLinkDTO> getVirtualLink(){
+        return new ResponseEntity<>(this.tutorService.getVirtualLink(), HttpStatus.OK);
     }
 
 }
