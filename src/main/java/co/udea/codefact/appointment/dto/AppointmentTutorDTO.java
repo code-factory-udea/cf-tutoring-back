@@ -16,6 +16,8 @@ public class AppointmentTutorDTO {
     private Long id;
     private String name;
     private String date;
+    private String startTime;
+    private String endTime;
     private boolean isVirtual;
 
 }

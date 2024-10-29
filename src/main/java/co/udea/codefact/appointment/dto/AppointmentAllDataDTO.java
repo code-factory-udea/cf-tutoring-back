@@ -17,6 +17,7 @@ public class AppointmentAllDataDTO {
     private String studentName;
     private String tutorName;
     private String date;
+    private String hour;
     private String creationDate;
     private boolean isVirtual;
     private AppointmentStatus status;

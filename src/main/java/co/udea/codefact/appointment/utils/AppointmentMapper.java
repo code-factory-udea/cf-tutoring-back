@@ -31,7 +31,9 @@ public class AppointmentMapper {
         return AppointmentTutorDTO.builder()
                 .id(appointment.getId())
                 .name(String.format(FormatConstants.FULLNAME_FORMAT, student.getFirstName(), student.getLastName()))
-                .date(appointment.getDate().toString())
+                .date(appointment.getDate().toLocalDate().toString())
+                .startTime(appointment.getDate().toLocalTime().toString().substring(0,5))
+                .endTime(appointment.getDate().toLocalTime().plusHours(1).toString().substring(0,5))
                 .isVirtual(appointment.isVirtual())
                 .build();
     }
@@ -54,7 +56,8 @@ public class AppointmentMapper {
         AppointmentAllDataDTO.AppointmentAllDataDTOBuilder appointmentDataBuilder = AppointmentAllDataDTO.builder()
                 .studentName(String.format(FormatConstants.FULLNAME_FORMAT, student.getFirstName(), student.getLastName()))
                 .tutorName(String.format(FormatConstants.FULLNAME_FORMAT, tutor.getFirstName(), tutor.getLastName()))
-                .date(appointment.getDate().toString())
+                .date(appointment.getDate().toLocalDate().toString())
+                .hour(appointment.getDate().toLocalTime().toString().substring(0,5))
                 .creationDate(appointment.getCreationDate().toString())
                 .isVirtual(appointment.isVirtual())
                 .status(appointment.getStatus());
