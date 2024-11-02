@@ -2,6 +2,7 @@ package co.udea.codefact.appointment.controller;
 
 import co.udea.codefact.appointment.dto.*;
 import co.udea.codefact.appointment.service.AppointmentFacade;
+import co.udea.codefact.tutor.dto.TutorListDTO;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,9 +28,30 @@ public class AppointmentController {
 
     @Operation(summary = "Estudiante - Crear solicitud de monitoria", description = "Crear una monitoria por parte de un usuario estudiante o monitor")
     @ApiResponse(responseCode = "200", description = "Monitoria creada")
-    @PostMapping(EndpointConstants.BASE)
+    @PostMapping(EndpointConstants.STUDENT)
     public ResponseEntity<AppointmentDTO> studentCreateAppointment(@Valid @RequestBody AppointmentCreationDTO appointmentCreationDTO) {
         return new ResponseEntity<>(this.appointmentFacade.studentRequestAppointment(appointmentCreationDTO), HttpStatus.OK);
+    }
+
+    @Operation(summary = "Estudiante - Busca los monitores asociados a una materia", description = "Manda el id de una materia para saber que tutores están asignados a ellas")
+    @ApiResponse(responseCode = "200", description = "Se carga un listado de tutores")
+    @GetMapping(EndpointConstants.STUDENT+"/{subjectId}")
+    public ResponseEntity<List<TutorListDTO>> studentGetTutorsBySubject(@PathVariable Long subjectId) {
+        return new ResponseEntity<>(this.appointmentFacade.studentGetTutorsBySubject(subjectId), HttpStatus.OK);
+    }
+
+    @Operation(summary = "Estudiante - Busca los horarios de un tutor", description = "Carga los horarios registrados por un tutor")
+    @ApiResponse(responseCode = "200", description = "Carga los horarios de un tutor")
+    @GetMapping(EndpointConstants.STUDENT+EndpointConstants.TUTOR+"/{username}")
+    public ResponseEntity<List<?>> studentGetTutorsSchedule(@PathVariable String username) {
+        return new ResponseEntity<>(this.appointmentFacade.studentGetTutorsSchedule(username), HttpStatus.OK);
+    }
+
+    @Operation(summary = "Estudiante - Obtener las solicitudes de tutoría de un monitor con base a su estado", description = "Un estudiante carga las solicitudes que ha enviado")
+    @ApiResponse(responseCode = "200", description = "Se cargan las solicitudes")
+    @GetMapping(EndpointConstants.STUDENT)
+    public ResponseEntity<List<AppointmentInfoDTO>> studentGetAllAppointmentRequest(@Valid AppointmentGetInfoDTO appointmentGetInfoDTO){
+        return new ResponseEntity<>(this.appointmentFacade.studentAppointmentsRequest(appointmentGetInfoDTO), HttpStatus.OK);
     }
 
     @Operation(summary = "Tutor - Respuesta a solicitud de monitoría", description = "Un tutor responde a una solicitud de monitoría que recibió anteriormente")
@@ -53,10 +75,10 @@ public class AppointmentController {
         return new ResponseEntity<>(this.appointmentFacade.tutorCompleteAppointment(tutorResponseDTO), HttpStatus.OK);
     }
 
-    @Operation(summary = "Tutor - Obtener las solicitudes de tutoría de un monitor con base a su estado", description = "Un tutor carga las solicitudes que a recibido")
+    @Operation(summary = "Tutor - Obtener las solicitudes de tutoría de un monitor con base a su estado", description = "Un tutor carga las solicitudes que ha recibido")
     @ApiResponse(responseCode = "200", description = "Se cargan las solicitudes")
     @GetMapping(EndpointConstants.TUTOR)
-    public ResponseEntity<List<AppointmentTutorDTO>> tutorGetAllAppointmentRequest(@Valid AppointmentGetTutorDTO appointmentGetTutorDTO){
+    public ResponseEntity<List<AppointmentInfoDTO>> tutorGetAllAppointmentRequest(@Valid AppointmentGetInfoDTO appointmentGetTutorDTO){
         return new ResponseEntity<>(this.appointmentFacade.tutorAppointmentsRequest(appointmentGetTutorDTO), HttpStatus.OK);
     }
 

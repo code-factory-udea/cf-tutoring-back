@@ -5,7 +5,9 @@ import java.util.Optional;
 
 import co.udea.codefact.tutor.dto.*;
 import co.udea.codefact.tutor.entity.Tutor;
+import co.udea.codefact.tutor.entity.TutorSchedule;
 import co.udea.codefact.tutor.repository.TutorRepository;
+import co.udea.codefact.tutor.utils.TutorMapper;
 import co.udea.codefact.tutor.utils.TutorScheduleMapper;
 import co.udea.codefact.utils.auth.AuthenticationUtil;
 import org.springframework.stereotype.Service;
@@ -137,6 +139,18 @@ public class TutorService {
         Tutor tutor = this.getTutorAuthenticated();
         String link =  tutor.getVirtualMeetingLink() != null ? tutor.getVirtualMeetingLink() : "El link no ha sido asignado";
         return VirtualLinkDTO.builder().link(link).build();
+    }
+
+    public List<TutorListDTO> getTutorsBySubject(Long subjectId){
+        List<Tutor> list = this.tutorRepository.findAllBySubjectCode(subjectId);
+        return TutorMapper.toListDTO(list);
+    }
+
+    public List<TutorScheduleDTO> getTutorScheduleSlots(String username){
+        Tutor tutor = this.getTutorByUsername(username).orElseThrow(
+                () -> new DataNotFoundException(MessagesConstants.TUTOR_NOT_FOUND));
+        List< TutorSchedule> schedules = this.tutorScheduleService.getTutorSchedules(tutor);
+        return TutorScheduleMapper.toSlotListDTO(schedules);
     }
 
     public Tutor getTutorAuthenticated(){

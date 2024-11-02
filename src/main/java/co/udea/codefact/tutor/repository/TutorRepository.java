@@ -1,5 +1,6 @@
 package co.udea.codefact.tutor.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import co.udea.codefact.tutor.entity.Tutor;
@@ -12,4 +13,6 @@ public interface TutorRepository extends JpaRepository<Tutor, Long> {
     Optional<Tutor> findByUserId(Long userId);
     
     Optional<Tutor> findByUserUsername(String username);
+
+    List<Tutor> findAllBySubjectCode(Long subjectId);
 }

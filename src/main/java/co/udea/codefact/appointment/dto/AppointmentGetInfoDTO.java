@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class AppointmentGetTutorDTO {
+public class AppointmentGetInfoDTO {
 
     @ValidEnum(enumClass = AppointmentStatus.class, message = "Invalid status value")
     private String status;
