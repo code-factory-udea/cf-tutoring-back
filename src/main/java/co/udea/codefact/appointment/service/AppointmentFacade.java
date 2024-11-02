@@ -2,6 +2,8 @@ package co.udea.codefact.appointment.service;
 
 import co.udea.codefact.appointment.dto.*;
 import co.udea.codefact.appointment.utils.AppointmentStatus;
+import co.udea.codefact.tutor.dto.TutorListDTO;
+import co.udea.codefact.tutor.dto.TutorScheduleDTO;
 import co.udea.codefact.tutor.entity.Tutor;
 import co.udea.codefact.tutor.service.TutorService;
 import co.udea.codefact.user.entity.User;
@@ -40,7 +42,20 @@ public class AppointmentFacade {
         return this.appointmentStudentService.requestAppointment(appointmentCreationDTO, user);
     }
 
-    public List<AppointmentTutorDTO> tutorAppointmentsRequest(AppointmentGetTutorDTO appointmentGetTutorDTO){
+    public List<AppointmentInfoDTO> studentAppointmentsRequest(AppointmentGetInfoDTO appointmentGetTutorDTO){
+        User user = this.userService.getUserByUsername(this.getUser());
+        return this.appointmentStudentService.getAppointmentsRequestAsStudent(user, AppointmentStatus.valueOf(appointmentGetTutorDTO.getStatus()));
+    }
+
+    public List<TutorListDTO> studentGetTutorsBySubject(Long subjectId){
+        return this.tutorService.getTutorsBySubject(subjectId);
+    }
+
+    public List<TutorScheduleDTO> studentGetTutorsSchedule(String username){
+        return this.tutorService.getTutorScheduleSlots(username);
+    }
+
+    public List<AppointmentInfoDTO> tutorAppointmentsRequest(AppointmentGetInfoDTO appointmentGetTutorDTO){
         Tutor tutor = this.tutorService.getTutorAuthenticated();
         return this.appointmentTutorService.getAppointmentsRequestAsTutor(tutor, AppointmentStatus.valueOf(appointmentGetTutorDTO.getStatus()));
     }

@@ -2,7 +2,7 @@ package co.udea.codefact.appointment.service;
 
 import co.udea.codefact.appointment.dto.AppointmentAllDataDTO;
 import co.udea.codefact.appointment.dto.AppointmentIDDTO;
-import co.udea.codefact.appointment.dto.AppointmentTutorDTO;
+import co.udea.codefact.appointment.dto.AppointmentInfoDTO;
 import co.udea.codefact.appointment.dto.AppointmentTutorResponseDTO;
 import co.udea.codefact.appointment.entity.Appointment;
 import co.udea.codefact.appointment.entity.SatisfactionSurvey;
@@ -36,10 +36,10 @@ public class AppointmentTutorService {
         this.satisfactionSurveyRepository = satisfactionSurveyRepository;
     }
 
-    public List<AppointmentTutorDTO> getAppointmentsRequestAsTutor(Tutor tutor, AppointmentStatus status) {
-        List<AppointmentTutorDTO> appointmentTutorDTOS = new ArrayList<>();
+    public List<AppointmentInfoDTO> getAppointmentsRequestAsTutor(Tutor tutor, AppointmentStatus status) {
+        List<AppointmentInfoDTO> appointmentTutorDTOS = new ArrayList<>();
         for (Appointment appointment : this.appointmentRepository.findAllByTutorAndStatus(tutor, status)) {
-            appointmentTutorDTOS.add(AppointmentMapper.toAppointmentTutorDTO(appointment));
+            appointmentTutorDTOS.add(AppointmentMapper.toAppointmentInfoDTO(appointment, appointment.getStudent()));
         }
         return appointmentTutorDTOS;
     }

@@ -3,7 +3,7 @@ package co.udea.codefact.appointment.utils;
 import co.udea.codefact.appointment.dto.AppointmentAllDataDTO;
 import co.udea.codefact.appointment.dto.AppointmentDTO;
 import co.udea.codefact.appointment.dto.AppointmentDataCSV;
-import co.udea.codefact.appointment.dto.AppointmentTutorDTO;
+import co.udea.codefact.appointment.dto.AppointmentInfoDTO;
 import co.udea.codefact.appointment.entity.Appointment;
 import co.udea.codefact.appointment.entity.SatisfactionSurvey;
 import co.udea.codefact.user.entity.User;
@@ -26,17 +26,17 @@ public class AppointmentMapper {
                 .build();
     }
 
-    public static AppointmentTutorDTO toAppointmentTutorDTO(Appointment appointment) {
-        User student = appointment.getStudent();
-        return AppointmentTutorDTO.builder()
+    public static AppointmentInfoDTO toAppointmentInfoDTO(Appointment appointment, User user) {
+        return AppointmentInfoDTO.builder()
                 .id(appointment.getId())
-                .name(String.format(FormatConstants.FULLNAME_FORMAT, student.getFirstName(), student.getLastName()))
+                .name(String.format(FormatConstants.FULLNAME_FORMAT, user.getFirstName(), user.getLastName()))
                 .date(appointment.getDate().toLocalDate().toString())
                 .startTime(appointment.getDate().toLocalTime().toString().substring(0,5))
                 .endTime(appointment.getDate().toLocalTime().plusHours(1).toString().substring(0,5))
                 .isVirtual(appointment.isVirtual())
                 .build();
     }
+
     public static AppointmentDataCSV toAppointmentDataCSV(Appointment appointment, Integer calification){
         return AppointmentDataCSV.builder()
                 .id(appointment.getId())

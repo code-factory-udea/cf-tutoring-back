@@ -2,6 +2,7 @@ package co.udea.codefact.appointment.service;
 
 import co.udea.codefact.appointment.dto.AppointmentCreationDTO;
 import co.udea.codefact.appointment.dto.AppointmentDTO;
+import co.udea.codefact.appointment.dto.AppointmentInfoDTO;
 import co.udea.codefact.appointment.entity.Appointment;
 import co.udea.codefact.appointment.repository.AppointmentRepository;
 import co.udea.codefact.appointment.utils.AppointmentMapper;
@@ -15,6 +16,8 @@ import co.udea.codefact.utils.exceptions.DataNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class AppointmentStudentService {
@@ -48,4 +51,11 @@ public class AppointmentStudentService {
         return AppointmentMapper.toDTOWithInfoTutorStudent(appointment);
     }
 
+    public List<AppointmentInfoDTO> getAppointmentsRequestAsStudent(User student, AppointmentStatus status) {
+        List<AppointmentInfoDTO> appointmentInfoDTOS = new ArrayList<>();
+        for (Appointment appointment : this.appointmentRepository.findAllByStudentAndStatus(student, status)) {
+            appointmentInfoDTOS.add(AppointmentMapper.toAppointmentInfoDTO(appointment, appointment.getTutor().getUser()));
+        }
+        return appointmentInfoDTOS;
+    }
 }
