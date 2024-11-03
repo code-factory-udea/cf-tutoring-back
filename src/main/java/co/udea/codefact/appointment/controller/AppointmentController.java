@@ -61,13 +61,6 @@ public class AppointmentController {
         return new ResponseEntity<>(this.appointmentFacade.tutorResponseToAppointment(tutorResponseDTO), HttpStatus.OK);
     }
 
-    @Operation(summary = "Tutor - Cancela una monitoría", description = "Un tutor cancela una monitoría que estaba programada")
-    @ApiResponse(responseCode = "200", description = "Se cambia el estado de la monitoría y se notifica al estudiante")
-    @DeleteMapping(EndpointConstants.TUTOR)
-    public ResponseEntity<String> tutorCancelAppointment(@Valid @RequestBody AppointmentIDDTO tutorResponseDTO){
-        return new ResponseEntity<>(this.appointmentFacade.tutorCancelAppointment(tutorResponseDTO), HttpStatus.OK);
-    }
-
     @Operation(summary = "Tutor - Completa una monitoría", description = "Un tutor completa una monitoría que realizó")
     @ApiResponse(responseCode = "200", description = "Se cambia el estado de la monitoría y se habilita su calificación")
     @PatchMapping(EndpointConstants.TUTOR)

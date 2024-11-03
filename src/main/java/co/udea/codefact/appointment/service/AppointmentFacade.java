@@ -70,10 +70,6 @@ public class AppointmentFacade {
         return this.appointmentTutorService.completeAppointment(tutor, appointmentIDDTO);
     }
 
-    public String tutorCancelAppointment(AppointmentIDDTO appointmentIDDTO){
-        Tutor tutor = this.tutorService.getTutorAuthenticated();
-        return this.appointmentTutorService.cancelAppointment(tutor, appointmentIDDTO);
-    }
 
     public AppointmentAllDataDTO getCompletedAppointmentInfo(Long appointmentId){
         Tutor tutor = this.tutorService.getTutorAuthenticated();

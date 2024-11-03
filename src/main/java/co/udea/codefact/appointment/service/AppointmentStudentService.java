@@ -16,6 +16,7 @@ import co.udea.codefact.utils.constants.MessagesConstants;
 import co.udea.codefact.utils.constants.RoleConstants;
 import co.udea.codefact.utils.exceptions.DataAlreadyExistsException;
 import co.udea.codefact.utils.exceptions.DataNotFoundException;
+import co.udea.codefact.utils.exceptions.InvalidBodyException;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
@@ -32,10 +33,14 @@ public class AppointmentStudentService {
 
     private final TutorService tutorService;
     private final AppointmentRepository appointmentRepository;
+    private final NotificationEmailService notificationEmailService;
 
-    public AppointmentStudentService(TutorService tutorService, AppointmentRepository appointmentRepository) {
+    public AppointmentStudentService(TutorService tutorService,
+                                     AppointmentRepository appointmentRepository,
+                                     NotificationEmailService notificationEmailService) {
         this.tutorService = tutorService;
         this.appointmentRepository = appointmentRepository;
+        this.notificationEmailService = notificationEmailService;
     }
 
     public AppointmentDTO requestAppointment(AppointmentCreationDTO appointmentCreation, User student) {
@@ -71,6 +76,30 @@ public class AppointmentStudentService {
             appointmentInfoDTOS.add(AppointmentMapper.toAppointmentInfoDTO(appointment, appointment.getTutor().getUser()));
         }
         return appointmentInfoDTOS;
+    }
+
+    public String cancellAppointment(Long appointmentId, User student) {
+        Appointment appointment = this.getAndValidateAppointment(student, appointmentId, AppointmentStatus.ACCEPTED);
+        appointment.setStatus(AppointmentStatus.CANCELLED);
+        this.appointmentRepository.save(appointment);
+        this.notificationEmailService.sendAppointmentCancellationByTutorEmail(appointment);
+        return MessagesConstants.RESPONSE_STUDENT_APPOINTMENT_CANCELLED;
+    }
+
+    private Appointment getAndValidateAppointment(User student, Long appointmentId, AppointmentStatus status) {
+        Appointment appointment = getAppointment(appointmentId);
+        if (!appointment.getStatus().equals(status)) {
+            throw new InvalidBodyException(MessagesConstants.TUTOR_APPOINTMENT_FINAL_STATUS);
+        }
+        if (!appointment.getStudent().equals(student)) {
+            throw new DataNotFoundException(MessagesConstants.NO_PERMISSION);
+        }
+        return appointment;
+    }
+
+    private Appointment getAppointment(Long appointmentId) {
+        return this.appointmentRepository.findById(appointmentId).orElseThrow(
+                () -> new DataNotFoundException(MessagesConstants.APPOINTMENT_NOT_FOUND));
     }
 
     private LocalDateTime getNextDate(TutorScheduleDTO schedule) {
