@@ -48,8 +48,8 @@ public class AppointmentController {
     }
 
 
-    @Operation(summary = "Estudiante - Busca los monitores asociados a una materia", description = "Manda el id de una materia para saber que tutores están asignados a ellas")
-    @ApiResponse(responseCode = "200", description = "Se carga un listado de tutores")
+    @Operation(summary = "Estudiante - Calificar una monitoría", description = "Un estudiante califica una monitoria recibida")
+    @ApiResponse(responseCode = "200", description = "Se califica la monitoria")
     @PostMapping(EndpointConstants.STUDENT+EndpointConstants.SURVEY)
     public ResponseEntity<String> studentGetTutorsBySubject(@Valid @RequestBody SatisfactionSurveyDTO satisfactionSurveyDTO)  {
         return new ResponseEntity<>(this.appointmentFacade.studentSatisfactionSurveyAppointment(satisfactionSurveyDTO), HttpStatus.OK);
