@@ -64,4 +64,9 @@ public class TutorScheduleService {
         return this.tutorScheduleRepository.findByTutor(tutor);
     }
 
+    public TutorSchedule getTutorSchedule(Long id) {
+        return this.tutorScheduleRepository.findById(id)
+                .orElseThrow(() -> new DataNotFoundException(MessagesConstants.TUTOR_SCHEDULE_NOT_FOUND));
+    }
+
 }

@@ -15,8 +15,14 @@ import co.udea.codefact.tutor.entity.Tutor;
 import co.udea.codefact.utils.constants.MessagesConstants;
 import co.udea.codefact.utils.exceptions.DataNotFoundException;
 import co.udea.codefact.utils.exceptions.InvalidBodyException;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,11 +84,34 @@ public class AppointmentTutorService {
     private String approveAppointment(Tutor tutor, Long appointmentId) {
         Appointment appointment = this.getAndValidateAppointment(tutor, appointmentId, AppointmentStatus.PENDING);
         this.validateTutorSchedule(appointment);
+        this.changeAppointmentDate(appointment, LocalDateTime.now());
         appointment.setStatus(AppointmentStatus.ACCEPTED);
-        //TODO: Falta rechazar las solicitudes que tienen la misma fecha y hora
         this.appointmentRepository.save(appointment);
+        this.changeAllAppointmentsRequestOnSameTime(appointment);
         this.notificationEmailService.sendAppointmentConfirmationEmail(appointment);
         return MessagesConstants.RESPONSE_TUTOR_APPOINTMENT_ACCEPTED;
+    }
+
+    private void changeAppointmentDate(Appointment appointment, LocalDateTime now){
+        LocalDateTime date = appointment.getDate();
+        if (date.isBefore(now) || date.isEqual(now)) {
+            DayOfWeek dayOfWeek = date.getDayOfWeek();
+            LocalTime time = date.toLocalTime();
+            LocalDate nextDate = now.toLocalDate().with(TemporalAdjusters.next(dayOfWeek));
+            appointment.setDate(LocalDateTime.of(nextDate, time));
+        }
+    }
+
+    @Async
+    public void changeAllAppointmentsRequestOnSameTime(Appointment appointment){
+        List<Appointment> appointments = this.appointmentRepository.findAllByStudentAndTutorAndStatusAndDate(
+                appointment.getStudent(),
+                appointment.getTutor(),
+                AppointmentStatus.PENDING,
+                appointment.getDate());
+        for (Appointment appointmentModify : appointments) {
+            changeAppointmentDate(appointmentModify, appointmentModify.getDate());
+        }
     }
 
     private String rejectAppointment(Tutor tutor, Long appointmentId) {

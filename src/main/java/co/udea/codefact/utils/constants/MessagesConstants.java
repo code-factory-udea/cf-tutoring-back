@@ -46,10 +46,12 @@ public class MessagesConstants {
     public static final String ERROR_EXCEPTION_MESSAGE_BODY = "message";
 
     public static final String ERROR_PARSING_HOUR_DAY = "Ingresa un horario válido";
+    public static final String ERROR_TUTOR_SCHEDULE_NO_EXISTS = "El tutor no tiene un horario registrado en esta franja horaria";
     public static final String ERROR_RESPONSE_APPOINTMENT_INVALID = "La respuesta a la solicitud de monitoria no es válida";
 
     public static final String TUTOR_SCHEDULE_CREATED = "El horario se ha creado correctamente";
     public static final String TUTOR_LINK_ASSIGNED = "El link se ha asignado correctamente";
+    public static final String APPOINTMENT_ALREADY_EXISTS = "Ya tienes una solicitud de tutoría pendiente con este tutor";
 
 
     private MessagesConstants() {

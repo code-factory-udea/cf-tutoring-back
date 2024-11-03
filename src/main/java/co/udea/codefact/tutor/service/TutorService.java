@@ -91,14 +91,14 @@ public class TutorService {
                 .username(user.getUsername());
         if (tutor.isPresent()) {
             tutorDTOBuilder.id(tutor.get().getId());
-            this.getAditionalInfo(tutorDTOBuilder, tutor.get().getSubject());
+            this.getAdditionalInfo(tutorDTOBuilder, tutor.get().getSubject());
             return tutorDTOBuilder.build();
         }
-        this.getAditionalInfo(tutorDTOBuilder, null);
+        this.getAdditionalInfo(tutorDTOBuilder, null);
         return tutorDTOBuilder.build();
     }
 
-    private void getAditionalInfo(TutorDTO.TutorDTOBuilder builder, Subject subject) {
+    private void getAdditionalInfo(TutorDTO.TutorDTOBuilder builder, Subject subject) {
         if (subject == null) {
             builder.subjectInfo(MessagesConstants.NO_DATA);
             builder.academicProgramInfo(MessagesConstants.NO_DATA);
@@ -112,6 +112,10 @@ public class TutorService {
     public void createTutorSchedule(CreateTutorScheduleDTO scheduleDTO) {
         Tutor tutor = this.getTutorAuthenticated();
         this.tutorScheduleService.createTutorSchedule(scheduleDTO, tutor);
+    }
+
+    public TutorSchedule getTutorSchedule(Long scheduleId) {
+        return this.tutorScheduleService.getTutorSchedule(scheduleId);
     }
 
     public List<TutorScheduleDTO> getTutorSchedules() {
