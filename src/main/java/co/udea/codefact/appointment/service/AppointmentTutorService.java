@@ -50,8 +50,8 @@ public class AppointmentTutorService {
         return appointmentTutorDTOS;
     }
 
-    public String cancelAppointment(Tutor tutor, AppointmentIDDTO appointmentIDDTO) {
-        Appointment appointment = this.getAndValidateAppointment(tutor, appointmentIDDTO.getId(), AppointmentStatus.ACCEPTED);
+    public String cancelAppointment(Tutor tutor, Long appointmentId) {
+        Appointment appointment = this.getAndValidateAppointment(tutor, appointmentId, AppointmentStatus.ACCEPTED);
         appointment.setStatus(AppointmentStatus.CANCELLED);
         this.appointmentRepository.save(appointment);
         this.notificationEmailService.sendAppointmentCancellationByTutorEmail(appointment);
@@ -60,6 +60,9 @@ public class AppointmentTutorService {
 
     public String completeAppointment(Tutor tutor, AppointmentIDDTO appointmentIDDTO){
         Appointment appointment = this.getAndValidateAppointment(tutor, appointmentIDDTO.getId(), AppointmentStatus.ACCEPTED);
+        if (LocalDateTime.now().isBefore(appointment.getDate())) {
+            throw new InvalidBodyException(MessagesConstants.DATE_BEFORE);
+        }
         appointment.setStatus(AppointmentStatus.COMPLETED);
         this.appointmentRepository.save(appointment);
         return MessagesConstants.RESPONSE_TUTOR_APPOINTMENT_COMPLETED;
@@ -77,6 +80,7 @@ public class AppointmentTutorService {
         return switch (tutorResponse) {
             case APPROVE -> approveAppointment(tutor, tutorResponseDTO.getId());
             case REJECT -> rejectAppointment(tutor, tutorResponseDTO.getId());
+            case CANCEL -> cancelAppointment(tutor, tutorResponseDTO.getId());
             default -> throw new InvalidBodyException(MessagesConstants.ERROR_RESPONSE_APPOINTMENT_INVALID);
         };
     }

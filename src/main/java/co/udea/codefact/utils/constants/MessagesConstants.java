@@ -39,7 +39,7 @@ public class MessagesConstants {
     public static final String RESPONSE_TUTOR_APPOINTMENT_REJECTED = "La solicitud de monitoría ha sido rechazada";
     public static final String RESPONSE_TUTOR_APPOINTMENT_COMPLETED = "La monitoría se ha completado, el estudiante ahora podrá calificarla";
     public static final String RESPONSE_TUTOR_APPOINTMENT_CANCELLED = "La monitoría ha sido cancelada, se le notificará al estudiante";
-
+    public static final String RESPONSE_STUDENT_APPOINTMENT_CANCELLED = "La monitoría ha sido cancelada, se le notificará al tutor";
 
     public static final String RESPONSE_TUTOR_SCHEDULE_DELETED = "El horario ha sido eliminado";
 
@@ -52,6 +52,8 @@ public class MessagesConstants {
     public static final String TUTOR_SCHEDULE_CREATED = "El horario se ha creado correctamente";
     public static final String TUTOR_LINK_ASSIGNED = "El link se ha asignado correctamente";
     public static final String APPOINTMENT_ALREADY_EXISTS = "Ya tienes una solicitud de tutoría pendiente con este tutor";
+    public static final String DATE_BEFORE = "Aún no puedes hacer esto";
+
 
 
     private MessagesConstants() {
