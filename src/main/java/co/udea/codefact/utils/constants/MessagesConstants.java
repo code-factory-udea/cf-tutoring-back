@@ -53,7 +53,8 @@ public class MessagesConstants {
     public static final String TUTOR_LINK_ASSIGNED = "El link se ha asignado correctamente";
     public static final String APPOINTMENT_ALREADY_EXISTS = "Ya tienes una solicitud de tutoría pendiente con este tutor";
     public static final String DATE_BEFORE = "Aún no puedes hacer esto";
-
+    public static final String APPOINTMENT_ALREADY_QUALIFIED = "La tutoría ya ha sido calificada";
+    public static final String RESPONSE_APPOINTMENT_QUALIFIED = "La tutoría ha sido calificada, gracias por tus aportes";
 
 
     private MessagesConstants() {

@@ -3,8 +3,11 @@ package co.udea.codefact.appointment.service;
 import co.udea.codefact.appointment.dto.AppointmentCreationDTO;
 import co.udea.codefact.appointment.dto.AppointmentDTO;
 import co.udea.codefact.appointment.dto.AppointmentInfoDTO;
+import co.udea.codefact.appointment.dto.SatisfactionSurveyDTO;
 import co.udea.codefact.appointment.entity.Appointment;
+import co.udea.codefact.appointment.entity.SatisfactionSurvey;
 import co.udea.codefact.appointment.repository.AppointmentRepository;
+import co.udea.codefact.appointment.repository.SatisfactionSurveyRepository;
 import co.udea.codefact.appointment.utils.AppointmentMapper;
 import co.udea.codefact.appointment.utils.AppointmentStatus;
 import co.udea.codefact.tutor.dto.TutorScheduleDTO;
@@ -33,13 +36,16 @@ public class AppointmentStudentService {
 
     private final TutorService tutorService;
     private final AppointmentRepository appointmentRepository;
+    private final SatisfactionSurveyRepository satisfactionSurveyRepository;
     private final NotificationEmailService notificationEmailService;
 
     public AppointmentStudentService(TutorService tutorService,
                                      AppointmentRepository appointmentRepository,
+                                     SatisfactionSurveyRepository satisfactionSurveyRepository,
                                      NotificationEmailService notificationEmailService) {
         this.tutorService = tutorService;
         this.appointmentRepository = appointmentRepository;
+        this.satisfactionSurveyRepository = satisfactionSurveyRepository;
         this.notificationEmailService = notificationEmailService;
     }
 
@@ -82,8 +88,24 @@ public class AppointmentStudentService {
         Appointment appointment = this.getAndValidateAppointment(student, appointmentId, AppointmentStatus.ACCEPTED);
         appointment.setStatus(AppointmentStatus.CANCELLED);
         this.appointmentRepository.save(appointment);
-        this.notificationEmailService.sendAppointmentCancellationByTutorEmail(appointment);
+        this.notificationEmailService.sendAppointmentCancellationByStudentEmail(appointment);
         return MessagesConstants.RESPONSE_STUDENT_APPOINTMENT_CANCELLED;
+    }
+
+    public String createSatisfactionSurvey(SatisfactionSurveyDTO satisfactionDTO, User student){
+        Appointment appointment = this.getAndValidateAppointment(
+                student, satisfactionDTO.getAppointmentId(), AppointmentStatus.COMPLETED);
+        Optional<SatisfactionSurvey> satisfactionSurveyExist = this.satisfactionSurveyRepository
+                .findByAppointmentId(appointment.getId());
+        if (satisfactionSurveyExist.isPresent()) {
+            throw new DataAlreadyExistsException(MessagesConstants.APPOINTMENT_ALREADY_QUALIFIED);
+        }
+        this.satisfactionSurveyRepository.save(SatisfactionSurvey.builder()
+                .appointment(appointment)
+                .calification(satisfactionDTO.getCalification())
+                .feedback(satisfactionDTO.getFeedback())
+                .build());
+        return MessagesConstants.RESPONSE_APPOINTMENT_QUALIFIED;
     }
 
     private Appointment getAndValidateAppointment(User student, Long appointmentId, AppointmentStatus status) {
