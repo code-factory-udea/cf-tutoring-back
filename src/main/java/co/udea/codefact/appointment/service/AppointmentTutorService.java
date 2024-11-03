@@ -50,14 +50,6 @@ public class AppointmentTutorService {
         return appointmentTutorDTOS;
     }
 
-    public String cancelAppointment(Tutor tutor, Long appointmentId) {
-        Appointment appointment = this.getAndValidateAppointment(tutor, appointmentId, AppointmentStatus.ACCEPTED);
-        appointment.setStatus(AppointmentStatus.CANCELLED);
-        this.appointmentRepository.save(appointment);
-        this.notificationEmailService.sendAppointmentCancellationByTutorEmail(appointment);
-        return MessagesConstants.RESPONSE_TUTOR_APPOINTMENT_CANCELLED;
-    }
-
     public String completeAppointment(Tutor tutor, AppointmentIDDTO appointmentIDDTO){
         Appointment appointment = this.getAndValidateAppointment(tutor, appointmentIDDTO.getId(), AppointmentStatus.ACCEPTED);
         if (LocalDateTime.now().isBefore(appointment.getDate())) {
@@ -87,7 +79,6 @@ public class AppointmentTutorService {
 
     private String approveAppointment(Tutor tutor, Long appointmentId) {
         Appointment appointment = this.getAndValidateAppointment(tutor, appointmentId, AppointmentStatus.PENDING);
-        this.validateTutorSchedule(appointment);
         this.changeAppointmentDate(appointment, LocalDateTime.now());
         appointment.setStatus(AppointmentStatus.ACCEPTED);
         this.appointmentRepository.save(appointment);
@@ -125,6 +116,14 @@ public class AppointmentTutorService {
         return MessagesConstants.RESPONSE_TUTOR_APPOINTMENT_REJECTED;
     }
 
+    public String cancelAppointment(Tutor tutor, Long appointmentId) {
+        Appointment appointment = this.getAndValidateAppointment(tutor, appointmentId, AppointmentStatus.ACCEPTED);
+        appointment.setStatus(AppointmentStatus.CANCELLED);
+        this.appointmentRepository.save(appointment);
+        this.notificationEmailService.sendAppointmentCancellationByTutorEmail(appointment);
+        return MessagesConstants.RESPONSE_TUTOR_APPOINTMENT_CANCELLED;
+    }
+
     private Appointment getAndValidateAppointment(Tutor tutor, Long appointmentId, AppointmentStatus status) {
         Appointment appointment = getAppointment(appointmentId);
         if (!appointment.getStatus().equals(status)) {
@@ -141,8 +140,4 @@ public class AppointmentTutorService {
                 () -> new DataNotFoundException(MessagesConstants.APPOINTMENT_NOT_FOUND));
     }
 
-    //TODO: Validar que tenga disponibilidad
-    private void validateTutorSchedule(Appointment appointment) {
-
-    }
 }

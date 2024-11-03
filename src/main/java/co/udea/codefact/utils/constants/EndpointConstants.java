@@ -19,7 +19,8 @@ public class EndpointConstants {
     public static final String APPOINTMENT = "/appointment";
     public static final String SCHEDULE = "/schedule";
     public static final String CSV = "/csv";
-    
+    public static final String SURVEY = "/survey" ;
+
     private EndpointConstants() {
         throw new IllegalStateException("Utility class");
     }

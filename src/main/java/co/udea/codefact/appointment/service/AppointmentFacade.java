@@ -38,8 +38,8 @@ public class AppointmentFacade {
     }
 
     public AppointmentDTO studentRequestAppointment(AppointmentCreationDTO appointmentCreationDTO){
-        User user = this.userService.getUserByUsername(this.getUser());
-        return this.appointmentStudentService.requestAppointment(appointmentCreationDTO, user);
+        User student = this.userService.getUserByUsername(this.getUser());
+        return this.appointmentStudentService.requestAppointment(appointmentCreationDTO, student);
     }
 
     public List<AppointmentInfoDTO> studentAppointmentsRequest(AppointmentGetInfoDTO appointmentGetTutorDTO){
@@ -54,6 +54,12 @@ public class AppointmentFacade {
     public List<TutorScheduleDTO> studentGetTutorsSchedule(String username){
         return this.tutorService.getTutorScheduleSlots(username);
     }
+
+    public String studentSatisfactionSurveyAppointment(SatisfactionSurveyDTO satisfactionSurveyDTO){
+        User student = this.userService.getUserByUsername(this.getUser());
+        return this.appointmentStudentService.createSatisfactionSurvey(satisfactionSurveyDTO, student);
+    }
+
 
     public List<AppointmentInfoDTO> tutorAppointmentsRequest(AppointmentGetInfoDTO appointmentGetTutorDTO){
         Tutor tutor = this.tutorService.getTutorAuthenticated();

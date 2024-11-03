@@ -47,6 +47,14 @@ public class AppointmentController {
         return new ResponseEntity<>(this.appointmentFacade.studentGetTutorsSchedule(username), HttpStatus.OK);
     }
 
+
+    @Operation(summary = "Estudiante - Calificar una monitoría", description = "Un estudiante califica una monitoria recibida")
+    @ApiResponse(responseCode = "200", description = "Se califica la monitoria")
+    @PostMapping(EndpointConstants.STUDENT+EndpointConstants.SURVEY)
+    public ResponseEntity<String> studentGetTutorsBySubject(@Valid @RequestBody SatisfactionSurveyDTO satisfactionSurveyDTO)  {
+        return new ResponseEntity<>(this.appointmentFacade.studentSatisfactionSurveyAppointment(satisfactionSurveyDTO), HttpStatus.OK);
+    }
+
     @Operation(summary = "Estudiante - Obtener las solicitudes de tutoría de un monitor con base a su estado", description = "Un estudiante carga las solicitudes que ha enviado")
     @ApiResponse(responseCode = "200", description = "Se cargan las solicitudes")
     @GetMapping(EndpointConstants.STUDENT)
