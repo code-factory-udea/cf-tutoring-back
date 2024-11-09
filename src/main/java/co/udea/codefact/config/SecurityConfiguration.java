@@ -42,6 +42,7 @@ public class SecurityConfiguration {
                                 authRequest.requestMatchers("/admin/**").hasAnyAuthority(RoleConstants.ADMIN)
                                 .requestMatchers("/appointment/**").hasAnyAuthority(RoleConstants.STUDENT,
                                                 RoleConstants.TUTOR)
+                                .requestMatchers("/professor/**").hasAnyAuthority(RoleConstants.PROFESSOR)
                                 .requestMatchers("/tutor/**").hasAnyAuthority(RoleConstants.TUTOR)
                                 .requestMatchers("/subject/**").authenticated()
                                 .requestMatchers("/swagger-ui/**","/v3/api-docs/**","/auth/**").permitAll()
