@@ -1,5 +1,6 @@
 package co.udea.codefact.professor.controller;
 
+import co.udea.codefact.appointment.dto.AppointmentDTO;
 import co.udea.codefact.professor.service.ProfessorService;
 import co.udea.codefact.subject.dto.SubjectListDTO;
 import co.udea.codefact.tutor.dto.TutorListDTO;
@@ -34,17 +35,17 @@ public class ProfessorController {
 
     @Operation(summary = "Obtener los tutores asociados a una materia asignada al profesor", description = "Un profesor obtiene los tutores asociados a una materia que tiene asignada")
     @ApiResponse(responseCode = "200", description = "Lista de tutores asociados a una materia seleccionada")
-    @GetMapping(EndpointConstants.TUTOR)
-    public ResponseEntity<List<TutorListDTO>> getTutorsProfessorSubject(Long subjectCode){
+    @GetMapping(EndpointConstants.TUTOR+"/{subjectCode}")
+    public ResponseEntity<List<TutorListDTO>> getTutorsProfessorSubject(@PathVariable Long subjectCode){
         return new ResponseEntity<>(this.professorService.getTutorsBySubject(subjectCode), HttpStatus.OK);
     }
 
     @Operation(summary = "Obtener las monitorias completadas de un tutor", description = "Un profesor obtiene las monitorias completadas de un tutor")
     @ApiResponse(responseCode = "200", description = "Lista de monitorias completadas por un tutor especifico")
     @GetMapping(EndpointConstants.APPOINTMENT)
-    public ResponseEntity<?> getTutorsProfessorAppointments(@RequestParam String username,
-                                                            @RequestParam LocalDate initialDate,
-                                                            @RequestParam LocalDate finalDate){
+    public ResponseEntity<List<AppointmentDTO>> getTutorsProfessorAppointments(@RequestParam String username,
+                                                                               @RequestParam LocalDate initialDate,
+                                                                               @RequestParam LocalDate finalDate){
         return new ResponseEntity<>(this.professorService.getTutorsCompletedAppointments(username,
                 initialDate, finalDate), HttpStatus.OK);
     }
