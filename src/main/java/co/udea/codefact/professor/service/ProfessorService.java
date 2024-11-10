@@ -146,8 +146,9 @@ public class ProfessorService {
     }
 
     public List<AppointmentDTO> getTutorsCompletedAppointments(String username, LocalDate initialDate, LocalDate finalDate){
-        Tutor tutor = this.tutorService.getTutorByUsername(username).orElseThrow();
-        return this.appointmentService.getAllAppointmentsByTutorAndDate(tutor, initialDate, finalDate);
+        Tutor tutor = this.tutorService.getTutorByUsername(username).orElseThrow(() -> new
+                DataNotFoundException(MessagesConstants.TUTOR_NOT_FOUND));
+        return this.appointmentService.getAllAppointmentsByTutorAndDate(tutor, initialDate, finalDate.plusDays(1));
     }
 
     public Professor getProfessorByUsernameAndSubject(String username, Long subjectCode){

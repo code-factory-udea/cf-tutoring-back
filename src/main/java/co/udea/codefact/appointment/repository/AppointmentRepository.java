@@ -24,10 +24,11 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     List<Appointment> findAllByStudentAndTutorAndStatusAndDate(
             User student, Tutor tutor, AppointmentStatus status, LocalDateTime date);
 
-    @Query("SELECT a FROM Appointment a WHERE a.tutor.id = :tutorId AND a.status = :status AND a.date BETWEEN :startDate AND :endDate")
+    //@Query("SELECT a FROM Appointment a WHERE a.tutor.id = :tutorId AND a.status = :status AND DATE(a.date) BETWEEN :startDate AND :endDate")
+    @Query(value = "SELECT * FROM appointment a WHERE a.tutor_id = :tutorId AND a.status = :status AND DATE(a.date) BETWEEN :startDate AND :endDate", nativeQuery = true)
     List<Appointment> findByTutorAndStatusAndDateBetween(
             @Param("tutorId") Long tutorId,
-            @Param("status") AppointmentStatus status,
+            @Param("status") String status,
             @Param("startDate") LocalDate startDate,
             @Param("endDate") LocalDate endDate
     );
