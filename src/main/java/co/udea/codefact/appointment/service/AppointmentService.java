@@ -1,5 +1,6 @@
 package co.udea.codefact.appointment.service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +57,17 @@ public class AppointmentService {
             listAppointments.add(AppointmentMapper.toDTOWithInfoTutorStudent(appointment));
         }
         return listAppointments;
+    }
+
+    public List<AppointmentDTO> getAllAppointmentsByTutorAndDate(Tutor tutor,
+                                                                 LocalDate initialDate, LocalDate finalDate){
+        List<AppointmentDTO> listAppointmentsDTO = new ArrayList<>();
+        List<Appointment> listAppointments = this.appointmentRepository.findByTutorAndStatusAndDateBetween(tutor.getId(),
+                AppointmentStatus.COMPLETED.toString(), initialDate, finalDate);
+        for (Appointment appointment : listAppointments) {
+            listAppointmentsDTO.add(AppointmentMapper.toDTOWithInfoTutorStudent(appointment));
+        }
+        return listAppointmentsDTO;
     }
 
     private Integer getCalification(Long appointmentId) {
