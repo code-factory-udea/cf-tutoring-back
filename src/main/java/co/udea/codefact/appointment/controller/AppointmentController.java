@@ -47,7 +47,6 @@ public class AppointmentController {
         return new ResponseEntity<>(this.appointmentFacade.studentGetTutorsSchedule(username), HttpStatus.OK);
     }
 
-
     @Operation(summary = "Estudiante - Calificar una monitoría", description = "Un estudiante califica una monitoria recibida")
     @ApiResponse(responseCode = "200", description = "Se califica la monitoria")
     @PostMapping(EndpointConstants.STUDENT+EndpointConstants.SURVEY)
@@ -60,6 +59,20 @@ public class AppointmentController {
     @GetMapping(EndpointConstants.STUDENT)
     public ResponseEntity<List<AppointmentInfoDTO>> studentGetAllAppointmentRequest(@Valid AppointmentGetInfoDTO appointmentGetInfoDTO){
         return new ResponseEntity<>(this.appointmentFacade.studentAppointmentsRequest(appointmentGetInfoDTO), HttpStatus.OK);
+    }
+
+    @Operation(summary = "Estudiante - Cancelar una monitoria", description = "Un estudiante cancela una monitoria ya programada")
+    @ApiResponse(responseCode = "200", description = "Se cancela la monitoria")
+    @PatchMapping(EndpointConstants.STUDENT)
+    public ResponseEntity<String> studentCancelAppointment(@Valid @RequestBody AppointmentIDDTO appointmentIDDTO){
+        return new ResponseEntity<>(this.appointmentFacade.studentCancelAppointment(appointmentIDDTO), HttpStatus.OK);
+    }
+
+    @Operation(summary = "Estudiante - Cancelar una solicitud de monitoria", description = "Un estudiante cancela una solicitud de monitoria realizada")
+    @ApiResponse(responseCode = "200", description = "Se cancela la solicitud de monitoria realizada")
+    @PatchMapping(EndpointConstants.STUDENT+"/request")
+    public ResponseEntity<String> studentCancelAppointmentRequest(@Valid @RequestBody AppointmentIDDTO appointmentIDDTO){
+        return new ResponseEntity<>(this.appointmentFacade.studentCancelAppointmentRequest(appointmentIDDTO), HttpStatus.OK);
     }
 
     @Operation(summary = "Tutor - Respuesta a solicitud de monitoría", description = "Un tutor responde a una solicitud de monitoría que recibió anteriormente")

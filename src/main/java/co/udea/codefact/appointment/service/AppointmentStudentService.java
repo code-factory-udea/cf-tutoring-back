@@ -84,12 +84,19 @@ public class AppointmentStudentService {
         return appointmentInfoDTOS;
     }
 
-    public String cancellAppointment(Long appointmentId, User student) {
+    public String cancelAppointment(Long appointmentId, User student) {
         Appointment appointment = this.getAndValidateAppointment(student, appointmentId, AppointmentStatus.ACCEPTED);
         appointment.setStatus(AppointmentStatus.CANCELLED);
         this.appointmentRepository.save(appointment);
         this.notificationEmailService.sendAppointmentCancellationByStudentEmail(appointment);
         return MessagesConstants.RESPONSE_STUDENT_APPOINTMENT_CANCELLED;
+    }
+
+    public String cancelAppointmentRequest(Long appointmentId, User student) {
+        Appointment appointment = this.getAndValidateAppointment(student, appointmentId, AppointmentStatus.PENDING);
+        appointment.setStatus(AppointmentStatus.CANCELLED);
+        this.appointmentRepository.save(appointment);
+        return MessagesConstants.RESPONSE_STUDENT_APPOINTMENT_REQUEST_CANCELLED;
     }
 
     public String createSatisfactionSurvey(SatisfactionSurveyDTO satisfactionDTO, User student){
@@ -105,6 +112,8 @@ public class AppointmentStudentService {
                 .calification(satisfactionDTO.getCalification())
                 .feedback(satisfactionDTO.getFeedback())
                 .build());
+        appointment.setStatus(AppointmentStatus.FINISHED);
+        this.appointmentRepository.save(appointment);
         return MessagesConstants.RESPONSE_APPOINTMENT_QUALIFIED;
     }
 
