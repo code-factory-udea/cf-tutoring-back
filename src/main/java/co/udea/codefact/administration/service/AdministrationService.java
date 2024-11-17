@@ -1,6 +1,7 @@
 package co.udea.codefact.administration.service;
 
 import java.io.StringWriter;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,7 +9,6 @@ import java.util.Map;
 
 import co.udea.codefact.academic.dto.UpdateAcademicProgramDTO;
 import co.udea.codefact.administration.dto.DeleteSubjectDTO;
-import co.udea.codefact.administration.dto.GetAllAppointmentsDTO;
 import co.udea.codefact.administration.dto.SubjectAssignmentDTO;
 import co.udea.codefact.administration.dto.UserPaginationDTO;
 import co.udea.codefact.utils.constants.FormatConstants;
@@ -105,16 +105,13 @@ public class AdministrationService {
         return this.appointmentService.getAppointmentByIdAsAdmin(appointmentId);
     }
     
-    public List<AppointmentDTO> getAllAppointments(GetAllAppointmentsDTO getAllAppointmentsDTO){
-        return this.appointmentService.getAllAppointmentsBetweenDates(getAllAppointmentsDTO.getInitialDate(),
-                getAllAppointmentsDTO.getEndDate());
+    public List<AppointmentDTO> getAllAppointments(LocalDate initialDate, LocalDate finalDate){
+        return this.appointmentService.getAllAppointmentsBetweenDates(initialDate, finalDate);
     }
 
-    public String appointmentsListToCSVFile(GetAllAppointmentsDTO getAllAppointmentsDTO){
+    public String appointmentsListToCSVFile(LocalDate initialDate, LocalDate finalDate){
         List<AppointmentDataCSV> listAppointmentsCsvs = this.appointmentService.getAllAppointmentsToCSV(
-                getAllAppointmentsDTO.getInitialDate(),
-                getAllAppointmentsDTO.getEndDate()
-        );
+                initialDate,finalDate);
         StringWriter writer = new StringWriter();
         writer.append("id,date,is_virtual,appointment_status,subject_id,academic_program_id,calification\n");
         for (AppointmentDataCSV appointmentDataCSV : listAppointmentsCsvs) {
