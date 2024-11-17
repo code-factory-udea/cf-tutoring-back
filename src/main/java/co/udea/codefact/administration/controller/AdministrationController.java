@@ -143,7 +143,7 @@ public class AdministrationController {
     @PostMapping(EndpointConstants.APPOINTMENT+EndpointConstants.CSV)
     public ResponseEntity<byte[]> getAppointmentsCSV(@Valid @RequestBody GetAllAppointmentsDTO getAllAppointmentsDTO) {
         String csv = this.adminService.appointmentsListToCSVFile(getAllAppointmentsDTO.getInitialDate(),
-                getAllAppointmentsDTO.getEndDate());
+                getAllAppointmentsDTO.getFinalDate());
         byte[] output = csv.getBytes(StandardCharsets.UTF_8);
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=monitorias.csv");

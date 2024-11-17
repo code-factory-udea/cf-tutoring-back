@@ -79,8 +79,4 @@ public class AppointmentService {
         return this.appointmentRepository.findById(appointmentId).orElseThrow(() -> new DataNotFoundException(MessagesConstants.APPOINTMENT_NOT_FOUND));
     }
 
-    private SatisfactionSurvey getSatisfactionSurvey(Long appointmentId) {
-        return this.satisfactionSurveyRepository.findByAppointmentId(appointmentId).orElseThrow(() -> new DataNotFoundException(MessagesConstants.APPOINTMENT_NOT_FOUND));
-    }
-
 }
