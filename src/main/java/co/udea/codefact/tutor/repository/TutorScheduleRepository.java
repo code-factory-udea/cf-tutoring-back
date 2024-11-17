@@ -1,6 +1,5 @@
 package co.udea.codefact.tutor.repository;
 
-import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.List;
 

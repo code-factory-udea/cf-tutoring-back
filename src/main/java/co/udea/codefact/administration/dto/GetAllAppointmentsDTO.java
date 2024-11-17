@@ -10,5 +10,5 @@ import java.time.LocalDate;
 public class GetAllAppointmentsDTO {
 
     LocalDate initialDate;
-    LocalDate endDate;
+    LocalDate finalDate;
 }

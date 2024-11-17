@@ -16,20 +16,17 @@ import java.util.List;
 @Service
 public class AppointmentFacade {
 
-    private final AppointmentService appointmentService;
     private final AppointmentStudentService appointmentStudentService;
     private final AppointmentTutorService appointmentTutorService;
     private final AuthenticationUtil authenticationUtil;
     private final TutorService tutorService;
     private final UserService userService;
 
-    public AppointmentFacade(AppointmentService appointmentService,
-                             TutorService tutorService,
+    public AppointmentFacade(TutorService tutorService,
                              UserService userService,
                              AppointmentStudentService appointmentStudentService,
                              AppointmentTutorService appointmentTutorService,
                              AuthenticationUtil authenticationUtil) {
-        this.appointmentService = appointmentService;
         this.userService = userService;
         this.appointmentStudentService = appointmentStudentService;
         this.appointmentTutorService = appointmentTutorService;

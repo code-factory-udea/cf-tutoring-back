@@ -3,6 +3,7 @@ package co.udea.codefact.appointment.controller;
 import co.udea.codefact.appointment.dto.*;
 import co.udea.codefact.appointment.service.AppointmentFacade;
 import co.udea.codefact.tutor.dto.TutorListDTO;
+import co.udea.codefact.tutor.dto.TutorScheduleDTO;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,7 +44,7 @@ public class AppointmentController {
     @Operation(summary = "Estudiante - Busca los horarios de un tutor", description = "Carga los horarios registrados por un tutor")
     @ApiResponse(responseCode = "200", description = "Carga los horarios de un tutor")
     @GetMapping(EndpointConstants.STUDENT+EndpointConstants.TUTOR+"/{username}")
-    public ResponseEntity<List<?>> studentGetTutorsSchedule(@PathVariable String username) {
+    public ResponseEntity<List<TutorScheduleDTO>> studentGetTutorsSchedule(@PathVariable String username) {
         return new ResponseEntity<>(this.appointmentFacade.studentGetTutorsSchedule(username), HttpStatus.OK);
     }
 

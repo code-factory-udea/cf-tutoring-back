@@ -13,7 +13,7 @@ public class TutorMapper {
 
 
     public static List<TutorListDTO> toListDTO(List<Tutor> list){
-        List<TutorListDTO> listDTO = new ArrayList<TutorListDTO>();
+        List<TutorListDTO> listDTO = new ArrayList<>();
         for(Tutor tutor : list){
             User user = tutor.getUser();
             listDTO.add(
