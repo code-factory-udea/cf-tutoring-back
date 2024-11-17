@@ -40,6 +40,7 @@ public class MessagesConstants {
     public static final String RESPONSE_TUTOR_APPOINTMENT_COMPLETED = "La monitoría se ha completado, el estudiante ahora podrá calificarla";
     public static final String RESPONSE_TUTOR_APPOINTMENT_CANCELLED = "La monitoría ha sido cancelada, se le notificará al estudiante";
     public static final String RESPONSE_STUDENT_APPOINTMENT_CANCELLED = "La monitoría ha sido cancelada, se le notificará al tutor";
+    public static final String RESPONSE_STUDENT_APPOINTMENT_REQUEST_CANCELLED = "La monitoría ha sido cancelada, se le notificará al tutor";
 
     public static final String RESPONSE_TUTOR_SCHEDULE_DELETED = "El horario ha sido eliminado";
 

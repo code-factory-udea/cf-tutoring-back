@@ -5,6 +5,7 @@ import java.util.List;
 
 import co.udea.codefact.academic.dto.UpdateAcademicProgramDTO;
 import co.udea.codefact.administration.dto.DeleteSubjectDTO;
+import co.udea.codefact.administration.dto.GetAllAppointmentsDTO;
 import co.udea.codefact.administration.dto.UserPaginationDTO;
 import co.udea.codefact.administration.service.AdministrationService;
 import co.udea.codefact.administration.dto.SubjectAssignmentDTO;
@@ -138,9 +139,9 @@ public class AdministrationController {
 
     @Operation(summary = "Obtener monitorias en csv", description = "Se obtiene la información de las monitorias en formato csv")
     @ApiResponse(responseCode = "200", description = "Se genero el csv con las informaciones de las monitorias")
-    @GetMapping(EndpointConstants.APPOINTMENT+EndpointConstants.CSV)
-    public ResponseEntity<byte[]> getAppointmentsCSV() {
-        String csv = this.adminService.appointmentsListToCSVFile();
+    @PostMapping(EndpointConstants.APPOINTMENT+EndpointConstants.CSV)
+    public ResponseEntity<byte[]> getAppointmentsCSV(@Valid @RequestBody GetAllAppointmentsDTO getAllAppointmentsDTO) {
+        String csv = this.adminService.appointmentsListToCSVFile(getAllAppointmentsDTO);
         byte[] output = csv.getBytes(StandardCharsets.UTF_8);
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=monitorias.csv");
@@ -150,9 +151,9 @@ public class AdministrationController {
 
     @Operation(summary = "Obtener monitorias", description = "Obtiene todas las monitorias")
     @ApiResponse(responseCode = "200", description = "Se obtuvieron las monitorias")
-    @GetMapping(EndpointConstants.APPOINTMENT)
-    public ResponseEntity<List<AppointmentDTO>> getAppointments() {
-        return new ResponseEntity<>(this.adminService.getAllAppointments(), null, 200);
+    @PostMapping(EndpointConstants.APPOINTMENT)
+    public ResponseEntity<List<AppointmentDTO>> getAppointments(@Valid @RequestBody GetAllAppointmentsDTO getAllAppointmentsDTO) {
+        return new ResponseEntity<>(this.adminService.getAllAppointments(getAllAppointmentsDTO), null, 200);
     }
 
     @Operation(summary = "Obtener toda la info de una monitoria", description = "Se obtiene la información de la monitoria y su calificación")

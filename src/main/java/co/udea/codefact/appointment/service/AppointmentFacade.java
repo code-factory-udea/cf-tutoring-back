@@ -60,6 +60,15 @@ public class AppointmentFacade {
         return this.appointmentStudentService.createSatisfactionSurvey(satisfactionSurveyDTO, student);
     }
 
+    public String studentCancelAppointment(AppointmentIDDTO appointmentIDDTO){
+        User student = this.userService.getUserByUsername(this.getUser());
+        return this.appointmentStudentService.cancelAppointment(appointmentIDDTO.getId(), student);
+    }
+
+    public String studentCancelAppointmentRequest(AppointmentIDDTO appointmentIDDTO){
+        User student = this.userService.getUserByUsername(this.getUser());
+        return this.appointmentStudentService.cancelAppointmentRequest(appointmentIDDTO.getId(), student);
+    }
 
     public List<AppointmentInfoDTO> tutorAppointmentsRequest(AppointmentGetInfoDTO appointmentGetTutorDTO){
         Tutor tutor = this.tutorService.getTutorAuthenticated();

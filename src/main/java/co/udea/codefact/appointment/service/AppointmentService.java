@@ -1,7 +1,6 @@
 package co.udea.codefact.appointment.service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -11,19 +10,12 @@ import co.udea.codefact.appointment.entity.SatisfactionSurvey;
 import co.udea.codefact.appointment.entity.Appointment;
 import co.udea.codefact.appointment.repository.AppointmentRepository;
 import co.udea.codefact.appointment.repository.SatisfactionSurveyRepository;
-import co.udea.codefact.appointment.repository.WaitingListRepository;
 import co.udea.codefact.appointment.utils.AppointmentMapper;
 import co.udea.codefact.appointment.utils.AppointmentStatus;
 import org.springframework.stereotype.Service;
 
 import co.udea.codefact.tutor.entity.Tutor;
-import co.udea.codefact.tutor.service.TutorService;
-import co.udea.codefact.user.entity.User;
-import co.udea.codefact.user.service.UserService;
-import co.udea.codefact.utils.auth.AuthenticationUtil;
-import co.udea.codefact.utils.constants.FormatConstants;
 import co.udea.codefact.utils.constants.MessagesConstants;
-import co.udea.codefact.utils.constants.RoleConstants;
 import co.udea.codefact.utils.exceptions.DataNotFoundException;
 
 @Service
@@ -31,19 +23,16 @@ public class AppointmentService {
 
     private final AppointmentRepository appointmentRepository;
     private final SatisfactionSurveyRepository satisfactionSurveyRepository;
-    private final WaitingListRepository waitingListRepository;
 
     public AppointmentService(AppointmentRepository appointmentRepository,
-                              SatisfactionSurveyRepository satisfactionSurveyRepository,
-                              WaitingListRepository waitingListRepository) {
+                              SatisfactionSurveyRepository satisfactionSurveyRepository) {
         this.appointmentRepository = appointmentRepository;
         this.satisfactionSurveyRepository = satisfactionSurveyRepository;
-        this.waitingListRepository = waitingListRepository;
     }
 
-    public List<AppointmentDataCSV> getAllAppointmentsToCSV() {
+    public List<AppointmentDataCSV> getAllAppointmentsToCSV(LocalDate initialDate, LocalDate finalDate) {
         List<AppointmentDataCSV> listAppointmentsCsvs = new ArrayList<>();
-        for (Appointment appointment : this.appointmentRepository.findAll()) {
+        for (Appointment appointment : this.appointmentRepository.findAllBetweenDates(initialDate, finalDate)) {
             listAppointmentsCsvs.add(
                     AppointmentMapper.toAppointmentDataCSV(appointment, this.getCalification(appointment.getId()))
             );
@@ -51,9 +40,9 @@ public class AppointmentService {
         return listAppointmentsCsvs;
     }
 
-    public List<AppointmentDTO> getAllAppointments() {
+    public List<AppointmentDTO> getAllAppointmentsBetweenDates(LocalDate initialDate, LocalDate finalDate) {
         List<AppointmentDTO> listAppointments = new ArrayList<>();
-        for (Appointment appointment : this.appointmentRepository.findAll()) {
+        for (Appointment appointment : this.appointmentRepository.findAllBetweenDates(initialDate, finalDate)) {
             listAppointments.add(AppointmentMapper.toDTOWithInfoTutorStudent(appointment));
         }
         return listAppointments;

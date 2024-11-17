@@ -8,6 +8,7 @@ import java.util.Map;
 
 import co.udea.codefact.academic.dto.UpdateAcademicProgramDTO;
 import co.udea.codefact.administration.dto.DeleteSubjectDTO;
+import co.udea.codefact.administration.dto.GetAllAppointmentsDTO;
 import co.udea.codefact.administration.dto.SubjectAssignmentDTO;
 import co.udea.codefact.administration.dto.UserPaginationDTO;
 import co.udea.codefact.utils.constants.FormatConstants;
@@ -104,12 +105,16 @@ public class AdministrationService {
         return this.appointmentService.getAppointmentByIdAsAdmin(appointmentId);
     }
     
-    public List<AppointmentDTO> getAllAppointments(){
-        return this.appointmentService.getAllAppointments();
+    public List<AppointmentDTO> getAllAppointments(GetAllAppointmentsDTO getAllAppointmentsDTO){
+        return this.appointmentService.getAllAppointmentsBetweenDates(getAllAppointmentsDTO.getInitialDate(),
+                getAllAppointmentsDTO.getEndDate());
     }
 
-    public String appointmentsListToCSVFile(){
-        List<AppointmentDataCSV> listAppointmentsCsvs = this.appointmentService.getAllAppointmentsToCSV();
+    public String appointmentsListToCSVFile(GetAllAppointmentsDTO getAllAppointmentsDTO){
+        List<AppointmentDataCSV> listAppointmentsCsvs = this.appointmentService.getAllAppointmentsToCSV(
+                getAllAppointmentsDTO.getInitialDate(),
+                getAllAppointmentsDTO.getEndDate()
+        );
         StringWriter writer = new StringWriter();
         writer.append("id,date,is_virtual,appointment_status,subject_id,academic_program_id,calification\n");
         for (AppointmentDataCSV appointmentDataCSV : listAppointmentsCsvs) {
@@ -125,7 +130,6 @@ public class AdministrationService {
         return writer.toString();
     }
 
-    
     public SubjectResponseDTO createSubject(SubjectRequestDTO subject){
         return this.subjectService.createSubject(subject);
     }
