@@ -2,6 +2,7 @@ package co.udea.codefact.administration.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDate;
 
@@ -9,6 +10,6 @@ import java.time.LocalDate;
 @Setter
 public class GetAllAppointmentsDTO {
 
-    LocalDate initialDate;
-    LocalDate finalDate;
+    private LocalDate initialDate;
+    private LocalDate finalDate;
 }
