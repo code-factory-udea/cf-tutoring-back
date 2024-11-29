@@ -52,7 +52,7 @@ public class AppointmentService {
                                                                  LocalDate initialDate, LocalDate finalDate){
         List<AppointmentDTO> listAppointmentsDTO = new ArrayList<>();
         List<Appointment> listAppointments = this.appointmentRepository.findByTutorAndStatusAndDateBetween(tutor.getId(),
-                AppointmentStatus.COMPLETED.toString(), initialDate, finalDate);
+                 initialDate, finalDate);
         for (Appointment appointment : listAppointments) {
             listAppointmentsDTO.add(AppointmentMapper.toDTOWithInfoTutorStudent(appointment));
         }
