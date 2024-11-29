@@ -25,13 +25,14 @@ import java.time.LocalTime;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 
 @Service
 public class AppointmentTutorService {
     private final AppointmentRepository appointmentRepository;
-    private final NotificationEmailService notificationEmailService;
     private final SatisfactionSurveyRepository satisfactionSurveyRepository;
+    private final NotificationEmailService notificationEmailService;
 
 
     public AppointmentTutorService(AppointmentRepository appointmentRepository,
@@ -44,12 +45,25 @@ public class AppointmentTutorService {
 
     public List<AppointmentInfoDTO> getAppointmentsRequestAsTutor(Tutor tutor, AppointmentStatus status) {
         List<AppointmentInfoDTO> appointmentTutorDTOS = new ArrayList<>();
+        if (!tutor.isActive()) {
+            updateStatusInactiveTutor(tutor);
+        }
         for (Appointment appointment : this.appointmentRepository.findAllByTutorAndStatus(tutor, status)) {
             appointmentTutorDTOS.add(AppointmentMapper.toAppointmentInfoDTO(appointment, appointment.getStudent()));
         }
         return appointmentTutorDTOS;
     }
 
+    private void updateStatusInactiveTutor(Tutor tutor) {
+        List<Appointment> appointments = Stream.concat(
+                this.appointmentRepository.findAllByTutorAndStatus(tutor, AppointmentStatus.PENDING).stream(),
+                this.appointmentRepository.findAllByTutorAndStatus(tutor, AppointmentStatus.ACCEPTED).stream())
+                .toList();
+        for (Appointment appointment : appointments) {
+            appointment.setStatus(AppointmentStatus.CANCELLED);
+            this.appointmentRepository.save(appointment);
+        }
+    }
     public String completeAppointment(Tutor tutor, AppointmentIDDTO appointmentIDDTO){
         Appointment appointment = this.getAndValidateAppointment(tutor, appointmentIDDTO.getId(), AppointmentStatus.ACCEPTED);
         if (LocalDateTime.now().isBefore(appointment.getDate())) {
@@ -73,7 +87,6 @@ public class AppointmentTutorService {
             case APPROVE -> approveAppointment(tutor, tutorResponseDTO.getId());
             case REJECT -> rejectAppointment(tutor, tutorResponseDTO.getId());
             case CANCEL -> cancelAppointment(tutor, tutorResponseDTO.getId());
-            default -> throw new InvalidBodyException(MessagesConstants.ERROR_RESPONSE_APPOINTMENT_INVALID);
         };
     }
 
@@ -83,7 +96,7 @@ public class AppointmentTutorService {
         appointment.setStatus(AppointmentStatus.ACCEPTED);
         this.appointmentRepository.save(appointment);
         this.changeAllAppointmentsRequestOnSameTime(appointment);
-        this.notificationEmailService.sendAppointmentConfirmationEmail(appointment);
+        notificationEmailService.sendAppointmentConfirmationEmail(appointment);
         return MessagesConstants.RESPONSE_TUTOR_APPOINTMENT_ACCEPTED;
     }
 
@@ -120,7 +133,7 @@ public class AppointmentTutorService {
         Appointment appointment = this.getAndValidateAppointment(tutor, appointmentId, AppointmentStatus.ACCEPTED);
         appointment.setStatus(AppointmentStatus.CANCELLED);
         this.appointmentRepository.save(appointment);
-        this.notificationEmailService.sendAppointmentCancellationByTutorEmail(appointment);
+        notificationEmailService.sendAppointmentCancellationByTutorEmail(appointment);
         return MessagesConstants.RESPONSE_TUTOR_APPOINTMENT_CANCELLED;
     }
 

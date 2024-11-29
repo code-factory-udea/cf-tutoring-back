@@ -4,11 +4,9 @@ import java.time.DayOfWeek;
 import java.util.List;
 
 import co.udea.codefact.tutor.dto.CreateTutorScheduleDTO;
-import co.udea.codefact.tutor.dto.TutorScheduleDTO;
 import co.udea.codefact.tutor.entity.Tutor;
 import co.udea.codefact.tutor.entity.TutorSchedule;
 import co.udea.codefact.tutor.repository.TutorScheduleRepository;
-import co.udea.codefact.utils.auth.AuthenticationUtil;
 import co.udea.codefact.utils.constants.MessagesConstants;
 import co.udea.codefact.utils.exceptions.DataNotFoundException;
 import co.udea.codefact.utils.exceptions.InvalidBodyException;

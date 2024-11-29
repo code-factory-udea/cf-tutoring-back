@@ -21,7 +21,6 @@ public class NotificationEmailService {
         this.mailSender = mailSender;
     }
 
-    @Async
     public void sendAppointmentConfirmationEmail(Appointment appointment) {
         String modality = this.getModality(appointment);
         Tutor tutor = appointment.getTutor();
@@ -55,7 +54,6 @@ public class NotificationEmailService {
                 .build());
     }
 
-    @Async
     public void sendAppointmentCancellationByTutorEmail(Appointment appointment) {
             Tutor tutor = appointment.getTutor();
             User student = appointment.getStudent();
@@ -84,7 +82,6 @@ public class NotificationEmailService {
                     .build());
     }
 
-    @Async
     public void sendAppointmentCancellationByStudentEmail(Appointment appointment) {
         User tutor = appointment.getTutor().getUser();
         User student = appointment.getStudent();
@@ -104,11 +101,11 @@ public class NotificationEmailService {
                 .subject("Notificación: Un estudiante ha cancelado la cita")
                 .recipient(recipient)
                 .build());
-
     }
 
-    private void sendNotification(NotificationInfo info) {
+    public void sendNotification(NotificationInfo info) {
         try {
+            System.out.println("Entro a sendNotification");
             MimeMessage mimeMessage = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
             helper.setSubject(info.getSubject());
