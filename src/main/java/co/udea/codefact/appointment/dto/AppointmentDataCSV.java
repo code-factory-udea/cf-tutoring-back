@@ -18,6 +18,9 @@ public class AppointmentDataCSV {
     private boolean isVirtual;
     private String appointmentStatus;
     private Long subjectId;
+    private String subjectName;
+    private String studentName;
+    private String tutorName;
     private Long academicProgramId;
     private Integer calification;
 

@@ -88,7 +88,7 @@ public class AppointmentStudentService {
         Appointment appointment = this.getAndValidateAppointment(student, appointmentId, AppointmentStatus.ACCEPTED);
         appointment.setStatus(AppointmentStatus.CANCELLED);
         this.appointmentRepository.save(appointment);
-        this.notificationEmailService.sendAppointmentCancellationByStudentEmail(appointment);
+        notificationEmailService.sendAppointmentCancellationByStudentEmail(appointment);
         return MessagesConstants.RESPONSE_STUDENT_APPOINTMENT_CANCELLED;
     }
 

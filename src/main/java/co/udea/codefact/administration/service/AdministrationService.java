@@ -115,12 +115,15 @@ public class AdministrationService {
         StringWriter writer = new StringWriter();
         writer.append("id,date,is_virtual,appointment_status,subject_id,academic_program_id,calification\n");
         for (AppointmentDataCSV appointmentDataCSV : listAppointmentsCsvs) {
-            writer.append(String.format("%d,%s,%b,%s,%d,%d,%d\n",
+            writer.append(String.format("%d,%s,%s,%s,%b,%s,%d,%s,%d,%d\n",
                 appointmentDataCSV.getId(),
+                appointmentDataCSV.getStudentName(),
+                appointmentDataCSV.getTutorName(),
                 appointmentDataCSV.getDate(),
                 appointmentDataCSV.isVirtual(),
                 appointmentDataCSV.getAppointmentStatus(),
                 appointmentDataCSV.getSubjectId(),
+                appointmentDataCSV.getSubjectName(),
                 appointmentDataCSV.getAcademicProgramId(),
                 appointmentDataCSV.getCalification()));
         }
