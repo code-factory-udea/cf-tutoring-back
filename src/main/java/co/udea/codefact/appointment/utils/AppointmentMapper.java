@@ -6,6 +6,7 @@ import co.udea.codefact.appointment.dto.AppointmentDataCSV;
 import co.udea.codefact.appointment.dto.AppointmentInfoDTO;
 import co.udea.codefact.appointment.entity.Appointment;
 import co.udea.codefact.appointment.entity.SatisfactionSurvey;
+import co.udea.codefact.tutor.entity.Tutor;
 import co.udea.codefact.user.entity.User;
 import co.udea.codefact.utils.constants.FormatConstants;
 import co.udea.codefact.utils.constants.MessagesConstants;
@@ -38,12 +39,18 @@ public class AppointmentMapper {
     }
 
     public static AppointmentDataCSV toAppointmentDataCSV(Appointment appointment, Integer calification){
+        Tutor tutor = appointment.getTutor();
         return AppointmentDataCSV.builder()
                 .id(appointment.getId())
                 .date(appointment.getDate().toString())
+                .studentName(String.format(FormatConstants.FULLNAME_FORMAT, appointment.getStudent().getFirstName(),
+                        appointment.getStudent().getLastName()))
+                .tutorName(String.format(FormatConstants.FULLNAME_FORMAT, tutor.getUser().getFirstName(),
+                        tutor.getUser().getLastName()))
                 .isVirtual(appointment.isVirtual())
                 .appointmentStatus(appointment.getStatus().toString())
-                .subjectId(appointment.getTutor().getSubject().getId())
+                .subjectId(tutor.getSubject().getId())
+                .subjectName(tutor.getSubject().getName())
                 .academicProgramId(appointment.getTutor().getSubject().getAcademicProgram().getId())
                 .calification(calification)
                 .build();

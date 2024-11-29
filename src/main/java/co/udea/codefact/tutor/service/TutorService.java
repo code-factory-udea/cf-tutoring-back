@@ -146,7 +146,7 @@ public class TutorService {
     }
 
     public List<TutorListDTO> getTutorsBySubject(Long subjectId){
-        List<Tutor> list = this.tutorRepository.findAllBySubjectCode(subjectId);
+        List<Tutor> list = this.tutorRepository.findAllBySubjectCodeAndActivate(subjectId);
         return TutorMapper.toListDTO(list);
     }
 
